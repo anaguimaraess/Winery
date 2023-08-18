@@ -10,4 +10,7 @@ import java.util.List;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     List<Usuario> findAll();
+
+    boolean existsByEmail(String email);
+
 }
