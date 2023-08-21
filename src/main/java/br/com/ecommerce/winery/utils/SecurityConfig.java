@@ -25,6 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll() // Permite acesso ao console do H2
                 .antMatchers("/usuarios/listarUsuarios").permitAll()
                 .antMatchers("/usuarios/alterar/{id}").permitAll()
+                .antMatchers("/usuarios/{id}/inativar").permitAll()
+                .antMatchers("/usuarios/{id}/reativar").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
