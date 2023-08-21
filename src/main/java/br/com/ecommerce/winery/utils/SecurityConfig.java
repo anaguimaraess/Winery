@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    //camada de segurança, precisa editar esses acessos do configure
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
