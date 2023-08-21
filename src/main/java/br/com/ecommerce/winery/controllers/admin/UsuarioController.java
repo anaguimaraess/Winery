@@ -1,15 +1,12 @@
 package br.com.ecommerce.winery.controllers.admin;
 
-import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.services.admin.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +23,11 @@ public class UsuarioController {
     @GetMapping("/listarUsuarios")
     public List<Usuario> listarTodosUsuarios() {
         return usuarioService.listarTodosUsuarios();
+    }
+
+    @GetMapping("/listarUsuarios/{nome}")
+    public List<Usuario> listarPorNome(@RequestParam String nome) {
+        return usuarioService.listarPorNome(nome);
     }
 
     @PutMapping("/alterar/{id}")

@@ -27,6 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/usuarios/alterar/{id}").permitAll()
                 .antMatchers("/usuarios/{id}/inativar").permitAll()
                 .antMatchers("/usuarios/{id}/reativar").permitAll()
+                .antMatchers("/usuarios/listarUsuarios/{nome}").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()

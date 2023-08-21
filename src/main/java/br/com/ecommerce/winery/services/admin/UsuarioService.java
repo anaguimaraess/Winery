@@ -21,6 +21,10 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    public List<Usuario> listarPorNome(String nome){
+        return usuarioRepository.findByNome(nome);
+    }
+
     public Usuario atualizarUsuario(int id, Usuario usuarioAtualizado) {
         Optional<Usuario> usuarioCadastrado = usuarioRepository.findById(id);
 
