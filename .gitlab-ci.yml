@@ -17,6 +17,9 @@ build:
   stage: build
   script:
     - mvn $MAVEN_CLI_OPTS clean package
+  artifacts:
+    paths:
+      - target/your-app.jar  # Atualize "your-app.jar" com o nome real do JAR gerado
 
 test:
   stage: test
@@ -31,6 +34,16 @@ test:
 deploy:
   stage: deploy
   script:
-    - # Adicione os comandos de deploy aqui
+    - eval $(ssh-agent -s)  # Inicializar o agente SSH
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -  # Adicionar a chave privada à autenticação SSH
+    - ssh-keyscan -H github.com >> ~/.ssh/known_hosts  # Adicionar a chave pública do GitHub ao arquivo known_hosts
+    - git clone git@github.com:anaguimaraess/Winery.git  # Clonar o repositório usando a Deploy key
+    - cd Winery
+    - mvn clean install compile  # Comando necessário para criar o JAR
+    - scp target/your-app.jar ubuntu@ec2-18-221-33-38.us-east-2.compute.amazonaws.com:/path/to/deployment/
+    - echo "Artefato transferido."
+    - echo "Reiniciando o serviço no servidor EC2..."
+    - ssh ubuntu@ec2-18-221-33-38.us-east-2.compute.amazonaws.com "sudo systemctl restart Winery"
+    - echo "Serviço reiniciado."
   only:
-    - master
+    - main
