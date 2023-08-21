@@ -47,3 +47,4 @@ deploy:
     - echo "Serviço reiniciado."
   only:
     - main
+    - feature/criandoSistemaDeploy
