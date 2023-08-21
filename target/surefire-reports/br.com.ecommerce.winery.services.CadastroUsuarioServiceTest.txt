@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: br.com.ecommerce.winery.services.CadastroUsuarioServiceTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.195 s - in br.com.ecommerce.winery.services.CadastroUsuarioServiceTest
