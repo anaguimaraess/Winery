@@ -3,7 +3,7 @@ package br.com.ecommerce.winery.controllers.admin;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
-import br.com.ecommerce.winery.services.admin.CadastroUsuarioService;
+import br.com.ecommerce.winery.services.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

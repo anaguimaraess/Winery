@@ -3,7 +3,6 @@ package br.com.ecommerce.winery.services;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
-import br.com.ecommerce.winery.services.admin.CadastroUsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

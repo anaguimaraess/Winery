@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.services.admin;
+package br.com.ecommerce.winery.services;
 
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
@@ -17,11 +17,16 @@ public class CadastroUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
+    @Autowired
+    private LoginService loginService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
+        if (!loginService.ehAdmin()) {
+            log.error("Você não é administrador. Não foi possível cadastrar usuário.");
+            throw new BusinessException("Tentativa falha de cadastro de usuário.");
+        }
         validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
         validarEmailUnico(usuario.getEmail());
 
@@ -29,6 +34,7 @@ public class CadastroUsuarioService {
         usuario.setConfirmaSenha(passwordEncoder.encode(usuario.getConfirmaSenha()));
         usuario.setStatus(Status.ATIVO);
 
+        log.info("Usuário cadastrado com sucesso.");
         return usuarioRepository.save(usuario);
     }
 
@@ -39,6 +45,7 @@ public class CadastroUsuarioService {
             throw new BusinessException("Senhas não coincidem");
         }
     }
+
     private void validarEmailUnico(String email) throws BusinessException {
         if (usuarioRepository.existsByEmail(email)) {
             log.error("Não é possível cadastrar usuário. O email já está em uso.");
