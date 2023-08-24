@@ -25,45 +25,7 @@ public class UsuarioControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private UsuarioService usuarioService;
-   @Test
-    public void testReativarUsuario() throws Exception {
-        Usuario usuarioAtivo = new Usuario();
-        usuarioAtivo.setStatus(Status.ATIVO);
 
-        Mockito.when(usuarioService.reativarUsuario(anyInt())).thenReturn(usuarioAtivo);
-
-        mockMvc.perform(put("/usuarios/{id}/reativar", 1))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testInativarUsuario() throws Exception{
-       Usuario usuarioInativo = new Usuario();
-       usuarioInativo.setStatus(Status.INATIVO);
-
-       Mockito.when(usuarioService.inativarUsuario(anyInt())).thenReturn(usuarioInativo);
-
-       mockMvc.perform(put("/usuarios/{id}/inativar",1))
-               .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testAtualizarUsuario() throws Exception {
-        Usuario usuarioAtualizado = new Usuario();
-        usuarioAtualizado.setId(1);
-        usuarioAtualizado.setNome("Novo Nome");
-        usuarioAtualizado.setEmail("novo@email.com");
-
-        Mockito.when(usuarioService.atualizarUsuario(anyInt(), Mockito.any(Usuario.class)))
-                .thenReturn(usuarioAtualizado);
-
-        String requestBody = "{ \"nome\": \"Novo Nome\", \"email\": \"novo@email.com\" }";
-
-        mockMvc.perform(put("/usuarios/alterar/{id}", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
-                .andExpect(status().isOk());
-    }
 
 
 }

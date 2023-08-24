@@ -12,7 +12,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     List<Usuario> findAll();
 
-    List<Usuario> findByNome(String nome);
+    List<Usuario> findByNomeContains(String nome);
+
+    //List<Usuario> findByNomeEmailStatusGrupo(String nome, String email, Grupo grupo, Status status);
     boolean existsByEmail(String email);
 
 }

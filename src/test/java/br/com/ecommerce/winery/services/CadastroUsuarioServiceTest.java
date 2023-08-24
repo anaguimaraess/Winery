@@ -1,5 +1,6 @@
 package br.com.ecommerce.winery.services;
 
+import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
@@ -11,9 +12,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 public class CadastroUsuarioServiceTest {
 
@@ -66,5 +69,43 @@ public class CadastroUsuarioServiceTest {
         Usuario usuarioSalvo = new Usuario();
         when(usuarioRepository.save(any())).thenReturn(usuarioSalvo);
 
+    }
+
+    @Test
+    public void testInativarUsuario() throws BusinessException {
+        Usuario usuarioExistente = new Usuario();
+        usuarioExistente.setId(1);
+        usuarioExistente.setNome("Mikami");
+        usuarioExistente.setEmail("mikami@example.com");
+        usuarioExistente.setStatus(Status.ATIVO);
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioExistente));
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioExistente);
+
+        Usuario resultado = cadastroUsuarioService.inativarUsuario(1);
+
+        assertNotNull(resultado);
+        assertEquals(Status.INATIVO, resultado.getStatus());
+
+        verify(usuarioRepository).save(any(Usuario.class));
+    }
+
+    @Test
+    public void testReativarUsuario() throws BusinessException {
+        Usuario usuarioExistente = new Usuario();
+        usuarioExistente.setId(1);
+        usuarioExistente.setNome("Mikami");
+        usuarioExistente.setEmail("mikami@example.com");
+        usuarioExistente.setStatus(Status.INATIVO);
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioExistente));
+        when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuarioExistente);
+
+        Usuario resultado = cadastroUsuarioService.reativarUsuario(1);
+
+        assertNotNull(resultado);
+        assertEquals(Status.ATIVO, resultado.getStatus());
+
+        verify(usuarioRepository).save(any(Usuario.class));
     }
 }

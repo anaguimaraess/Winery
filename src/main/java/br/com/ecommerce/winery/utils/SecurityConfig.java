@@ -23,11 +23,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/admin/cadastrar").permitAll() // Permite acesso não autenticado ao endpoint de cadastro
                 .antMatchers("/h2-console/**").permitAll() // Permite acesso ao console do H2
+                .antMatchers("/usuarios/listarUsuariosPorNome").permitAll()
                 .antMatchers("/usuarios/listarUsuarios").permitAll()
-                .antMatchers("/usuarios/alterar/{id}").permitAll()
-                .antMatchers("/usuarios/{id}/inativar").permitAll()
-                .antMatchers("/usuarios/{id}/reativar").permitAll()
-                .antMatchers("/usuarios/listarUsuarios/{nome}").permitAll()
+                .antMatchers("/usuarios/alterar").permitAll()
+                .antMatchers("/usuarios/inativar").permitAll()
+                .antMatchers("/usuarios/reativar").permitAll()
+                .antMatchers("/usuarios/filtro").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
