@@ -6,11 +6,14 @@ import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -50,27 +53,29 @@ public class CadastroUsuarioService {
         }
     }
 
+    public List<Usuario> listarTodosUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
     public Usuario inativarUsuario(int id) throws BusinessException {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
-
-        usuario.setStatus(Status.INATIVO);
-        return usuarioRepository.save(usuario);
+        if (!usuario.getStatus().equals(Status.INATIVO)) {
+            usuario.setStatus(Status.INATIVO);
+            log.info("Usuário inativado com sucesso!");
+            return usuarioRepository.save(usuario);
+        }
+        log.error("Usuário já está inativo!");
+        throw new BusinessException("Não é possível inativar, usuário ja está inativo!");
     }
 
     public Usuario reativarUsuario(int id) throws BusinessException {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
-
-        usuario.setStatus(Status.ATIVO);
-        return usuarioRepository.save(usuario);
-    }
-
-    public Optional<Usuario> buscarUsuarioPorId(int id) throws BusinessException {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        if (usuario.isEmpty()) {
-            log.error("Não foi possível encontrar o usuário.");
-            throw new BusinessException("Usuário não encontrado.");
+        if (!usuario.getStatus().equals(Status.ATIVO)) {
+            usuario.setStatus(Status.ATIVO);
+            log.info("Usuário reativado com sucesso!");
+            return usuarioRepository.save(usuario);
         }
-        return usuario;
+        log.error("Usuário já está ativo!");
+        throw new BusinessException("Não é possível reativar, usuário já está ativo!");
     }
-
 }

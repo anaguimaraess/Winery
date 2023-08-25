@@ -24,11 +24,6 @@ public class UsuarioController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-   // @GetMapping("/listarUsuarios/")
-    //public ResponseEntity<List<Usuario>> listarPorFiltro(String nome, String email, Grupo grupo, Status status) {
-     //   List<Usuario> lista = usuarioService.listarPorFiltro(nome, email, grupo, status);
-      //  return ResponseEntity.ok().body(lista);
-    //}
 
 
 
