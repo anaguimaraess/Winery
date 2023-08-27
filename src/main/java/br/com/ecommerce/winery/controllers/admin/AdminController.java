@@ -1,21 +1,16 @@
 package br.com.ecommerce.winery.controllers.admin;
 
-import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
-import br.com.ecommerce.winery.services.admin.CadastroUsuarioService;
-import br.com.ecommerce.winery.services.admin.UsuarioService;
-import lombok.extern.slf4j.Slf4j;
+import br.com.ecommerce.winery.services.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
-@Slf4j
 @RestController
 @RequestMapping(path = "/admin")
 public class AdminController {
@@ -34,17 +29,17 @@ public class AdminController {
         }
     }
 
-  /*@PutMapping("/alterar")
+  @PutMapping("/alterar")
     public ResponseEntity<?> atualizarUsuario(@RequestBody Usuario usuario) {
-        Usuario usuarioAtualizado = cadastroUsuarioService.atualizarUsuario(usuario);
+      try{
+          Usuario usuarioAtualizado = cadastroUsuarioService.alterarUsuario(usuario);
+          return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
 
-        if (usuarioAtualizado != null) {
-            return ResponseEntity.ok(usuarioAtualizado);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+      }catch (BusinessException e){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+      }
     }
-  * */
+
 
     @GetMapping("/listarUsuarios")
     public List<Usuario> listarTodosUsuarios() {

@@ -1,5 +1,6 @@
-package br.com.ecommerce.winery.services.admin;
+package br.com.ecommerce.winery.services;
 
+import br.com.ecommerce.winery.models.Grupo;
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
@@ -23,11 +24,16 @@ public class CadastroUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
+    @Autowired
+    private LoginService loginService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
+        if (!loginService.ehAdmin()) {
+            log.error("Você não é administrador. Não foi possível cadastrar usuário.");
+            throw new BusinessException("Tentativa falha de cadastro de usuário.");
+        }
         validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
         validarEmailUnico(usuario.getEmail());
 
@@ -35,6 +41,7 @@ public class CadastroUsuarioService {
         usuario.setConfirmaSenha(passwordEncoder.encode(usuario.getConfirmaSenha()));
         usuario.setStatus(Status.ATIVO);
 
+        log.info("Usuário cadastrado com sucesso.");
         return usuarioRepository.save(usuario);
     }
 
@@ -78,4 +85,41 @@ public class CadastroUsuarioService {
         log.error("Usuário já está ativo!");
         throw new BusinessException("Não é possível reativar, usuário já está ativo!");
     }
+
+    public Usuario alterarUsuario(Usuario usuarioParaAtualizar) throws BusinessException {
+
+        Usuario usuario = loginService.obterUsuarioLogado();
+
+        if (usuario.getGrupo().equals(Grupo.USUARIO)) {
+            log.error("Acesso negado! Usuários não podem fazer alterações de dados!");
+            throw new BusinessException("Apenas administradores podem fazer alterações!");
+        }
+        if (!usuario.getNome().equals(usuarioParaAtualizar.getNome())) {
+            usuarioParaAtualizar.setNome(usuarioParaAtualizar.getNome());
+            log.info("Nome de usuário alterado com sucesso!");
+            usuarioRepository.save(usuario);
+        } else {
+            log.error("Nome igual ao anterior!");
+            throw new BusinessException("O nome não pode ser o mesmo que o anterior!");
+        }
+        if (!usuario.getCpf().equals(usuarioParaAtualizar.getCpf())) {
+            usuarioParaAtualizar.setCpf(usuarioParaAtualizar.getCpf());
+            log.info("CPF alterado com sucesso!");
+            usuarioRepository.save(usuario);
+        } else {
+            log.error("CPF não pode ser o mesmo que o anterior!");
+            throw new BusinessException("CPF não pode ser o mesmo que o anterior!");
+        }
+        if (!usuario.getSenha().equals(usuarioParaAtualizar.getSenha())) {
+            usuarioParaAtualizar.setSenha(passwordEncoder.encode(usuarioParaAtualizar.getSenha()));
+            usuarioParaAtualizar.setConfirmaSenha(passwordEncoder.encode(usuarioParaAtualizar.getConfirmaSenha()));
+            log.info("Senha alterada com sucesso!");
+            usuarioRepository.save(usuario);
+        } else {
+            log.error("Não foi possível alterar, a senha não pode ser igual a anterior!");
+            throw new BusinessException("A senha não pode ser igual a anterior!");
+        }
+        return usuarioRepository.save(usuario);
+    }
 }
+

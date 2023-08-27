@@ -14,5 +14,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     List<Usuario> findByNomeContains(String nome);
 
     boolean existsByEmail(String email);
-
+    Usuario findByEmail(String email);
 }

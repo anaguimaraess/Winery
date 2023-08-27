@@ -3,7 +3,7 @@ package br.com.ecommerce.winery.controllers;
 import br.com.ecommerce.winery.controllers.admin.AdminController;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
-import br.com.ecommerce.winery.services.admin.CadastroUsuarioService;
+import br.com.ecommerce.winery.services.CadastroUsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
