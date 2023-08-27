@@ -23,6 +23,9 @@ public class CadastroUsuarioServiceTest {
     private UsuarioRepository usuarioRepository;
 
     @Mock
+    private LoginService loginService;
+
+    @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
