@@ -6,19 +6,14 @@ import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collections;
 
 @Service
 @Slf4j
-public class LoginService implements UserDetailsService {
+public class LoginService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -37,7 +32,11 @@ public class LoginService implements UserDetailsService {
         throw new BusinessException("Usuário não encontrado ou senha inválida.");
     }
 
-    public void logout() {
+    public void logout() throws BusinessException {
+        Usuario usuarioLogado = (Usuario) httpSession.getAttribute("usuarioLogado");
+        if (usuarioLogado == null) {
+            throw new BusinessException("Nenhum usuário logado para desconectar.");
+        }
         httpSession.removeAttribute("usuarioLogado");
         log.info("Usuário desconectado com sucesso!");
     }
@@ -48,7 +47,7 @@ public class LoginService implements UserDetailsService {
         return isLoggedIn;
     }
 
-    public Usuario obterUsuarioLogado() throws BusinessException {
+    private Usuario obterUsuarioLogado() throws BusinessException {
         Usuario loggedUser = (Usuario) httpSession.getAttribute("usuarioLogado");
         if (loggedUser == null) {
             log.error("Nenhum usuário logado.");
@@ -60,25 +59,16 @@ public class LoginService implements UserDetailsService {
 
     public boolean ehAdmin() throws BusinessException {
         Usuario usuarioLogado = obterUsuarioLogado();
-        return usuarioLogado != null && usuarioLogado.getGrupo() == Grupo.ADMIN;
+        return usuarioLogado.getGrupo() == Grupo.ADMIN;
     }
 
     public boolean ehEstoquista() throws BusinessException {
         Usuario usuarioLogado = obterUsuarioLogado();
-        return usuarioLogado != null && usuarioLogado.getGrupo() == Grupo.ESTOQUISTA;
+        return usuarioLogado.getGrupo() == Grupo.ESTOQUISTA;
     }
 
     public boolean ehUsuario() throws BusinessException {
         Usuario usuarioLogado = obterUsuarioLogado();
-        return usuarioLogado != null && usuarioLogado.getGrupo() == Grupo.USUARIO;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email);
-        if (usuario == null) {
-            throw new UsernameNotFoundException("Usuário não encontrado: " + email);
-        }
-        return new User(usuario.getEmail(), usuario.getSenha(), Collections.emptyList());
+        return usuarioLogado.getGrupo() == Grupo.USUARIO;
     }
 }
