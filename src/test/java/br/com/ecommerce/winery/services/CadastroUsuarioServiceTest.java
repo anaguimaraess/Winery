@@ -1,5 +1,6 @@
 package br.com.ecommerce.winery.services;
 
+import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
@@ -10,14 +11,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class CadastroUsuarioServiceTest {
+class CadastroUsuarioServiceTest {
 
     @Mock
     private UsuarioRepository usuarioRepository;
+
+    @Mock
+    private LoginService loginService;
 
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
@@ -26,44 +29,63 @@ public class CadastroUsuarioServiceTest {
     private CadastroUsuarioService cadastroUsuarioService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testCadastrarUsuario_SenhasNaoCoincidem_Exception() {
+    void testCadastrarUsuarioSuccess() throws BusinessException {
         Usuario usuario = new Usuario();
-        usuario.setSenha("senha1");
-        usuario.setConfirmaSenha("senha2");
+        usuario.setEmail("test@example.com");
+        usuario.setSenha("password");
+        usuario.setConfirmaSenha("password");
 
-        assertThrows(BusinessException.class, () -> cadastroUsuarioService.cadastrarUsuario(usuario));
+        when(loginService.ehAdmin()).thenReturn(true);
+        when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
+        when(usuarioRepository.save(usuario)).thenReturn(usuario);
+
+        Usuario result = cadastroUsuarioService.cadastrarUsuario(usuario);
+
+        assertEquals("encodedPassword", usuario.getSenha());
+        assertEquals("encodedPassword", usuario.getConfirmaSenha());
+        assertEquals(Status.ATIVO, usuario.getStatus());
+        assertSame(usuario, result);
+
+        verify(usuarioRepository, times(1)).save(usuario);
     }
 
     @Test
-    public void testCadastrarUsuario_EmailJaExistente_Exception() {
+    void testCadastrarUsuarioNotAdmin() throws BusinessException {
         Usuario usuario = new Usuario();
-        usuario.setEmail("email@example.com");
+        usuario.setEmail("test@example.com");
+        usuario.setSenha("password");
+        usuario.setConfirmaSenha("password");
 
-        when(usuarioRepository.existsByEmail("email@example.com")).thenReturn(true);
-
-        when(passwordEncoder.matches("senha", "senha")).thenReturn(false);
+        when(loginService.ehAdmin()).thenReturn(false);
 
         assertThrows(BusinessException.class, () -> cadastroUsuarioService.cadastrarUsuario(usuario));
+
+        verifyZeroInteractions(usuarioRepository);
+    }
+    @Test
+    void testValidarSenhasIguaisSuccess() throws BusinessException {
+        cadastroUsuarioService.validarSenhasIguais("password", "password");
     }
 
+    @Test
+    void testValidarSenhasIguaisFailure() {
+        assertThrows(BusinessException.class, () -> cadastroUsuarioService.validarSenhasIguais("password", "differentPassword"));
+    }
 
     @Test
-    public void testCadastrarUsuario_Sucesso() throws BusinessException {
-        Usuario usuario = new Usuario();
-        usuario.setSenha("senha123");
-        usuario.setConfirmaSenha("senha123");
-        usuario.setEmail("novoemail@example.com");
+    void testValidarEmailUnicoSuccess() throws BusinessException {
+        when(usuarioRepository.existsByEmail("test@example.com")).thenReturn(false);
+        cadastroUsuarioService.validarEmailUnico("test@example.com");
+    }
 
-        when(usuarioRepository.existsByEmail("novoemail@example.com")).thenReturn(false);
-        when(passwordEncoder.encode("senha123")).thenReturn("senhaCriptografada");
-
-        Usuario usuarioSalvo = new Usuario();
-        when(usuarioRepository.save(any())).thenReturn(usuarioSalvo);
-
+    @Test
+    void testValidarEmailUnicoFailure() {
+        when(usuarioRepository.existsByEmail("test@example.com")).thenReturn(true);
+        assertThrows(BusinessException.class, () -> cadastroUsuarioService.validarEmailUnico("test@example.com"));
     }
 }

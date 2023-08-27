@@ -46,7 +46,7 @@ public class CadastroUsuarioService {
         }
     }
 
-    private void validarEmailUnico(String email) throws BusinessException {
+    void validarEmailUnico(String email) throws BusinessException {
         if (usuarioRepository.existsByEmail(email)) {
             log.error("Não é possível cadastrar usuário. O email já está em uso.");
             throw new BusinessException("O email já está em uso.");
