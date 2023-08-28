@@ -1,19 +1,20 @@
 package br.com.ecommerce.winery.controllers.login;
 
-
-import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import br.com.ecommerce.winery.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
+@Controller
 @RequestMapping(path = "/authentication")
 public class LoginController {
     @Autowired
@@ -21,15 +22,23 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String getLoginForm() {
+        return "login";
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<?> logar(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> logar(@RequestParam String email, @RequestParam String senha) {
+        HttpHeaders headers = new HttpHeaders();
         try {
-            String email = usuario.getEmail();
-            String senha = usuario.getSenha();
             boolean login = loginService.login(email, senha);
-            return ResponseEntity.status(HttpStatus.OK).body(login);
+            headers.add("Location", "/admin/cadastrar");
+            return new ResponseEntity<>(headers, HttpStatus.FOUND);
         } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            headers.add("Location", "/authentication/login?error=true");
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .headers(headers)
+                    .body(e.getMessage());
         }
     }
 
@@ -42,6 +51,4 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
-
 }
