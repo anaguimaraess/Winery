@@ -37,7 +37,11 @@ public class LoginService implements UserDetailsService {
         throw new BusinessException("Usuário não encontrado ou senha inválida.");
     }
 
-    public void logout() {
+    public void logout() throws BusinessException {
+        Usuario usuarioLogado = (Usuario) httpSession.getAttribute("usuarioLogado");
+        if (usuarioLogado == null) {
+            throw new BusinessException("Nenhum usuário logado para desconectar.");
+        }
         httpSession.removeAttribute("usuarioLogado");
         log.info("Usuário desconectado com sucesso!");
     }

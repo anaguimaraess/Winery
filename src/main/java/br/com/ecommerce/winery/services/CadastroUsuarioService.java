@@ -7,12 +7,8 @@ import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Objects;
@@ -86,40 +82,76 @@ public class CadastroUsuarioService {
         throw new BusinessException("Não é possível reativar, usuário já está ativo!");
     }
 
-    public Usuario alterarUsuario(Usuario usuarioParaAtualizar) throws BusinessException {
 
-        Usuario usuario = loginService.obterUsuarioLogado();
 
-        if (usuario.getGrupo().equals(Grupo.USUARIO)) {
-            log.error("Acesso negado! Usuários não podem fazer alterações de dados!");
-            throw new BusinessException("Apenas administradores podem fazer alterações!");
-        }
-        if (!usuario.getNome().equals(usuarioParaAtualizar.getNome())) {
-            usuarioParaAtualizar.setNome(usuarioParaAtualizar.getNome());
+    public Usuario alterarNomeUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
+        Usuario usuarioCadastrado = buscarUsuarioPorId(id);
+        System.out.println(usuarioCadastrado.getNome());
+
+        if (!usuarioCadastrado.getNome().equals(usuarioAtualizado.getNome())) {
+            usuarioCadastrado.setNome(usuarioAtualizado.getNome());
             log.info("Nome de usuário alterado com sucesso!");
-            usuarioRepository.save(usuario);
+            return usuarioRepository.save(usuarioCadastrado);
         } else {
-            log.error("Nome igual ao anterior!");
-            throw new BusinessException("O nome não pode ser o mesmo que o anterior!");
+            log.error("Inserir nome diferente do anterior!");
+            throw new BusinessException("Nome não pode ser igual ao anterior!");
         }
-        if (!usuario.getCpf().equals(usuarioParaAtualizar.getCpf())) {
-            usuarioParaAtualizar.setCpf(usuarioParaAtualizar.getCpf());
+    }
+
+    public Usuario alterarCpfUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
+        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
+
+        if (!usuarioCadastrado.getCpf().equals(usuarioAtualizado.getCpf())) {
+            usuarioCadastrado.setCpf(usuarioAtualizado.getCpf());
             log.info("CPF alterado com sucesso!");
-            usuarioRepository.save(usuario);
-        } else {
-            log.error("CPF não pode ser o mesmo que o anterior!");
-            throw new BusinessException("CPF não pode ser o mesmo que o anterior!");
+            return usuarioRepository.save(usuarioCadastrado);
         }
-        if (!usuario.getSenha().equals(usuarioParaAtualizar.getSenha())) {
-            usuarioParaAtualizar.setSenha(passwordEncoder.encode(usuarioParaAtualizar.getSenha()));
-            usuarioParaAtualizar.setConfirmaSenha(passwordEncoder.encode(usuarioParaAtualizar.getConfirmaSenha()));
-            log.info("Senha alterada com sucesso!");
-            usuarioRepository.save(usuario);
+        log.error("Inserir número de CPF diferente do anterior!");
+        throw new BusinessException("CPF não pode ser igual ao anterior!");
+    }
+
+    public Usuario alterarSenha(int id, Usuario usuarioAtualiado) throws BusinessException {
+        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
+
+        if (!usuarioCadastrado.getSenha().equals(usuarioAtualiado.getSenha())) {
+            usuarioCadastrado.setSenha(passwordEncoder.encode(usuarioAtualiado.getSenha()));
+            usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualiado.getConfirmaSenha()));
+            if (usuarioAtualiado.getSenha().equals(usuarioAtualiado.getConfirmaSenha())) {
+                log.info("Senha alterada com sucesso!");
+            } else {
+                log.error("Senhas não são iguais!");
+                throw new BusinessException("As senhas não são iguais!");
+            }
         } else {
             log.error("Não foi possível alterar, a senha não pode ser igual a anterior!");
             throw new BusinessException("A senha não pode ser igual a anterior!");
         }
-        return usuarioRepository.save(usuario);
+        return usuarioRepository.save(usuarioCadastrado);
     }
+
+    public Usuario alterarGrupo(int id, Usuario usuarioAtualizado) throws BusinessException{
+        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
+        Usuario usuarioLogado = loginService.obterUsuarioLogado();
+
+        if (!usuarioLogado.getGrupo().equals(Grupo.ADMIN) && usuarioLogado.getId() == usuarioCadastrado.getId()) {
+            log.error("Acesso negado! Usuário não pode alterar o grupo");
+            throw new BusinessException("Acesso negado! Não é possível alterar seu próprio grupo");
+        }else{
+            usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
+            log.info("Grupo atualizado com sucesso!");
+        }
+        return usuarioRepository.save(usuarioCadastrado);
+    }
+
+    public Usuario buscarUsuarioPorId(int id) throws BusinessException {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
+        if (usuarioOptional.isPresent()) {
+            return usuarioOptional.get();
+        } else {
+            throw new BusinessException("Usuário não encontrado com o ID: " + id);
+        }
+    }
+
 }
 

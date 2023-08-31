@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/admin")
@@ -29,17 +30,82 @@ public class AdminController {
         }
     }
 
-  @PutMapping("/alterar")
-    public ResponseEntity<?> atualizarUsuario(@RequestBody Usuario usuario) {
-      try{
-          Usuario usuarioAtualizado = cadastroUsuarioService.alterarUsuario(usuario);
-          return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+    @PutMapping("/alterarNome")
+    public ResponseEntity<?> atualizarNomeDoUsuario(@RequestBody Usuario usuario) {
+        try {
+            int usuarioId = usuario.getId();
+            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
 
-      }catch (BusinessException e){
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-      }
+            if (usuario.getNome() != null) {
+                usuarioAtualizado = cadastroUsuarioService.alterarNomeUsuario(usuario.getId(), usuario);
+                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
+    @PutMapping("/alterarCpf")
+    public ResponseEntity<?> atualizarCpfDoUsuario(@RequestBody Usuario usuario) {
+        try {
+            int usuarioId = usuario.getId();
+            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
+
+            if (usuario.getCpf() != null) {
+                usuarioAtualizado = cadastroUsuarioService.alterarCpfUsuario(usuario.getId(), usuario);
+                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+
+        } catch (BusinessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/alterarSenha")
+    public ResponseEntity<?> atualizarSenhaDoUsuario(@RequestBody Usuario usuario) {
+        try {
+            int usuarioId = usuario.getId();
+            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
+
+            if (usuario.getSenha() != null) {
+                usuarioAtualizado = cadastroUsuarioService.alterarSenha(usuario.getId(), usuario);
+                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/alterarGrupo")
+    public ResponseEntity<?> atualizarGrupoDoUsuario(@RequestBody Usuario usuario) {
+        try {
+            int usuarioId = usuario.getId();
+            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
+
+            if (usuario.getGrupo() != null) {
+                usuarioAtualizado = cadastroUsuarioService.alterarGrupo(usuario.getId(), usuario);
+                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/listarUsuarioPorId")
+    public ResponseEntity<Usuario> listarPorId(@RequestBody Map<String, Integer> requestBody) {
+        int id = requestBody.get("id");
+
+        try {
+            Usuario usuario = cadastroUsuarioService.buscarUsuarioPorId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(usuario);
+        } catch (BusinessException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping("/listarUsuarios")
     public List<Usuario> listarTodosUsuarios() {
@@ -59,12 +125,12 @@ public class AdminController {
 
     @PutMapping("/reativar")
     public ResponseEntity<?> reativarUsuario(@RequestBody Usuario usuario) {
-      try{
-          Usuario usuarioInativo = cadastroUsuarioService.reativarUsuario(usuario.getId());
-          return ResponseEntity.status(HttpStatus.OK).body(usuarioInativo);
-      }catch (BusinessException e){
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-      }
+        try {
+            Usuario usuarioInativo = cadastroUsuarioService.reativarUsuario(usuario.getId());
+            return ResponseEntity.status(HttpStatus.OK).body(usuarioInativo);
+        } catch (BusinessException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     @GetMapping("/filtro")
