@@ -7,33 +7,141 @@
     <title>Lista Usuario</title>
 </head>
 <body>
-<img th:src="@{/static/imagens/10.png}" alt="">
-<div class="containerHeader">
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Produto</a></li>
-                <li><a href="#">Usuário</a></li>
-            </ul>
-        </nav>
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquisar...">
-            <button class="buttonSearch">Buscar</button>
-        </div>
-    </header>
-</div>
+    <div class="containerHeader">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#">Produto</a></li>
+                    <li><a href="#">Usuário</a></li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar...">
+                <button class="buttonSearch">Buscar</button>
+            </div>
+        </header>
+    </div>
 
-<!-- Lista de Usuários em Cards -->
-<div class="user-list">
-    <div class="user-item" th:each="usuario : ${usuarios}">
-        <h3 th:text="'Nome: ' + ${usuario.nome}"></h3>
-        <p th:text="'Email: ' + ${usuario.email}"></p>
-        <p th:text="'Status: ' + ${usuario.status}"></p>
-        <div class="user-item-buttons">
-            <button class="user-item-button-alterar">Alterar</button>
-            <button>Inativar</button>
+    <button id="openModalBtn">Cadastrar Usuário</button>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="titulo-cadastro-usuario">Cadastro de Usuário</h2> <br><br>
+            <form th:action="@{/admin/cadastrar}" method="post" th:object="${usuario}">
+                <input type="text" class="inputCadastro" id="nome" name="nome" placeholder="Nome do Usuario"><br><br>
+                <input class="inputCadastro" type="text" id="cpf" name="cpf" pattern="\d{11}" placeholder="123.456.789-00" required><br><br>
+              <!---->  <input class="inputCadastro" type="email" id="email" name="email" placeholder="E-mail" required><br><br>
+                <input class="inputCadastro" type="password" id="senha" name="senha" placeholder="Senha" required><br><br>
+                <input class="inputCadastro" type="password" id="confirmaSenha" name="confirmaSenha" placeholder="Digite a Senha Novamente" required><br><br>
+                <label for="grupo" class="tituloCadastro">Grupo:</label>
+                <select class="inputGrupo" id="grupo" name="grupo" required>
+                    <option value="ADMIN">Administrador</option>
+                    <option value="ESTOQUISTA">Estoquista</option>
+                </select> <br> <br>
+                <input class="cadastrar-button" type="submit" value="Cadastrar">
+            </form>
+            <div class="mensagem" >
+                <br><br>
+                <p id="mensagemDiv" th:if="${mensagem}" th:text="${mensagem}" th:class="'mensagem-texto ' + ${tipoMensagem}"></p>
+            </div>
         </div>
     </div>
-</div>
+
+    <!-- Lista de Usuários em Cards -->
+    <div class="user-list">
+        <div class="user-item" th:each="usuario : ${usuarios}">
+            <h3 th:text="'Nome: ' + ${usuario.nome}"></h3>
+            <p th:text="'Email: ' + ${usuario.email}"></p>
+            <p th:text="'Status: ' + ${usuario.status}"></p>
+            <div class="user-item-buttons">
+                <button id="openModalAlter" class="user-item-button-alterar">Alterar</button>
+                <button>Inativar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="alterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeAlterModalBtn">&times;</span>
+            <h2 class="titulo-cadastro-usuario">Alterar Usuário</h2> <br><br>
+            <form th:action="@{/admin/cadastrar}" method="post" th:object="${usuario}">
+                <input type="text" class="inputCadastro" id="nome" name="nome" placeholder="Nome do Usuario"><br><br>
+                <input class="inputCadastro" type="text" id="cpf" name="cpf" pattern="\d{11}" placeholder="123.456.789-00" required><br><br>
+               <!--  <input class="inputCadastro" type="email" id="email" name="email" placeholder="E-mail" required><br><br> --> 
+                <input class="inputCadastro" type="password" id="senha" name="senha" placeholder="Senha" required><br><br>
+                <input class="inputCadastro" type="password" id="confirmaSenha" name="confirmaSenha" placeholder="Digite a Senha Novamente" required><br><br>
+                <label for="grupo" class="tituloCadastro">Grupo:</label>
+                <select class="inputGrupo" id="grupo" name="grupo" required>
+                    <option value="ADMIN">Administrador</option>
+                    <option value="ESTOQUISTA">Estoquista</option>
+                </select> <br> <br>
+                <input class="cadastrar-button" type="submit" value="Alterar">
+            </form>
+        </div>
+    </div>
+    
+
+    <script>
+
+        /* Modal Cadastro */
+        
+        function openCadastroModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "flex";
+        }
+
+        
+        function closeCadastroModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        
+        var openCadastroModalBtn = document.getElementById("openModalBtn");
+        openCadastroModalBtn.addEventListener("click", openCadastroModal);
+
+        
+        var closeCadastroBtn = document.querySelector("#myModal .close");
+        closeCadastroBtn.addEventListener("click", closeCadastroModal);
+
+        
+        window.addEventListener("click", function (event) {
+            var modal = document.getElementById("myModal");
+            if (event.target == modal) {
+                closeCadastroModal();
+            }
+        });
+
+        /* Modal Alterar */
+        
+        
+        function openAlterModal() {
+            var modal = document.getElementById("alterModal");
+            modal.style.display = "flex";
+        }
+
+        
+        function closeAlterModal() {
+            var modal = document.getElementById("alterModal");
+            modal.style.display = "none";
+        }
+
+        
+        var openAlterModalBtn = document.getElementById("openModalAlter");
+        openAlterModalBtn.addEventListener("click", openAlterModal);
+
+        
+        var closeAlterModalBtn = document.querySelector("#alterModal .close");
+        closeAlterModalBtn.addEventListener("click", closeAlterModal);
+
+        
+        window.addEventListener("click", function (event) {
+            var modal = document.getElementById("alterModal");
+            if (event.target == modal) {
+                closeAlterModal();
+            }
+        });
+    </script>
 </body>
 </html>
