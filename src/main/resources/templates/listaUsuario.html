@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/listaUsuarioStyle.css}" />
+    <title>Lista Usuario</title>
+</head>
+<body>
+<img th:src="@{/static/imagens/10.png}" alt="">
+<div class="containerHeader">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Produto</a></li>
+                <li><a href="#">Usuário</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Pesquisar...">
+            <button class="buttonSearch">Buscar</button>
+        </div>
+    </header>
+</div>
+
+<!-- Lista de Usuários em Cards -->
+<div class="user-list">
+    <div class="user-item" th:each="usuario : ${usuarios}">
+        <h3 th:text="'Nome: ' + ${usuario.nome}"></h3>
+        <p th:text="'Email: ' + ${usuario.email}"></p>
+        <p th:text="'Status: ' + ${usuario.status}"></p>
+        <div class="user-item-buttons">
+            <button class="user-item-button-alterar">Alterar</button>
+            <button>Inativar</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

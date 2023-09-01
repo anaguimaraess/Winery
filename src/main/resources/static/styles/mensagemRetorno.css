@@ -1,0 +1,44 @@
+/* Mensagem de sucesso */
+.mensagem-texto.sucesso {
+    color: white; /* Letras brancas */
+}
+
+.mensagem-texto.sucesso::after {
+    content: ''; /* Adiciona a linha sob a mensagem */
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: green; /* Linha verde para mensagem de sucesso */
+}
+
+/* Mensagem de erro */
+.mensagem-texto.erro {
+    color: white; /* Letras brancas */
+}
+
+.mensagem-texto.erro::after {
+    content: ''; /* Adiciona a linha sob a mensagem */
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: red; /* Linha vermelha para mensagem de erro */
+}
+
+
+.mensagem-texto.sucesso.desaparecendo {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    transition: opacity 0.5s ease-in-out, height 0s 0.5s, padding 0s 0.5s, margin 0s 0.5s, border 0s 0.5s;
+}
+.mensagem-texto.erro.desaparecendo {
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    transition: opacity 0.5s ease-in-out, height 0s 0.5s, padding 0s 0.5s, margin 0s 0.5s, border 0s 0.5s;
+}
+

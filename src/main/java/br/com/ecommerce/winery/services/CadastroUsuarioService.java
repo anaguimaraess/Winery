@@ -1,12 +1,14 @@
 package br.com.ecommerce.winery.services;
 
-import br.com.ecommerce.winery.models.Grupo;
+import br.com.ecommerce.winery.models.CustomUserDetails;
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +23,9 @@ public class CadastroUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private LoginService loginService;
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
-        if (!loginService.ehAdmin()) {
-            log.error("Você não é administrador. Não foi possível cadastrar usuário.");
-            throw new BusinessException("Tentativa falha de cadastro de usuário.");
-        }
         validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
         validarEmailUnico(usuario.getEmail());
 
@@ -49,7 +45,7 @@ public class CadastroUsuarioService {
         }
     }
 
-    private void validarEmailUnico(String email) throws BusinessException {
+    void validarEmailUnico(String email) throws BusinessException {
         if (usuarioRepository.existsByEmail(email)) {
             log.error("Não é possível cadastrar usuário. O email já está em uso.");
             throw new BusinessException("O email já está em uso.");
@@ -81,7 +77,6 @@ public class CadastroUsuarioService {
         log.error("Usuário já está ativo!");
         throw new BusinessException("Não é possível reativar, usuário já está ativo!");
     }
-
 
 
     public Usuario alterarNomeUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
@@ -129,18 +124,24 @@ public class CadastroUsuarioService {
         }
     }
 
-    public Usuario alterarGrupo(int id, Usuario usuarioAtualizado) throws BusinessException{
+    public Usuario alterarGrupo(int id, Usuario usuarioAtualizado) throws BusinessException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
-        Usuario usuarioLogado = loginService.obterUsuarioLogado();
 
-        if (!usuarioLogado.getGrupo().equals(Grupo.ADMIN) && usuarioLogado.getId() == usuarioCadastrado.getId()) {
-            log.error("Acesso negado! Usuário não pode alterar o grupo");
-            throw new BusinessException("Acesso negado! Não é possível alterar seu próprio grupo");
-        }else{
-            usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
-            log.info("Grupo atualizado com sucesso!");
+        if (authentication != null && authentication.isAuthenticated()) {
+            CustomUserDetails usuarioLogado = (CustomUserDetails) authentication.getPrincipal();
+
+            if (usuarioLogado.getUsername().equals(usuarioCadastrado.getEmail())) {
+                log.error("Acesso negado! Usuário não pode alterar o grupo do seu usuário");
+                throw new BusinessException("Acesso negado! Não é possível alterar o grupo do seu usuário");
+            } else {
+                usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
+                log.info("Grupo atualizado com sucesso!");
+                usuarioRepository.save(usuarioCadastrado);
+            }
         }
-        return usuarioRepository.save(usuarioCadastrado);
+
+        return usuarioCadastrado;
     }
 
     public Usuario buscarUsuarioPorId(int id) throws BusinessException {

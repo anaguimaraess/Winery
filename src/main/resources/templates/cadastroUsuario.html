@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Usuario</title>
+    <link rel="stylesheet" th:href="@{/styles/cadastroUsuarioStyle.css}" />
+    <link rel="stylesheet" th:href="@{/styles/mensagemRetorno.css}" />
+    <script th:src="@{/js/mensagemRetorno.js}"></script>
+    <link rel="shortcut icon" th:href="@{/imagens/WINERY7.png}" type="image/x-icon"/>
+</head>
+<body class="body-container">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Produto</a></li>
+                <li><a href="#">Usuário</a></li>
+                <li><a th:href="@{/admin/listar}" >Listar Usuários</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" placeholder="Pesquisar...">
+            <button class="buttonSearch">Buscar</button>
+        </div>
+
+    </header>
+    <div class="containerHeader">
+
+        <div class="cadastro-container">
+            <h2 class="tituloCadastro">Cadastrar Usuario</h2>
+            <form th:action="@{/admin/cadastrar}" method="post" th:object="${usuario}">
+                <input type="text" class="inputCadastro" id="nome" name="nome" placeholder="Nome do Usuario"><br><br>
+                <input class="inputCadastro" type="text" id="cpf" name="cpf" pattern="\d{11}" placeholder="123.456.789-00" required><br><br>
+                <input class="inputCadastro" type="email" id="email" name="email" placeholder="E-mail" required><br><br>
+                <input class="inputCadastro" type="password" id="senha" name="senha" placeholder="Senha" required><br><br>
+                <input class="inputCadastro" type="password" id="confirmaSenha" name="confirmaSenha" placeholder="Digite a Senha Novamente" required><br><br>
+                <label for="grupo" class="tituloCadastro">Grupo:</label>
+                <select class="inputGrupo" id="grupo" name="grupo" required>
+                    <option value="ADMIN">Administrador</option>
+                    <option value="ESTOQUISTA">Estoquista</option>
+                </select>
+                <input type="submit" value="Cadastrar">
+            </form>
+            <div class="mensagem" >
+                <br><br>
+                <p id="mensagemDiv" th:if="${mensagem}" th:text="${mensagem}" th:class="'mensagem-texto ' + ${tipoMensagem}"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        removerMensagens('mensagemDiv');
+    });
+</script>
+</body>
+</html>
+
+

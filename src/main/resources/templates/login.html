@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/indexStyle.css}" />
+    <title>Login</title>
+</head>
+<body>
+<div class="login-container">
+    <h2 class="login-h2">Winery</h2>
+
+    <p class="error-message" th:if="${param.error}">Login inválido, tente novamente.</p>
+
+    <form th:action="@{/authentication/login}" method="post">
+        <input type="email" class="login-input" placeholder="Usuário ou email" name="username">
+        <input type="password" class="login-input" placeholder="Senha" name="password">
+        <button type="submit" class="login-button">Entrar</button>
+    </form>
+</div>
+
+</body>
+</html>
