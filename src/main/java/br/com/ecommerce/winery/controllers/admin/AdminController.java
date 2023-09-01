@@ -30,6 +30,7 @@ public class AdminController {
     public String getCadastroForm() {
         return "cadastroUsuario";
     }
+
     @PostMapping("/cadastrar")
     public String cadastrarUsuario(@ModelAttribute Usuario usuario, Model model, HttpServletResponse response) {
         try {

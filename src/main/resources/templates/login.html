@@ -13,8 +13,8 @@
     <p class="error-message" th:if="${param.error}">Login inválido, tente novamente.</p>
 
     <form th:action="@{/authentication/login}" method="post">
-        <input type="email" class="login-input" placeholder="Usuário ou email" name="email">
-        <input type="password" class="login-input" placeholder="Senha" name="senha">
+        <input type="email" class="login-input" placeholder="Usuário ou email" name="username">
+        <input type="password" class="login-input" placeholder="Senha" name="password">
         <button type="submit" class="login-button">Entrar</button>
     </form>
 </div>

@@ -18,15 +18,9 @@ public class CadastroUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private LoginService loginService;
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
-        if (!loginService.ehAdmin()) {
-            log.error("Você não é administrador. Não foi possível cadastrar usuário.");
-            throw new BusinessException("Você não é administrador. Tentativa falha de cadastro de usuário.");
-        }
         validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
         validarEmailUnico(usuario.getEmail());
 

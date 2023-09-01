@@ -3,58 +3,75 @@ package br.com.ecommerce.winery.controllers;
 import br.com.ecommerce.winery.controllers.admin.AdminController;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import br.com.ecommerce.winery.services.CadastroUsuarioService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import br.com.ecommerce.winery.utils.MensagemRetorno;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import javax.servlet.http.HttpServletResponse;
 
-public class AdminControllerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-    private MockMvc mockMvc;
+class AdminControllerTest {
+
+    @Mock
+    private UsuarioRepository usuarioRepository;
 
     @Mock
     private CadastroUsuarioService cadastroUsuarioService;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Mock
+    private MensagemRetorno mensagemRetorno;
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
+    @Mock
+    private Model model;
 
-        AdminController adminController = new AdminController();
-        ReflectionTestUtils.setField(adminController, "cadastroUsuarioService", cadastroUsuarioService);
+    @Mock
+    private HttpServletResponse response;
 
-        mockMvc = MockMvcBuilders.standaloneSetup(adminController).build();
+    @InjectMocks
+    private AdminController adminController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testCadastrarUsuario_BusinessException() throws Exception {
-        Usuario usuario = new Usuario();
-        usuario.setEmail("ana@gmail.com");
-        usuario.setSenha("senha123");
+    void testGetCadastroForm() {
+        String viewName = adminController.getCadastroForm();
 
-        String errorMessage = "Erro de negócio";
-
-        when(cadastroUsuarioService.cadastrarUsuario(any(Usuario.class)))
-                .thenThrow(new BusinessException(errorMessage));
-
-        mockMvc.perform(post("/admin/cadastrar")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuario)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(errorMessage));
+        assertEquals("cadastroUsuario", viewName);
     }
 
+    @Test
+    void testCadastrarUsuarioSuccess() throws BusinessException {
+        Usuario usuario = new Usuario();
+        when(cadastroUsuarioService.cadastrarUsuario(usuario)).thenReturn(usuario);
+
+        String viewName = adminController.cadastrarUsuario(usuario, model, response);
+
+        assertEquals("cadastroUsuario", viewName);
+        verify(mensagemRetorno).adicionarMensagem(model, "sucesso", "Usuário cadastrado com sucesso!");
+        verify(response).setStatus(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void testCadastrarUsuarioBusinessException() throws BusinessException {
+        Usuario usuario = new Usuario();
+        when(cadastroUsuarioService.cadastrarUsuario(usuario)).thenThrow(new BusinessException("Erro ao cadastrar usuário"));
+
+        String viewName = adminController.cadastrarUsuario(usuario, model, response);
+
+        assertEquals("cadastroUsuario", viewName);
+        verify(mensagemRetorno).adicionarMensagem(model, "erro", "Erro ao cadastrar usuário: Erro ao cadastrar usuário");
+        verify(response).setStatus(HttpStatus.BAD_REQUEST.value());
+    }
 }
