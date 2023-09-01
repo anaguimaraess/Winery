@@ -111,6 +111,10 @@ nav ul li a:hover {
     background: linear-gradient(to bottom, #4F0599, #7A0707);
 }
 
+.user-item-button-alterar-status{
+    background: linear-gradient(to bottom, #4F0599, #7A0707);
+}
+
 .user-item-buttons button {
     padding: 5px 10px;
     border: none;

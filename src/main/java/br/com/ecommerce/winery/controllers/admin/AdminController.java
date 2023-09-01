@@ -3,23 +3,18 @@ package br.com.ecommerce.winery.controllers.admin;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
-import br.com.ecommerce.winery.services.CadastroUsuarioService;
+import br.com.ecommerce.winery.services.PoderAdminService;
 import br.com.ecommerce.winery.utils.MensagemRetorno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping(path = "/admin")
@@ -27,7 +22,7 @@ public class AdminController {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private CadastroUsuarioService cadastroUsuarioService;
+    private PoderAdminService cadastroUsuarioService;
     @Autowired
     private MensagemRetorno mensagemRetorno;
 
@@ -35,7 +30,6 @@ public class AdminController {
     public String getCadastroForm() {
         return "cadastroUsuario";
     }
-
     @PostMapping("/cadastrar")
     public String cadastrarUsuario(@ModelAttribute Usuario usuario, Model model, HttpServletResponse response) {
         try {
@@ -127,34 +121,38 @@ public class AdminController {
     }
 
     @GetMapping("/listar")
-    public String listarTodosUsuarios(Model model) {
+    public String listarTodosUsuarios(Model model, HttpServletResponse response) {
         List<Usuario> usuarios = cadastroUsuarioService.listarTodosUsuarios();
         model.addAttribute("usuarios", usuarios);
+        response.setStatus(HttpStatus.OK.value());
         return "listaUsuario";
     }
 
-    @PutMapping("/inativar")
-    public ResponseEntity<?> inativarUsuario(@RequestBody Usuario usuario) {
+    @RequestMapping(value = "/alterarStatus", method = { RequestMethod.GET, RequestMethod.POST })
+    public String alternarStatusUsuario(@RequestParam("id") int id, Model model, HttpServletResponse response) {
         try {
-            Usuario usuarioAtivo = cadastroUsuarioService.inativarUsuario(usuario.getId());
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtivo);
+            Usuario usuarioAlterado = cadastroUsuarioService.alternarStatusUsuario(id);
+            List<Usuario> usuarios = cadastroUsuarioService.listarTodosUsuarios();
+            response.setStatus(HttpStatus.OK.value());
+            model.addAttribute("usuarios", usuarios);
+            return "redirect:/admin/listar";
         } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao alterar status do usuário: " + e.getMessage());
+            return "listaUsuario";
         }
     }
 
-    @PutMapping("/reativar")
-    public ResponseEntity<?> reativarUsuario(@RequestBody Usuario usuario) {
-        try {
-            Usuario usuarioInativo = cadastroUsuarioService.reativarUsuario(usuario.getId());
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioInativo);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
+
+
 
     @GetMapping("/filtro")
-    public List<Usuario> filtroPorNome(@RequestParam("nome") String nome) {
-        return this.usuarioRepository.findByNomeContains(nome);
+    public String filtroPorNome(@RequestParam("nome") String nome, Model model, HttpServletResponse response) {
+        nome = nome.toLowerCase(); // Converter o nome para letras minúsculas
+        List<Usuario> usuarios = this.usuarioRepository.findByNomeContains(nome);
+        model.addAttribute("usuarios", usuarios);
+        response.setStatus(HttpStatus.OK.value());
+        return "listaUsuario";
     }
+
 }

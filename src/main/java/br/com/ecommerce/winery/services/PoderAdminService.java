@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class CadastroUsuarioService {
+public class PoderAdminService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -56,27 +56,22 @@ public class CadastroUsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario inativarUsuario(int id) throws BusinessException {
+    public Usuario alternarStatusUsuario(int id) throws BusinessException {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if (!usuario.getStatus().equals(Status.INATIVO)) {
-            usuario.setStatus(Status.INATIVO);
-            log.info("Usuário inativado com sucesso!");
+        if (usuario != null) {
+            if (usuario.getStatus().equals(Status.ATIVO)) {
+                usuario.setStatus(Status.INATIVO);
+                log.info("Usuário inativado com sucesso!");
+            } else if (usuario.getStatus().equals(Status.INATIVO)) {
+                usuario.setStatus(Status.ATIVO);
+                log.info("Usuário reativado com sucesso!");
+            }
             return usuarioRepository.save(usuario);
         }
-        log.error("Usuário já está inativo!");
-        throw new BusinessException("Não é possível inativar, usuário ja está inativo!");
+        log.error("Usuário não encontrado!");
+        throw new BusinessException("Usuário não encontrado!");
     }
 
-    public Usuario reativarUsuario(int id) throws BusinessException {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if (!usuario.getStatus().equals(Status.ATIVO)) {
-            usuario.setStatus(Status.ATIVO);
-            log.info("Usuário reativado com sucesso!");
-            return usuarioRepository.save(usuario);
-        }
-        log.error("Usuário já está ativo!");
-        throw new BusinessException("Não é possível reativar, usuário já está ativo!");
-    }
 
 
     public Usuario alterarNomeUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {

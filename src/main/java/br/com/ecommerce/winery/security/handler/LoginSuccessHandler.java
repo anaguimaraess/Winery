@@ -39,9 +39,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .collect(Collectors.toSet());
 
         if (roles.contains("ADMIN")) {
-            return "/admin/cadastrar";
+            return "/admin/listar";
         } else if (roles.contains("ESTOQUISTA")) {
-            return "/estoque/dashboard";
+            return "/estoque";
         } else {
             return "/winery";  // para outros usuários ou default
         }

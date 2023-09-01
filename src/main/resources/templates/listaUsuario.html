@@ -12,18 +12,20 @@
     <header>
         <nav>
             <ul>
-                <li><a href="#">Produto</a></li>
-                <li><a href="#">Usuário</a></li>
+                <li><a href="#">Cadastrar produto</a></li>
+                <li><a th:href="@{/admin/cadastrar}" >Cadastrar usuário</a></li>
+                <li><a th:href="@{/admin/listar}" >Listar Usuários</a></li>
             </ul>
         </nav>
-        <div class="search-bar">
-            <input type="text" placeholder="Pesquisar...">
-            <button class="buttonSearch">Buscar</button>
-        </div>
+        <form th:action="@{/admin/filtro}" method="get">
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar..." name="nome">
+                <button type="submit" class="buttonSearch">Buscar</button>
+            </div>
+        </form>
     </header>
 </div>
 
-<!-- Lista de Usuários em Cards -->
 <div class="user-list">
     <div class="user-item" th:each="usuario : ${usuarios}">
         <h3 th:text="'Nome: ' + ${usuario.nome}"></h3>
@@ -31,7 +33,14 @@
         <p th:text="'Status: ' + ${usuario.status}"></p>
         <div class="user-item-buttons">
             <button class="user-item-button-alterar">Alterar</button>
-            <button>Inativar</button>
+            <form th:action="@{/admin/alterarStatus}" th:method="post">
+                <input type="hidden" name="id" th:value="${usuario.id}" />
+                <input type="hidden" name="action" th:if="${usuario.status == 'ATIVO'}" th:value="inativar" />
+                <input type="hidden" name="action" th:if="${usuario.status == 'INATIVO'}" th:value="ativar" />
+                <button class="user-item-button-alterar-status" data-id="${usuario.id}" onclick="return confirm('Tem certeza de que deseja alterar o status?')">
+                    Alterar Status
+                </button>
+            </form>
         </div>
     </div>
 </div>
