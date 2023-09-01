@@ -9,11 +9,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,6 +34,8 @@ public class AdminControllerTest {
     @Mock
     private CadastroUsuarioService cadastroUsuarioService;
 
+    @Mock
+    private AdminController adminController;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Before
@@ -56,5 +65,4 @@ public class AdminControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(errorMessage));
     }
-
 }

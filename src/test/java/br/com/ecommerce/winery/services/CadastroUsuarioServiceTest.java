@@ -110,4 +110,149 @@ public class CadastroUsuarioServiceTest {
 
         verify(usuarioRepository).save(any(Usuario.class));
     }
+
+    @Test
+    public void testAlterarNomeUsuario() throws BusinessException {
+        Usuario usuarioCadastrado = new Usuario();
+        usuarioCadastrado.setId(1);
+        usuarioCadastrado.setNome("Guilherme");
+
+        Usuario usuarioAtualizado = new Usuario();
+        usuarioAtualizado.setId(1);
+        usuarioAtualizado.setNome("Mikami");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioCadastrado));
+        when(usuarioRepository.save(usuarioCadastrado)).thenReturn(usuarioCadastrado);
+
+        Usuario resultado = cadastroUsuarioService.alterarNomeUsuario(1, usuarioAtualizado);
+
+        assertEquals("Mikami", resultado.getNome());
+
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(usuarioRepository, times(1)).save(usuarioCadastrado);
+    }
+
+    @Test
+    public void testAlterarNomeUsuarioMesmoNome() throws BusinessException {
+        Usuario usuarioCadastrado = new Usuario();
+        usuarioCadastrado.setId(1);
+        usuarioCadastrado.setNome("Guilherme");
+
+        Usuario usuarioAtualizado = new Usuario();
+        usuarioAtualizado.setId(1);
+        usuarioAtualizado.setNome("Guilherme");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioCadastrado));
+
+        try {
+            cadastroUsuarioService.alterarNomeUsuario(1, usuarioAtualizado);
+            fail("Expected BusinessException was not thrown");
+        } catch (BusinessException e) {
+            assertEquals("Nome não pode ser igual ao anterior!", e.getMessage());
+        }
+
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(usuarioRepository, never()).save(any());
+    }
+
+    @Test
+    public void testAlterarCpfUsuario() throws BusinessException {
+        Usuario usuarioCadastrado = new Usuario();
+        usuarioCadastrado.setId(1);
+        usuarioCadastrado.setCpf("12345678900");
+
+        Usuario usuarioAtualizado = new Usuario();
+        usuarioAtualizado.setId(1);
+        usuarioAtualizado.setCpf("98765432100");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioCadastrado));
+        when(usuarioRepository.save(usuarioCadastrado)).thenReturn(usuarioCadastrado);
+
+        Usuario resultado = cadastroUsuarioService.alterarCpfUsuario(1, usuarioAtualizado);
+
+        assertEquals("98765432100", resultado.getCpf());
+
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(usuarioRepository, times(1)).save(usuarioCadastrado);
+    }
+
+    @Test
+    public void testAlterarCpfUsuarioMesmoCpf() throws BusinessException {
+        Usuario usuarioCadastrado = new Usuario();
+        usuarioCadastrado.setId(1);
+        usuarioCadastrado.setCpf("12345678900");
+
+        Usuario usuarioAtualizado = new Usuario();
+        usuarioAtualizado.setId(1);
+        usuarioAtualizado.setCpf("12345678900");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioCadastrado));
+
+        try {
+            cadastroUsuarioService.alterarCpfUsuario(1, usuarioAtualizado);
+            fail("Expected BusinessException was not thrown");
+        } catch (BusinessException e) {
+            assertEquals("CPF não pode ser igual ao anterior!", e.getMessage());
+        }
+
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(usuarioRepository, never()).save(any());
+    }
+
+    @Test
+    public void testAlterarSenha() throws BusinessException {
+        Usuario usuarioCadastrado = new Usuario();
+        usuarioCadastrado.setId(1);
+        usuarioCadastrado.setSenha("123");
+        usuarioCadastrado.setConfirmaSenha("123");
+
+        Usuario usuarioAtualizado = new Usuario();
+        usuarioAtualizado.setId(1);
+        usuarioAtualizado.setSenha("123456");
+        usuarioAtualizado.setConfirmaSenha("123456");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioCadastrado));
+
+        when(passwordEncoder.encode("123")).thenReturn("encodedPassword123");
+        when(passwordEncoder.encode("123456")).thenReturn("encodedPassword123456");
+
+        Usuario resultado = cadastroUsuarioService.alterarSenha(1, usuarioAtualizado);
+
+        assertEquals("encodedPassword123456", resultado.getSenha());
+        assertEquals("encodedPassword123456", resultado.getConfirmaSenha());
+
+        assertEquals("encodedPassword123456", resultado.getSenha());
+        assertEquals("encodedPassword123456", resultado.getConfirmaSenha());
+        verify(usuarioRepository, times(1)).findById(1);
+
+        verify(passwordEncoder, times(2)).encode(anyString());
+        verify(usuarioRepository, times(1)).save(usuarioCadastrado);
+    }
+
+
+    @Test
+    public void testAlterarSenhaMesmaSenha() throws BusinessException {
+        Usuario usuarioCadastrado = new Usuario();
+        usuarioCadastrado.setId(1);
+        usuarioCadastrado.setSenha("123");
+        usuarioCadastrado.setConfirmaSenha("123");
+
+        Usuario usuarioAtualizado = new Usuario();
+        usuarioAtualizado.setId(1);
+        usuarioAtualizado.setSenha("123");
+        usuarioAtualizado.setConfirmaSenha("123");
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuarioCadastrado));
+
+        try {
+            cadastroUsuarioService.alterarSenha(1, usuarioAtualizado);
+            fail("Expected BusinessException was not thrown");
+        } catch (BusinessException e) {
+            assertEquals("A senha não pode ser igual a anterior!", e.getMessage());
+        }
+
+        verify(usuarioRepository, times(1)).findById(1);
+        verify(passwordEncoder, never()).encode(any());
+        verify(usuarioRepository, never()).save(any());
+    }
 }

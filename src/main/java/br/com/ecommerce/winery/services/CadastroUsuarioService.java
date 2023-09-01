@@ -118,6 +118,7 @@ public class CadastroUsuarioService {
             usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualiado.getConfirmaSenha()));
             if (usuarioAtualiado.getSenha().equals(usuarioAtualiado.getConfirmaSenha())) {
                 log.info("Senha alterada com sucesso!");
+                return usuarioRepository.save(usuarioCadastrado);
             } else {
                 log.error("Senhas não são iguais!");
                 throw new BusinessException("As senhas não são iguais!");
@@ -126,7 +127,6 @@ public class CadastroUsuarioService {
             log.error("Não foi possível alterar, a senha não pode ser igual a anterior!");
             throw new BusinessException("A senha não pode ser igual a anterior!");
         }
-        return usuarioRepository.save(usuarioCadastrado);
     }
 
     public Usuario alterarGrupo(int id, Usuario usuarioAtualizado) throws BusinessException{
