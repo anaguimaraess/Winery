@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,50 +9,55 @@
     <link rel="shortcut icon" href="imagens/WINERY7.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
-<header>
-    <nav>
-        <ul>
-            <li><a href="#">Cadastrar produto</a></li>
-            <li><a th:href="@{/admin/cadastrar}" >Cadastrar usuário</a></li>
-            <li><a th:href="@{/admin/listar}" >Listar Usuários</a></li>
-        </ul>
-    </nav>
-    <div class="search-bar">
-        <button class="buttonSearch">Entre com seu Login</button>
-    </div>
-</header>
-
-<section class="wine-section">
-    <div class="imghome-overlay">
-        <img class="imghome" src="imagens/telainicial.jpg" alt="Vinho Tinto">
-        <div class="wine-info">
-            <h1>Vinhos de Qualidade</h1>
-            <p>Descubra uma seleção exclusiva de vinhos premiados.</p>
-            <p>Entrega rápida em sua porta.</p>
-            <button class="buy-button">Comprar Agora</button>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Cadastrar produto</a></li>
+                <li><a th:href="@{/admin/cadastrar}">Cadastrar usuário</a></li>
+                <li><a th:href="@{/admin/listar}">Listar Usuários</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <button class="buttonSearch">Entre com seu Login</button>
         </div>
-    </div>
-</section>
+    </header>
 
-<section class="features-section">
-    <h2 style="color: black;">Por que escolher a Winery?</h2>
-    <div class="feature">
-        <i class="fas fa-cogs fa-3x purple-gradient-icon"></i>
-        <p style="color: black;">Fácil de usar</p>
-    </div>
-    <div class="feature">
-        <i class="fas fa-truck fa-3x purple-gradient-icon"></i>
-        <p style="color: black;">Entrega Rápida</p>
-    </div>
-    <div class="feature">
-        <i class="fas fa-medal fa-3x purple-gradient-icon"></i>
-        <p style="color: black;">Qualidade Garantida</p>
-    </div>
-</section>
+    <section class="wine-section">
+        <div class="imghome-overlay">
+            <div class="wine-info">
+                <div class="content-container">
+                    <section class="features-section">
+                        <h2 style="color: white;">Por que escolher a Winery?</h2>
+                        <div class="feature">
+                            <i class="fas fa-cogs fa-3x purple-gradient-icon"></i>
+                            <p style="color: white;">Fácil de usar</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-truck fa-3x purple-gradient-icon"></i>
+                            <p style="color: white;">Entrega Rápida</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-medal fa-3x purple-gradient-icon"></i>
+                            <p style="color: white;">Qualidade Garantida</p>
+                        </div>
+                    </section>
+                    <div class="comprar">
+                        <h1>Vinhos de Qualidade</h1>
+                        <p>Descubra uma seleção exclusiva de vinhos premiados.</p>
+                        <p>Entrega rápida em sua porta.</p>
+                        <button class="buy-button">Comprar Agora</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<footer>
-    <p>&copy; 2023 Winery - Todos os direitos reservados.</p>
-</footer>
+
+    <footer>
+        <p>&copy; 2023 Winery - Todos os direitos reservados.</p>
+    </footer>
 </body>
+
 </html>
