@@ -1,10 +1,8 @@
 package br.com.ecommerce.winery.services;
 
-import br.com.ecommerce.winery.models.CustomUserDetails;
-import br.com.ecommerce.winery.models.Produto;
-import br.com.ecommerce.winery.models.Status;
-import br.com.ecommerce.winery.models.Usuario;
+import br.com.ecommerce.winery.models.*;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.repositories.ImagemRepository;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +24,8 @@ public class PoderAdminService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private ImagemRepository imagemRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -75,7 +75,6 @@ public class PoderAdminService {
         log.error("Usuário não encontrado!");
         throw new BusinessException("Usuário não encontrado!");
     }
-
 
 
     public Usuario alterarNomeUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
@@ -165,5 +164,21 @@ public class PoderAdminService {
         return produtoRepository.save(produto);
     }
 
+    public Imagem cadastrarImagem(Imagem imagem) throws BusinessException {
+
+        imagem.setUrl(imagem.getUrl());
+        if(imagem.isImagemPrincipal()){
+            desmarcarOutrasImagens(imagem.getProduto());
+        }
+        return imagemRepository.save(imagem);
+    }
+
+    private void desmarcarOutrasImagens(Produto produto) {
+        List<Imagem> imagemPrincipal = imagemRepository.findByImagemPrincipal(produto);
+        for(Imagem imagem : imagemPrincipal){
+            imagem.setImagemPrincipal(false);
+            imagemRepository.save(imagem);
+        }
+    }
 }
 
