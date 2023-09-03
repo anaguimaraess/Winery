@@ -2,8 +2,8 @@ package br.com.ecommerce.winery.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +11,8 @@ import javax.persistence.Entity;
 @Entity
 public class Produto {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int produto_id;
     @Column(name = "nome_produto")
     private String nomeProduto;
