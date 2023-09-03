@@ -1,9 +1,11 @@
 package br.com.ecommerce.winery.services;
 
 import br.com.ecommerce.winery.models.CustomUserDetails;
+import br.com.ecommerce.winery.models.Produto;
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class PoderAdminService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private ProdutoRepository produtoRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -147,6 +151,18 @@ public class PoderAdminService {
         } else {
             throw new BusinessException("Usuário não encontrado com o ID: " + id);
         }
+    }
+
+    public Produto cadastrarProdutos(Produto produto) throws BusinessException {
+
+        produto.setNomeProduto(produto.getNomeProduto());
+        produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+        produto.setDescricaoProduto(produto.getDescricaoProduto());
+        produto.setPrecoProduto(produto.getPrecoProduto());
+        produto.setQtdEstoque(produto.getQtdEstoque());
+
+        log.info("Produto cadastrado com sucesso.");
+        return produtoRepository.save(produto);
     }
 
 }
