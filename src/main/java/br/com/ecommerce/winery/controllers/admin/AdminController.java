@@ -162,7 +162,7 @@ public class AdminController {
     @PostMapping("/cadastrarProdutos")
     public String cadastrarProdutos(@ModelAttribute Produto produto, Model model, HttpServletResponse response) {
         try {
-            ProdutoRepository novoProduto = cadastroProdutoService.cadastrarProduto(produto);
+            Produto novoProduto = cadastroProdutoService.cadastrarProdutos(produto);
             mensagemRetorno.adicionarMensagem(model, "sucesso", "Produto cadastrado com sucesso!");
             response.setStatus(HttpStatus.CREATED.value());
         } catch (BusinessException e) {
