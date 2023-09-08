@@ -188,5 +188,10 @@ public class PoderAdminService {
             throw new BusinessException("Produto não encontrado com o ID: " + id);
         }
     }
+
+    public List<Produto> listarTodosProdutos() {
+        return produtoRepository.findAll();
+    }
+
 }
 

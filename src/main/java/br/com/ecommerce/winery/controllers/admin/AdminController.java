@@ -3,6 +3,7 @@ package br.com.ecommerce.winery.controllers.admin;
 import br.com.ecommerce.winery.models.Produto;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import br.com.ecommerce.winery.services.PoderAdminService;
 import br.com.ecommerce.winery.utils.MensagemRetorno;
@@ -26,6 +27,8 @@ public class AdminController {
     private PoderAdminService cadastroUsuarioService;
     @Autowired
     private PoderAdminService cadastroProdutoService;
+    @Autowired
+    private ProdutoRepository produtoRepository;
     @Autowired
     private MensagemRetorno mensagemRetorno;
 
@@ -166,5 +169,22 @@ public class AdminController {
         } catch (BusinessException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar produto!");
         }
+    }
+
+    @GetMapping("/filtroNomeProduto")
+    public String filtroNomeDoProduto(@RequestParam("nomeProduto") String nomeProduto, Model model, HttpServletResponse response) {
+        nomeProduto = nomeProduto.toLowerCase();
+        List<Produto> produtos = this.produtoRepository.findByNomeProdutoContainingIgnoreCase(nomeProduto);
+        model.addAttribute("produtos", produtos);
+        response.setStatus(HttpStatus.OK.value());
+        return "listaProdutos";
+    }
+
+    @GetMapping("/listarProduto")
+    public String listarTodosOsProdutos(Model model, HttpServletResponse response) {
+        List<Produto> produtos = cadastroProdutoService.listarTodosProdutos();
+        model.addAttribute("produtos", produtos);
+        response.setStatus(HttpStatus.OK.value());
+        return "listaProdutos";
     }
 }
