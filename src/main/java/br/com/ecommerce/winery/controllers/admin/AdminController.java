@@ -3,7 +3,6 @@ package br.com.ecommerce.winery.controllers.admin;
 import br.com.ecommerce.winery.models.Produto;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
-import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import br.com.ecommerce.winery.services.PoderAdminService;
 import br.com.ecommerce.winery.utils.MensagemRetorno;
@@ -160,15 +159,12 @@ public class AdminController {
     }
 
     @PostMapping("/cadastrarProdutos")
-    public String cadastrarProdutos(@ModelAttribute Produto produto, Model model, HttpServletResponse response) {
+    public ResponseEntity<?> cadastrarProdutos(@RequestBody Produto produto) {
         try {
             Produto novoProduto = cadastroProdutoService.cadastrarProdutos(produto);
-            mensagemRetorno.adicionarMensagem(model, "sucesso", "Produto cadastrado com sucesso!");
-            response.setStatus(HttpStatus.CREATED.value());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Produto cadastrado com sucesso!");
         } catch (BusinessException e) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao cadastrar produto: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar produto!");
         }
-        return "cadastroProduto";
     }
 }

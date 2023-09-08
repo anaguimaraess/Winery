@@ -155,7 +155,14 @@ public class PoderAdminService {
     public Produto cadastrarProdutos(Produto produto) throws BusinessException {
 
         produto.setNomeProduto(produto.getNomeProduto());
-        produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+
+        if (produto.getAvaliacaoProduto() >= 1 && produto.getAvaliacaoProduto() <= 5) {
+            produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+        } else {
+            log.error("Avaliação fora dos parametros permitidos!");
+            throw new BusinessException("Avaliação fora dos parametros!");
+        }
+
         produto.setDescricaoProduto(produto.getDescricaoProduto());
         produto.setPrecoProduto(produto.getPrecoProduto());
         produto.setQtdEstoque(produto.getQtdEstoque());
@@ -164,20 +171,21 @@ public class PoderAdminService {
         return produtoRepository.save(produto);
     }
 
-    public Imagem cadastrarImagem(Imagem imagem) throws BusinessException {
-
-        imagem.setUrl(imagem.getUrl());
-        if(imagem.isImagemPrincipal()){
-            desmarcarOutrasImagens(imagem.getProduto());
-        }
-        return imagemRepository.save(imagem);
-    }
-
     private void desmarcarOutrasImagens(Produto produto) {
         List<Imagem> imagemPrincipal = imagemRepository.findByImagemPrincipal(produto);
-        for(Imagem imagem : imagemPrincipal){
+        for (Imagem imagem : imagemPrincipal) {
             imagem.setImagemPrincipal(false);
             imagemRepository.save(imagem);
+        }
+    }
+
+    public Produto buscarProdutoPorId(int id) throws BusinessException {
+        Optional<Produto> produtoOptional = produtoRepository.findById(id);
+
+        if (produtoOptional.isPresent()) {
+            return produtoOptional.get();
+        } else {
+            throw new BusinessException("Produto não encontrado com o ID: " + id);
         }
     }
 }
