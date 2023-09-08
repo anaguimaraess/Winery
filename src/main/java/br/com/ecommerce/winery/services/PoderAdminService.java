@@ -190,7 +190,7 @@ public class PoderAdminService {
     }
 
     public List<Produto> listarTodosProdutos() {
-        return produtoRepository.findAll();
+        return produtoRepository.findAllByOrderByIdProdutoDesc();
     }
 
 }

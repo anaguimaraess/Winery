@@ -36,6 +36,7 @@ public class AdminController {
     public String getCadastroForm() {
         return "cadastroUsuario";
     }
+
     @PostMapping("/cadastrar")
     public String cadastrarUsuario(@ModelAttribute Usuario usuario, Model model, HttpServletResponse response) {
         try {
@@ -134,7 +135,7 @@ public class AdminController {
         return "listaUsuario";
     }
 
-    @RequestMapping(value = "/alterarStatus", method = { RequestMethod.GET, RequestMethod.POST })
+    @RequestMapping(value = "/alterarStatus", method = {RequestMethod.GET, RequestMethod.POST})
     public String alternarStatusUsuario(@RequestParam("id") int id, Model model, HttpServletResponse response) {
         try {
             Usuario usuarioAlterado = cadastroUsuarioService.alternarStatusUsuario(id);
@@ -148,8 +149,6 @@ public class AdminController {
             return "listaUsuario";
         }
     }
-
-
 
 
     @GetMapping("/filtro")
@@ -171,6 +170,7 @@ public class AdminController {
         }
     }
 
+
     @GetMapping("/filtroNomeProduto")
     public String filtroNomeDoProduto(@RequestParam("nomeProduto") String nomeProduto, Model model, HttpServletResponse response) {
         nomeProduto = nomeProduto.toLowerCase();
@@ -180,11 +180,12 @@ public class AdminController {
         return "listaProdutos";
     }
 
-    @GetMapping("/listarProduto")
-    public String listarTodosOsProdutos(Model model, HttpServletResponse response) {
+
+    @GetMapping("/listarProdutos")
+    public String listarTodosOsProdutos(Model model) throws BusinessException {
+
         List<Produto> produtos = cadastroProdutoService.listarTodosProdutos();
         model.addAttribute("produtos", produtos);
-        response.setStatus(HttpStatus.OK.value());
         return "listaProdutos";
     }
 }
