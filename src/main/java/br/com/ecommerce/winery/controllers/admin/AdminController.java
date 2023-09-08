@@ -188,4 +188,19 @@ public class AdminController {
         model.addAttribute("produtos", produtos);
         return "listaProdutos";
     }
+
+    @RequestMapping(value = "/alterarStatusProduto", method = {RequestMethod.GET, RequestMethod.POST})
+    public String alterarStatusDoProduto(@RequestParam("idProduto") int idProduto, Model model, HttpServletResponse response) {
+        try {
+            Produto produtoAlterado = cadastroProdutoService.alterarStatusDoProduto(idProduto);
+            List<Produto> produtos = cadastroProdutoService.listarTodosProdutos();
+            response.setStatus(HttpStatus.OK.value());
+            model.addAttribute("produtos", produtos);
+            return "redirect:/admin/listarProdutos";
+        } catch (BusinessException e) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao alterar status do produto: " + e.getMessage());
+            return "listaProdutos";
+        }
+    }
 }

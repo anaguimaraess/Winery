@@ -193,5 +193,23 @@ public class PoderAdminService {
         return produtoRepository.findAllByOrderByIdProdutoDesc();
     }
 
+    public Produto alterarStatusDoProduto(int idProduto) throws BusinessException {
+        Produto produto = produtoRepository.findById(idProduto).orElse(null);
+        if (produto != null) {
+            if (produto.getStatusProduto().equals(Status.ATIVO)) {
+                produto.setStatusProduto(Status.INATIVO);
+
+                log.info("Produto inativado com sucesso!");
+            } else if (produto.getStatusProduto().equals(Status.INATIVO)) {
+                produto.setStatusProduto(Status.ATIVO);
+                log.info("Produto reativado com sucesso!");
+            }
+            return produtoRepository.save(produto);
+        }
+        log.error("Produto não encontrado!");
+        throw new BusinessException("Produto não encontrado!");
+    }
+
+
 }
 

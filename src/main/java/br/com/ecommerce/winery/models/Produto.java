@@ -23,4 +23,6 @@ public class Produto {
     private double precoProduto;
     @Column(name = "qtd_estoque")
     private int qtdEstoque;
+    @Enumerated(EnumType.STRING)
+    private Status statusProduto;
 }
