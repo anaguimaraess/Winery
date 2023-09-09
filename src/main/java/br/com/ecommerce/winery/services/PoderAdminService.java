@@ -189,7 +189,7 @@ public class PoderAdminService {
         }
     }
 
-    public List<Produto> listarTodosProdutos() {
+    public List<Produto> listarTodosProdutosDecrescente() {
         return produtoRepository.findAllByOrderByIdProdutoDesc();
     }
 
@@ -211,5 +211,8 @@ public class PoderAdminService {
     }
 
 
+    public List<Produto> listarTodosProdutos() {
+        return produtoRepository.findAll();
+    }
 }
 

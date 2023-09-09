@@ -181,6 +181,14 @@ public class AdminController {
     }
 
 
+    @GetMapping("/listarProdutosDecrescente")
+    public String listarTodosOsProdutosDecrescente(Model model) throws BusinessException {
+
+        List<Produto> produtos = cadastroProdutoService.listarTodosProdutosDecrescente();
+        model.addAttribute("produtos", produtos);
+        return "listaProdutosDecrescente";
+    }
+
     @GetMapping("/listarProdutos")
     public String listarTodosOsProdutos(Model model) throws BusinessException {
 
@@ -193,14 +201,14 @@ public class AdminController {
     public String alterarStatusDoProduto(@RequestParam("idProduto") int idProduto, Model model, HttpServletResponse response) {
         try {
             Produto produtoAlterado = cadastroProdutoService.alterarStatusDoProduto(idProduto);
-            List<Produto> produtos = cadastroProdutoService.listarTodosProdutos();
+            List<Produto> produtos = cadastroProdutoService.listarTodosProdutosDecrescente();
             response.setStatus(HttpStatus.OK.value());
             model.addAttribute("produtos", produtos);
             return "redirect:/admin/listarProdutos";
         } catch (BusinessException e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao alterar status do produto: " + e.getMessage());
-            return "listaProdutos";
+            return "listaProdutosDecrescente";
         }
     }
 }
