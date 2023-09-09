@@ -11,7 +11,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -152,24 +158,6 @@ public class PoderAdminService {
         }
     }
 
-    public Produto cadastrarProdutos(Produto produto) throws BusinessException {
-
-        produto.setNomeProduto(produto.getNomeProduto());
-
-        if (produto.getAvaliacaoProduto() >= 1 && produto.getAvaliacaoProduto() <= 5) {
-            produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
-        } else {
-            log.error("Avaliação fora dos parametros permitidos!");
-            throw new BusinessException("Avaliação fora dos parametros!");
-        }
-
-        produto.setDescricaoProduto(produto.getDescricaoProduto());
-        produto.setPrecoProduto(produto.getPrecoProduto());
-        produto.setQtdEstoque(produto.getQtdEstoque());
-
-        log.info("Produto cadastrado com sucesso.");
-        return produtoRepository.save(produto);
-    }
 
     private void desmarcarOutrasImagens(Produto produto) {
         List<Imagem> imagemPrincipal = imagemRepository.findByImagemPrincipal(produto);
@@ -214,5 +202,48 @@ public class PoderAdminService {
     public List<Produto> listarTodosProdutos() {
         return produtoRepository.findAll();
     }
+    public Produto cadastrarProdutos(Produto produto) throws BusinessException {
+
+        produto.setNomeProduto(produto.getNomeProduto());
+
+        if (produto.getAvaliacaoProduto() >= 1 && produto.getAvaliacaoProduto() <= 5) {
+            produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+        } else {
+            log.error("Avaliação fora dos parametros permitidos!");
+            throw new BusinessException("Avaliação fora dos parametros!");
+        }
+
+        produto.setDescricaoProduto(produto.getDescricaoProduto());
+        produto.setPrecoProduto(produto.getPrecoProduto());
+        produto.setQtdEstoque(produto.getQtdEstoque());
+
+        log.info("Produto cadastrado com sucesso.");
+        return produtoRepository.save(produto);
+    }
+
+    public void salvarImagens(MultipartFile imagem, Produto produto) throws BusinessException {
+
+        if (imagem != null && !imagem.isEmpty()) {
+            String nomeImagem = imagem.getOriginalFilename();
+            String url = "static/imagens-produtos/" + nomeImagem;
+            Path path = Paths.get("src/main/resources/static/" + url);
+            try {
+                Files.copy(imagem.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                System.out.println("Erro ao carregar a imagem! " + nomeImagem + e);
+                throw new BusinessException("Erro ao carregar a imagem!");
+            }
+
+            Imagem novaImagem = new Imagem();
+            novaImagem.setUrl(url);
+            novaImagem.setProduto(produto);
+            imagemRepository.save(novaImagem);
+            log.info("Imagem cadastrada com sucesso!");
+        } else {
+            log.error("Erro ao cadastrar a imagem!");
+            throw new BusinessException("Erro ao cadastrar a imagem!");
+        }
+    }
+
 }
 

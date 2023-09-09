@@ -1,8 +1,10 @@
 package br.com.ecommerce.winery.controllers.admin;
 
+import br.com.ecommerce.winery.models.Imagem;
 import br.com.ecommerce.winery.models.Produto;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.repositories.ImagemRepository;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import br.com.ecommerce.winery.services.PoderAdminService;
@@ -13,8 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +37,8 @@ public class AdminController {
     private PoderAdminService cadastroProdutoService;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private ImagemRepository imagemRepository;
     @Autowired
     private MensagemRetorno mensagemRetorno;
 
@@ -160,16 +170,6 @@ public class AdminController {
         return "listaUsuario";
     }
 
-    @PostMapping("/cadastrarProdutos")
-    public ResponseEntity<?> cadastrarProdutos(@RequestBody Produto produto) {
-        try {
-            Produto novoProduto = cadastroProdutoService.cadastrarProdutos(produto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Produto cadastrado com sucesso!");
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar produto!");
-        }
-    }
-
 
     @GetMapping("/filtroNomeProduto")
     public String filtroNomeDoProduto(@RequestParam("nomeProduto") String nomeProduto, Model model, HttpServletResponse response) {
@@ -182,7 +182,7 @@ public class AdminController {
 
 
     @GetMapping("/listarProdutosDecrescente")
-    public String listarTodosOsProdutosDecrescente(Model model) throws BusinessException {
+    public String listarTodosOsProdutosDecrescente(Model model) {
 
         List<Produto> produtos = cadastroProdutoService.listarTodosProdutosDecrescente();
         model.addAttribute("produtos", produtos);
@@ -190,7 +190,7 @@ public class AdminController {
     }
 
     @GetMapping("/listarProdutos")
-    public String listarTodosOsProdutos(Model model) throws BusinessException {
+    public String listarTodosOsProdutos(Model model) {
 
         List<Produto> produtos = cadastroProdutoService.listarTodosProdutos();
         model.addAttribute("produtos", produtos);
@@ -211,4 +211,25 @@ public class AdminController {
             return "listaProdutosDecrescente";
         }
     }
+
+    @PostMapping("/cadastrarProdutos")
+    String cadastrarProdutosComImagens(@ModelAttribute("produto") Produto produto, @RequestParam("imagem") MultipartFile[] imagens,
+                                       @RequestParam("imagemPrincipal") String imagemPrincipal, Model model, HttpServletResponse response) {
+        try {
+
+            Produto produtoCadastrado = cadastroProdutoService.cadastrarProdutos(produto);
+
+            for (MultipartFile imagem : imagens) {
+                cadastroProdutoService.salvarImagens(imagem, produtoCadastrado);
+            }
+            mensagemRetorno.adicionarMensagem(model, "sucesso", "Produto cadastrado com sucesso!");
+            response.setStatus(HttpStatus.CREATED.value());
+
+        } catch (BusinessException e) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao cadastrar o produto: " + e.getMessage());
+        }
+        return "listarProdutos";
+    }
+
 }
