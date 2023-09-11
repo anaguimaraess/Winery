@@ -214,5 +214,22 @@ public class PoderAdminService {
     public List<Produto> listarTodosProdutos() {
         return produtoRepository.findAll();
     }
+
+    public void alterarQuantidade(int idProduto, int novaQuantidade) throws BusinessException {
+
+        Produto produto = produtoRepository.findById(idProduto).orElse(null);
+
+        if(produto == null){
+            log.error("Produto não encontrado!");
+            throw new BusinessException("Produto não encontrado!");
+        }
+        if(novaQuantidade < 0){
+            log.error("O estoque não pode ser menor do que 0!");
+            throw new BusinessException("Estoque não pode ser negativo!");
+        }
+
+        produto.setQtdEstoque(novaQuantidade);
+        produtoRepository.save(produto);
+    }
 }
 
