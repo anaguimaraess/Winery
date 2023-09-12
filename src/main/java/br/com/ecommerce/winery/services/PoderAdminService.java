@@ -6,6 +6,8 @@ import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
+import br.com.caelum.stella.validation.CPFValidator;
+import br.com.caelum.stella.validation.InvalidStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +26,12 @@ public class PoderAdminService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-
+    @Autowired
+    private final CPFValidator cpfValidator = new CPFValidator();
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
         validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
         validarEmailUnico(usuario.getEmail());
-
+        validarCpf(usuario.getCpf());
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         usuario.setConfirmaSenha(passwordEncoder.encode(usuario.getConfirmaSenha()));
         usuario.setStatus(Status.ATIVO);
@@ -36,7 +39,16 @@ public class PoderAdminService {
         log.info("Usuário cadastrado com sucesso.");
         return usuarioRepository.save(usuario);
     }
+    private boolean validarCpf(String cpf) throws BusinessException {
+        try {
+            cpfValidator.assertValid(cpf);
+            System.out.println("CPF válido.");
+            return true;
 
+        } catch (InvalidStateException e) {
+            throw new BusinessException("CPF inválido.");
+        }
+    }
 
     public void validarSenhasIguais(String senha, String confirmacaoSenha) throws BusinessException {
         if (!Objects.equals(senha, confirmacaoSenha)) {
@@ -71,42 +83,49 @@ public class PoderAdminService {
         log.error("Usuário não encontrado!");
         throw new BusinessException("Usuário não encontrado!");
     }
+    public Usuario alterarUsuario(Usuario usuarioAtualizado) throws BusinessException {
+        Usuario usuarioCadastrado = usuarioRepository.findById(usuarioAtualizado.getId()).orElse(null);
+        log.info("Usuário cadastrado: " + String.valueOf(usuarioCadastrado));
+        log.info("Usuário atualizado: " + String.valueOf(usuarioAtualizado));
 
+        usuarioCadastrado.setNome(usuarioAtualizado.getNome());
 
-
-    public Usuario alterarNomeUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
-        Usuario usuarioCadastrado = buscarUsuarioPorId(id);
-        System.out.println(usuarioCadastrado.getNome());
-
-        if (!usuarioCadastrado.getNome().equals(usuarioAtualizado.getNome())) {
-            usuarioCadastrado.setNome(usuarioAtualizado.getNome());
-            log.info("Nome de usuário alterado com sucesso!");
-            return usuarioRepository.save(usuarioCadastrado);
-        } else {
-            log.error("Inserir nome diferente do anterior!");
-            throw new BusinessException("Nome não pode ser igual ao anterior!");
-        }
-    }
-
-    public Usuario alterarCpfUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
-        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
-
-        if (!usuarioCadastrado.getCpf().equals(usuarioAtualizado.getCpf())) {
+        if (validarCpf(usuarioAtualizado.getCpf())){
             usuarioCadastrado.setCpf(usuarioAtualizado.getCpf());
-            log.info("CPF alterado com sucesso!");
-            return usuarioRepository.save(usuarioCadastrado);
         }
-        log.error("Inserir número de CPF diferente do anterior!");
-        throw new BusinessException("CPF não pode ser igual ao anterior!");
+
+        if (usuarioAtualizado.getSenha() != null && !passwordEncoder.matches(usuarioAtualizado.getSenha(), usuarioCadastrado.getSenha())) {
+            usuarioCadastrado.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
+            usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualizado.getSenha())); // A senha é a mesma, então também deve ser criptografada
+            log.info("Senha alterada com sucesso!");
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            CustomUserDetails usuarioLogado = (CustomUserDetails) authentication.getPrincipal();
+
+            if (!usuarioLogado.getUsername().equals(usuarioCadastrado.getEmail())) {
+                usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
+                usuarioRepository.save(usuarioCadastrado);
+            } else {
+                log.error("Acesso negado! Usuário não pode alterar o grupo do seu usuário");
+                throw new BusinessException("Acesso negado! Não é possível alterar o grupo do seu usuário");
+            }
+        }
+        return usuarioRepository.save(usuarioCadastrado);
     }
 
-    public Usuario alterarSenha(int id, Usuario usuarioAtualiado) throws BusinessException {
+    public Usuario alterarSenha(int id, Usuario usuarioAtualizado) throws BusinessException {
         Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
+        log.info("SENHA CADASTRADO" + String.valueOf(usuarioCadastrado));
 
-        if (!usuarioCadastrado.getSenha().equals(usuarioAtualiado.getSenha())) {
-            usuarioCadastrado.setSenha(passwordEncoder.encode(usuarioAtualiado.getSenha()));
-            usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualiado.getConfirmaSenha()));
-            if (usuarioAtualiado.getSenha().equals(usuarioAtualiado.getConfirmaSenha())) {
+        if (!passwordEncoder.matches(usuarioAtualizado.getSenha(), usuarioCadastrado.getSenha())) {
+            usuarioCadastrado.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
+            usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualizado.getConfirmaSenha()));
+            log.info("SENHA ALTERADO 1" + String.valueOf(usuarioAtualizado));
+
+            if (usuarioAtualizado.getSenha().equals(usuarioAtualizado.getConfirmaSenha())) {
                 log.info("Senha alterada com sucesso!");
                 return usuarioRepository.save(usuarioCadastrado);
             } else {
@@ -119,26 +138,6 @@ public class PoderAdminService {
         }
     }
 
-    public Usuario alterarGrupo(int id, Usuario usuarioAtualizado) throws BusinessException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
-
-        if (authentication != null && authentication.isAuthenticated()) {
-            CustomUserDetails usuarioLogado = (CustomUserDetails) authentication.getPrincipal();
-
-            if (usuarioLogado.getUsername().equals(usuarioCadastrado.getEmail())) {
-                log.error("Acesso negado! Usuário não pode alterar o grupo do seu usuário");
-                throw new BusinessException("Acesso negado! Não é possível alterar o grupo do seu usuário");
-            } else {
-                usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
-                log.info("Grupo atualizado com sucesso!");
-                usuarioRepository.save(usuarioCadastrado);
-            }
-        }
-
-        return usuarioCadastrado;
-    }
-
     public Usuario buscarUsuarioPorId(int id) throws BusinessException {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
 
@@ -148,6 +147,5 @@ public class PoderAdminService {
             throw new BusinessException("Usuário não encontrado com o ID: " + id);
         }
     }
-
 }
 

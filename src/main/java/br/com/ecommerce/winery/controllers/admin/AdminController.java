@@ -26,85 +26,37 @@ public class AdminController {
     @Autowired
     private MensagemRetorno mensagemRetorno;
 
-    @RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
-    public String getCadastroForm() {
-        return "cadastroUsuario";
+    @GetMapping("/listar")
+    public String listarTodosUsuarios(Model model, HttpServletResponse response) {
+        List<Usuario> usuarios = cadastroUsuarioService.listarTodosUsuarios();
+        model.addAttribute("usuarios", usuarios);
+        response.setStatus(HttpStatus.OK.value());
+        return "listaUsuario";
+    }
+    @GetMapping("/filtro")
+    public String filtroPorNome(@RequestParam("nome") String nome, Model model, HttpServletResponse response) {
+        nome = nome.toLowerCase(); // Converter o nome para letras minúsculas
+        List<Usuario> usuarios = this.usuarioRepository.findByNomeContains(nome);
+        model.addAttribute("usuarios", usuarios);
+        response.setStatus(HttpStatus.OK.value());
+        return "listaUsuario";
     }
     @PostMapping("/cadastrar")
-    public String cadastrarUsuario(@ModelAttribute Usuario usuario, Model model, HttpServletResponse response) {
+    public ResponseEntity<String> cadastrarUsuario(@ModelAttribute Usuario usuario, HttpServletResponse response) {
         try {
             Usuario novoUsuario = cadastroUsuarioService.cadastrarUsuario(usuario);
-            mensagemRetorno.adicionarMensagem(model, "sucesso", "Usuário cadastrado com sucesso!");
-            response.setStatus(HttpStatus.CREATED.value());
+            return ResponseEntity.ok("Usuário cadastrado com sucesso!");
         } catch (BusinessException e) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao cadastrar usuário: " + e.getMessage());
-        }
-        return "cadastroUsuario";
-    }
-
-    @PutMapping("/alterarNome")
-    public ResponseEntity<?> atualizarNomeDoUsuario(@RequestBody Usuario usuario) {
-        try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getNome() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarNomeUsuario(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.badRequest().body("Erro ao cadastrar usuário: " + e.getMessage());
         }
     }
-
-    @PutMapping("/alterarCpf")
-    public ResponseEntity<?> atualizarCpfDoUsuario(@RequestBody Usuario usuario) {
+    @PostMapping("/alterar")
+    public ResponseEntity<String> alterarDadosUsuario(@ModelAttribute("usuario") Usuario usuario) {
         try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getCpf() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarCpfUsuario(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-
+            Usuario usuarioAtualizado = cadastroUsuarioService.alterarUsuario( usuario);
+            return ResponseEntity.ok("Usuário alterado com sucesso!");
         } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/alterarSenha")
-    public ResponseEntity<?> atualizarSenhaDoUsuario(@RequestBody Usuario usuario) {
-        try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getSenha() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarSenha(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/alterarGrupo")
-    public ResponseEntity<?> atualizarGrupoDoUsuario(@RequestBody Usuario usuario) {
-        try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getGrupo() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarGrupo(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
     }
 
@@ -118,14 +70,6 @@ public class AdminController {
         } catch (BusinessException e) {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @GetMapping("/listar")
-    public String listarTodosUsuarios(Model model, HttpServletResponse response) {
-        List<Usuario> usuarios = cadastroUsuarioService.listarTodosUsuarios();
-        model.addAttribute("usuarios", usuarios);
-        response.setStatus(HttpStatus.OK.value());
-        return "listaUsuario";
     }
 
     @RequestMapping(value = "/alterarStatus", method = { RequestMethod.GET, RequestMethod.POST })
@@ -142,17 +86,4 @@ public class AdminController {
             return "listaUsuario";
         }
     }
-
-
-
-
-    @GetMapping("/filtro")
-    public String filtroPorNome(@RequestParam("nome") String nome, Model model, HttpServletResponse response) {
-        nome = nome.toLowerCase(); // Converter o nome para letras minúsculas
-        List<Usuario> usuarios = this.usuarioRepository.findByNomeContains(nome);
-        model.addAttribute("usuarios", usuarios);
-        response.setStatus(HttpStatus.OK.value());
-        return "listaUsuario";
-    }
-
 }
