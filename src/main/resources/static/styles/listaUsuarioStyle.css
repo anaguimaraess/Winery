@@ -151,11 +151,11 @@ nav ul li a:hover {
 /* CSS para a classe position-absolute */
 .position-absolute {
     position: absolute;
-    /* Personalize o posicionamento conforme necessário */
-    top: 0; /* Posição vertical a partir do topo */
-    left: 0; /* Posição horizontal a partir da esquerda */
-    /* Você pode ajustar o posicionamento de acordo com suas necessidades */
+    top: 50%; /* Coloca o elemento no centro vertical */
+    left: 50%; /* Coloca o elemento no centro horizontal */
+    transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
 }
+
 
 
 .botaoNovo{

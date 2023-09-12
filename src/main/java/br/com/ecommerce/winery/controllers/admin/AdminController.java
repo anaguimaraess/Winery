@@ -45,16 +45,16 @@ public class AdminController {
     public ResponseEntity<String> cadastrarUsuario(@ModelAttribute Usuario usuario, HttpServletResponse response) {
         try {
             Usuario novoUsuario = cadastroUsuarioService.cadastrarUsuario(usuario);
-            return ResponseEntity.ok("Usuário cadastrado com sucesso!");
+            return ResponseEntity.ok("Sucesso:Usuário cadastrado com sucesso!");
         } catch (BusinessException e) {
-            return ResponseEntity.badRequest().body("Erro ao cadastrar usuário: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
     }
     @PostMapping("/alterar")
     public ResponseEntity<String> alterarDadosUsuario(@ModelAttribute("usuario") Usuario usuario) {
         try {
             Usuario usuarioAtualizado = cadastroUsuarioService.alterarUsuario( usuario);
-            return ResponseEntity.ok("Usuário alterado com sucesso!");
+            return ResponseEntity.ok("Sucesso: Usuário alterado com sucesso! ");
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }

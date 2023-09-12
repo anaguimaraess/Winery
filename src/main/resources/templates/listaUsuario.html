@@ -56,7 +56,7 @@
         </thead>
         <tbody>
         <tr th:each="usuario : ${usuarios}">
-            <input type="hidden"  th:id="${usuario.id}"  th:attr="data-id=${usuario.id},data-nome=${usuario.nome},data-email=${usuario.email},data-cpf=${usuario.cpf}, data-grupo= ${usuario.grupo}, data-status=${usuario.status}">
+            <input type="hidden"  th:id="${usuario.id}"  th:attr="data-id=${usuario.id},data-nome=${usuario.nome},data-email=${usuario.email},data-cpf=${usuario.cpf}, data-grupo= ${usuario.grupo},  data-senha= ${usuario.senha}, data-confirmaSenha = ${usuario.confirmaSenha}, data-status=${usuario.status}">
             <td th:text="${usuario.nome}"></td>
             <td th:text="${usuario.email}"></td>
             <td th:text="${usuario.status}"></td>
@@ -147,22 +147,23 @@
                 <div class="input-group">
                     <!-- Use IDs correspondentes aos atributos do objeto "usuario" -->
                     <input type="hidden" id="idUsuarioAlterar" name="id" value="">
-                    <input type="hidden" id="cpfUsuarioAlterar" name="cpf" value="">
+                    <input type="hidden" id="emailAlterar" name="email" value="">
                     <input type="hidden" id="statusUsuarioAlterar" name="status" value="">
 
                     <div class="input-box">
                         <input id="nomeAlterar" type="text" name="nome" maxlength="200" placeholder="Digite o nome do usuario:" required>
                     </div>
                     <div class="input-box">
-                        <input id="cpfAlterar" type="text" name="cpf" placeholder="Digite o seu CPF:">
+                        <input id="cpfAlterar" type="text" name="cpf" placeholder="Digite o seu CPF:" required>
                     </div>
                     <!-- Adicione os campos restantes aqui com IDs correspondentes -->
                     <div class="input-box">
-                        <input id="senhaAlterar" type="password" name="senha" placeholder="Digite a senha:">
+                        <input id="senhaAlterar" type="password" name="senha" placeholder="Digite a senha:" >
                     </div>
                     <div class="input-box">
-                        <input id="confirmaSenhaAlterar" type="password" name="confirmaSenha" placeholder="Digite a senha novamente:" required>
+                        <input id="confirmaSenhaAlterar" type="password" name="confirmaSenha" placeholder="Digite a senha novamente:" >
                     </div>
+
 
                     <div class="input-box">
                         <label>Grupo:</label>
@@ -187,17 +188,22 @@
 
 
 <script>
+var senhaUsuario = "";
+var confirmaSenhaUsuario = "";
+
 function abrirModalAlterar(id) {
     var nome = document.getElementById(id).getAttribute('data-nome');
     var email = document.getElementById(id).getAttribute('data-email');
     var cpf = document.getElementById(id).getAttribute('data-cpf');
     var grupo = document.getElementById(id).getAttribute('data-grupo');
     var status = document.getElementById(id).getAttribute('data-status');
+    senhaUsuario = document.getElementById(id).getAttribute('data-senha');
+    confirmaSenhaUsuario = document.getElementById(id).getAttribute('data-confirmaSenha');
 
     $('#nomeAlterar').val(nome);
     $('#emailAlterar').val(email);
     $('#grupoAlterar').val(grupo);
-    $('#cpfUsuarioAlterar').val(cpf);
+    $('#cpfAlterar').val(cpf);
     $('#statusUsuarioAlterar').val(status);
 
     $('#idUsuarioAlterar').val(id);
@@ -240,13 +246,22 @@ $(document).ready(function () {
             success: function (data) {
                 $('#modalMessages').empty();
 
-                if (data.startsWith('sucesso:')) {
-                    var mensagemSucesso = data.replace('sucesso:', '');
+                if (data.startsWith('Sucesso:')) {
+                    var mensagemSucesso = data.replace('Sucesso:', '');
                     $('#modalMessages').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
 
                     $('#formCadastro')[0].reset();
-                } else if (data.startsWith('erro:')) {
-                    var mensagemErro = data.replace('erro:', '');
+
+                    setTimeout(function () {
+                        $('#myModalCadastroBootstrap').modal('hide');
+                    }, 3500);
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3500);
+
+                } else if (data.startsWith('Erro:')) {
+                    var mensagemErro = data.replace('Erro:', '');
                     $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
                 }
             },
@@ -264,56 +279,68 @@ $(document).ready(function () {
     });
 });
 
-
-
-function alterarUsuario() {
-    var id = $('#idUsuarioAlterar').val();
-    var nome = $('#nomeAlterar').val();
-    var cpf = $('#cpfAlterar').val(); // Alterei o ID aqui para pegar o CPF corretamente
-    var senha = $('#senhaAlterar').val();
-    var confirmaSenha = $('#confirmaSenhaAlterar').val();
-    var grupo = $('#grupoAlterar').val();
-    var status = $('#statusUsuarioAlterar').val();
-
-    var dadosUsuario = {
-        id: id,
-        nome: nome,
-        cpf: cpf, // Usei o ID correto aqui
-        senha: senha,
-        confirmaSenha: confirmaSenha,
-        grupo: grupo,
-    };
-
-    $.ajax({
-        type: 'POST',
-        url: '/usuarios/alterar', // Use a URL correspondente à sua controller
-        data: dadosUsuario,
-        success: function (data) {
-            $('#modalMessagesAlterar').empty();
-
-            if (data.startsWith('sucesso:')) {
-                var mensagemSucesso = data.replace('sucesso:', '');
-                $('#modalMessagesAlterar').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
-                // Limpar os campos do formulário ou fazer qualquer outra ação necessária
-                $('#nomeAlterar').val('');
-                $('#cpfAlterar').val('');
-                $('#senhaAlterar').val('');
-                $('#confirmaSenhaAlterar').val('');
-                $('#grupoAlterar').val('');
-            } else if (data.startsWith('erro:')) {
-                var mensagemErro = data.replace('erro:', '');
-                $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
-            }
-        },
-        error: function (xhr) {
-            $('#modalMessagesAlterar').empty();
-
-            var mensagemErro = xhr.responseText;
-            $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
-        },
+$(document).ready(function () {
+    $('#modalAlterar').on('show.bs.modal', function () {
+        $('#modalMessagesAlterar').empty(); // Limpa as mensagens quando o modal é aberto
     });
-}
 
+    $('#formAlterar').on('submit', function (event) {
+        event.preventDefault();
+    var novaSenha = $('#senhaAlterar').val();
+    var novaConfirmaSenha = $('#confirmaSenhaAlterar').val();
+
+    var formData = $(this).serialize();
+
+    // Verifique se ambos os campos de senha estão vazios
+    if (novaSenha === '' && novaConfirmaSenha === '') {
+        // Se estiverem vazios, use as senhas existentes (senhaUsuario e confirmaSenhaUsuario)
+        formData += '&senha=' + senhaUsuario;
+        formData += '&confirmaSenha=' + confirmaSenhaUsuario;
+    }
+
+        var modal = $('#modalAlterar');
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/alterar',
+            data: formData,
+            success: function (data) {
+                $('#modalMessagesAlterar').empty();
+
+                if (data.startsWith('Sucesso:')) {
+                    var mensagemSucesso = data.replace('Sucesso:', '');
+                    $('#modalMessagesAlterar').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+
+                    $('#formAlterar')[0].reset();
+
+                    setTimeout(function () {
+                        $('#modalAlterar').modal('hide');
+                    }, 3500);
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3500);
+
+                } else if (data.startsWith('Erro:')) {
+                    var mensagemErro = data.replace('Erro:', '');
+                    $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                                    $('#formAlterar')[0].reset();
+
+                }
+            },
+            error: function (xhr) {
+                $('#modalMessagesAlterar').empty();
+
+                var mensagemErro = xhr.responseText;
+                $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+            }
+        });
+    });
+
+    $('#modalAlterar').on('hidden.bs.modal', function () {
+        $('#modalMessagesAlterar .alert').popover('hide');
+    });
+});
 
 </script>
 

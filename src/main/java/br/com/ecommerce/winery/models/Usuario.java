@@ -19,8 +19,9 @@ public class Usuario {
     @Id
     @GeneratedValue
     private int id;
+    @Column(nullable = false)
     private String nome;
-
+    @Column(nullable = false)
     @Pattern(regexp = "[0-9]{11}", message = "CPF deve conter apenas dígitos")
     private String cpf;
 

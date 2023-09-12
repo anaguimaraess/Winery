@@ -1,13 +1,13 @@
 package br.com.ecommerce.winery.services;
 
+import br.com.caelum.stella.validation.CPFValidator;
+import br.com.caelum.stella.validation.InvalidStateException;
 import br.com.ecommerce.winery.models.CustomUserDetails;
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
-import br.com.caelum.stella.validation.CPFValidator;
-import br.com.caelum.stella.validation.InvalidStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,17 +28,20 @@ public class PoderAdminService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private final CPFValidator cpfValidator = new CPFValidator();
+
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
         validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
         validarEmailUnico(usuario.getEmail());
         validarCpf(usuario.getCpf());
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        usuario.setConfirmaSenha(passwordEncoder.encode(usuario.getConfirmaSenha()));
+        String senhaCript = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaCript);
+        usuario.setConfirmaSenha(senhaCript);
         usuario.setStatus(Status.ATIVO);
 
         log.info("Usuário cadastrado com sucesso.");
         return usuarioRepository.save(usuario);
     }
+
     private boolean validarCpf(String cpf) throws BusinessException {
         try {
             cpfValidator.assertValid(cpf);
@@ -83,23 +86,26 @@ public class PoderAdminService {
         log.error("Usuário não encontrado!");
         throw new BusinessException("Usuário não encontrado!");
     }
+
     public Usuario alterarUsuario(Usuario usuarioAtualizado) throws BusinessException {
         Usuario usuarioCadastrado = usuarioRepository.findById(usuarioAtualizado.getId()).orElse(null);
-        log.info("Usuário cadastrado: " + String.valueOf(usuarioCadastrado));
-        log.info("Usuário atualizado: " + String.valueOf(usuarioAtualizado));
 
         usuarioCadastrado.setNome(usuarioAtualizado.getNome());
 
-        if (validarCpf(usuarioAtualizado.getCpf())){
+        if (validarCpf(usuarioAtualizado.getCpf())) {
             usuarioCadastrado.setCpf(usuarioAtualizado.getCpf());
         }
 
-        if (usuarioAtualizado.getSenha() != null && !passwordEncoder.matches(usuarioAtualizado.getSenha(), usuarioCadastrado.getSenha())) {
-            usuarioCadastrado.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
-            usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualizado.getSenha())); // A senha é a mesma, então também deve ser criptografada
+        if (passwordEncoder.matches(usuarioAtualizado.getSenha(), usuarioCadastrado.getSenha())) {
+            log.info("Senha não alterada.");
+        } else if (usuarioAtualizado.getSenha().equals(usuarioAtualizado.getConfirmaSenha())) {
+            String encript = passwordEncoder.encode(usuarioAtualizado.getSenha());
+            usuarioCadastrado.setSenha(encript);
+            usuarioCadastrado.setConfirmaSenha(encript);
             log.info("Senha alterada com sucesso!");
+        } else {
+            throw new BusinessException("As senhas não coincidem, tente novamente!");
         }
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
@@ -114,28 +120,6 @@ public class PoderAdminService {
             }
         }
         return usuarioRepository.save(usuarioCadastrado);
-    }
-
-    public Usuario alterarSenha(int id, Usuario usuarioAtualizado) throws BusinessException {
-        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
-        log.info("SENHA CADASTRADO" + String.valueOf(usuarioCadastrado));
-
-        if (!passwordEncoder.matches(usuarioAtualizado.getSenha(), usuarioCadastrado.getSenha())) {
-            usuarioCadastrado.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
-            usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualizado.getConfirmaSenha()));
-            log.info("SENHA ALTERADO 1" + String.valueOf(usuarioAtualizado));
-
-            if (usuarioAtualizado.getSenha().equals(usuarioAtualizado.getConfirmaSenha())) {
-                log.info("Senha alterada com sucesso!");
-                return usuarioRepository.save(usuarioCadastrado);
-            } else {
-                log.error("Senhas não são iguais!");
-                throw new BusinessException("As senhas não são iguais!");
-            }
-        } else {
-            log.error("Não foi possível alterar, a senha não pode ser igual a anterior!");
-            throw new BusinessException("A senha não pode ser igual a anterior!");
-        }
     }
 
     public Usuario buscarUsuarioPorId(int id) throws BusinessException {
