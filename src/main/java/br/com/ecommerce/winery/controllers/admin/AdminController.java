@@ -214,13 +214,15 @@ public class AdminController {
 
     @PostMapping("/cadastrarProdutos")
     String cadastrarProdutosComImagens(@ModelAttribute("produto") Produto produto, @RequestParam("imagem") MultipartFile[] imagens,
-                                       @RequestParam("imagemPrincipal") String imagemPrincipal, Model model, HttpServletResponse response) {
+                                       @RequestParam("imagemPrincipal") int imagemPrincipalIndex,
+                                        Model model, HttpServletResponse response) {
         try {
 
             Produto produtoCadastrado = cadastroProdutoService.cadastrarProdutos(produto);
 
-            for (MultipartFile imagem : imagens) {
-                cadastroProdutoService.salvarImagens(imagem, produtoCadastrado);
+            for (int i = 0; i < imagens.length; i++) {
+                boolean isPrincipal = (i == imagemPrincipalIndex);
+                cadastroProdutoService.salvarImagens(imagens[i], produtoCadastrado, isPrincipal);
             }
             mensagemRetorno.adicionarMensagem(model, "sucesso", "Produto cadastrado com sucesso!");
             response.setStatus(HttpStatus.CREATED.value());

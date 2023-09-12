@@ -221,7 +221,7 @@ public class PoderAdminService {
         return produtoRepository.save(produto);
     }
 
-    public void salvarImagens(MultipartFile imagem, Produto produto) throws BusinessException {
+    public void salvarImagens(MultipartFile imagem, Produto produto, boolean isPrincipal) throws BusinessException {
 
         if (imagem != null && !imagem.isEmpty()) {
             String nomeImagem = imagem.getOriginalFilename();
@@ -237,6 +237,7 @@ public class PoderAdminService {
             Imagem novaImagem = new Imagem();
             novaImagem.setUrl(url);
             novaImagem.setProduto(produto);
+            novaImagem.setImagemPrincipal(isPrincipal);
             imagemRepository.save(novaImagem);
             log.info("Imagem cadastrada com sucesso!");
         } else {
