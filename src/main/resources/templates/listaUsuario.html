@@ -4,45 +4,345 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/styles/listaUsuarioStyle.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <!-- Inclua as folhas de estilo e o JavaScript do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Lista Usuario</title>
 </head>
 <body>
-<img th:src="@{/static/imagens/10.png}" alt="">
 <div class="containerHeader">
     <header>
         <nav>
             <ul>
-                <li><a href="#">Cadastrar produto</a></li>
-                <li><a th:href="@{/admin/cadastrar}" >Cadastrar usuário</a></li>
-                <li><a th:href="@{/admin/listar}" >Listar Usuários</a></li>
+                <li><a href="#">Produto</a></li>
+                <li><a href="#">Usuário</a></li>
             </ul>
         </nav>
-        <form th:action="@{/admin/filtro}" method="get">
-            <div class="search-bar">
-                <input type="text" placeholder="Pesquisar..." name="nome">
-                <button type="submit" class="buttonSearch">Buscar</button>
-            </div>
-        </form>
+        <div class="search-bar">
+            <button class="buttonSearch">SAIR</button>
+        </div>
     </header>
 </div>
+<div class="card">
+    <div class="card-header">
+        <h1>Lista de Usuarios</h1>
+    </div>
+    <div class="div-funcoes">
+        <button class="botaoNovo" data-toggle="modal" data-target="#myModalCadastroBootstrap">Cadastrar Novo Usuario</button>
 
-<div class="user-list">
-    <div class="user-item" th:each="usuario : ${usuarios}">
-        <h3 th:text="'Nome: ' + ${usuario.nome}"></h3>
-        <p th:text="'Email: ' + ${usuario.email}"></p>
-        <p th:text="'Status: ' + ${usuario.status}"></p>
-        <div class="user-item-buttons">
-            <button class="user-item-button-alterar">Alterar</button>
-            <form th:action="@{/admin/alterarStatus}" th:method="post">
-                <input type="hidden" name="id" th:value="${usuario.id}" />
-                <input type="hidden" name="action" th:if="${usuario.status == 'ATIVO'}" th:value="inativar" />
-                <input type="hidden" name="action" th:if="${usuario.status == 'INATIVO'}" th:value="ativar" />
-                <button class="user-item-button-alterar-status" data-id="${usuario.id}" onclick="return confirm('Tem certeza de que deseja alterar o status?')">
-                    Alterar Status
-                </button>
+        <form th:action="@{/admin/filtro}" method="get">
+            <div class="div-funcoes2">
+                <form th:action="@{/admin/filtro}" method="get">
+                    <input type="text" class="input-buscar" placeholder="Digite sua pesquisa" name="nome">
+                    <button type="submit" class="lupa-button"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+
+        </form>
+
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="th">Nome</th>
+            <th class="th">E-mail</th>
+            <th class="th">Status</th>
+            <th class="th">Grupo</th>
+            <th class="th">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <input type="hidden"  th:id="${usuario.id}"  th:attr="data-id=${usuario.id},data-nome=${usuario.nome},data-email=${usuario.email},data-cpf=${usuario.cpf}, data-grupo= ${usuario.grupo},  data-senha= ${usuario.senha}, data-confirmaSenha = ${usuario.confirmaSenha}, data-status=${usuario.status}">
+            <td th:text="${usuario.nome}"></td>
+            <td th:text="${usuario.email}"></td>
+            <td th:text="${usuario.status}"></td>
+            <td th:text="${usuario.grupo}"></td>
+            <td class="botoes-div">
+                <button class="botoes" th:attr="data-usuario-id=${usuario.id}" th:onclick="'abrirModalAlterar(\'' + ${usuario.id} + '\')'">Alterar</button>
+               <form th:action="@{/admin/alterarStatus}" th:method="post">
+                    <input type="hidden" name="id" th:value="${usuario.id}" />
+                    <input type="hidden" name="action" th:if="${usuario.status == 'ATIVO'}" th:value="inativar" />
+                    <input type="hidden" name="action" th:if="${usuario.status == 'INATIVO'}" th:value="ativar" />
+                    <button class="botoes" data-id="${usuario.id}" onclick="return confirm('Tem certeza de que deseja alterar o status?')">
+                        Alterar Status
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+        <tr>
+    </table>
+</div>
+
+<div class="modal" id="myModalCadastroBootstrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="container">
+        <div id="modalMessages" class="position-absolute"></div>
+        <div class="form">
+            <form th:action="@{/admin/cadastrar}" method="post" th:object="${usuario}" id="formCadastro">
+                <div class="form-header">
+                    <div class="title">
+                        <h1 class="tituloForm">Cadastro dos Usuarios</h1>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-box">
+                            <input id="nomeCadastro" type="text" name="nome" maxlength="200" placeholder="Digite o nome do usuario:" required>
+                        </div>
+
+                        <div class="input-box">
+                            <input id="cpfCadastro" type="text" name="cpf" maxlength="14" placeholder="Digite o CPF:" required>
+                        </div>
+
+                        <div class="input-box">
+                            <input id="emailCadastro" type="text" name="email" placeholder="Digite o e-mail:" required>
+                        </div>
+
+                        <div class="input-box">
+                            <input id="senhaCadastro" type="password" name="senha" placeholder="Digite a senha:" required>
+                        </div>
+
+                        <div class="input-box">
+                            <input id="confirmaSenhaCadastro" type="password" name="confirmaSenha" placeholder="Digite a senha novamente:" required>
+                        </div>
+
+                        <div class="input-box">
+                            <label>Grupo:</label>
+                            <select class="selectGrupo" id="grupoCadastro" name="grupo" required>
+                                <option value="ADMIN" class="optionGrupo">Administrador</option>
+                                <option value="ESTOQUISTA" class="optionGrupo">Estoquista</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="cadastrar-button">
+                    <button type="submit"  data-dismiss-modal="false">Cadastrar</button>
+                </div>
+                <div class="cancelar-button">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
+<!-- Modal Alterar USUARIO -->
+<div class="modal" id="modalAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="container">
+        <div id="modalMessagesAlterar" class="position-absolute"></div>
+        <div class="form">
+            <form th:action="@{/admin/alterar}" method="post" th:object="${usuario}" id="formAlterar">
+
+                <div class="form-header">
+                    <div class="title">
+                        <h1 class="tituloForm">Alterar Cadastro do Usuario</h1>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <!-- Use IDs correspondentes aos atributos do objeto "usuario" -->
+                    <input type="hidden" id="idUsuarioAlterar" name="id" value="">
+                    <input type="hidden" id="emailAlterar" name="email" value="">
+                    <input type="hidden" id="statusUsuarioAlterar" name="status" value="">
+
+                    <div class="input-box">
+                        <input id="nomeAlterar" type="text" name="nome" maxlength="200" placeholder="Digite o nome do usuario:" required>
+                    </div>
+                    <div class="input-box">
+                        <input id="cpfAlterar" type="text" name="cpf" placeholder="Digite o seu CPF:" required>
+                    </div>
+                    <!-- Adicione os campos restantes aqui com IDs correspondentes -->
+                    <div class="input-box">
+                        <input id="senhaAlterar" type="password" name="senha" placeholder="Digite a senha:" >
+                    </div>
+                    <div class="input-box">
+                        <input id="confirmaSenhaAlterar" type="password" name="confirmaSenha" placeholder="Digite a senha novamente:" >
+                    </div>
+
+
+                    <div class="input-box">
+                        <label>Grupo:</label>
+                        <select class="selectGrupo" id="grupoAlterar" name="grupo" required>
+                            <option value="ADMIN" class="optionGrupo">Administrador</option>
+                            <option value="ESTOQUISTA" class="optionGrupo">Estoquista</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cadastrar-button">
+                    <button type="submit" data-dismiss-modal="false" onclick="alterarUsuario()">Alterar</button>
+                </div>
+                <div class="cancelar-button">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="fecharModalAlterar()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+var senhaUsuario = "";
+var confirmaSenhaUsuario = "";
+
+function abrirModalAlterar(id) {
+    var nome = document.getElementById(id).getAttribute('data-nome');
+    var email = document.getElementById(id).getAttribute('data-email');
+    var cpf = document.getElementById(id).getAttribute('data-cpf');
+    var grupo = document.getElementById(id).getAttribute('data-grupo');
+    var status = document.getElementById(id).getAttribute('data-status');
+    senhaUsuario = document.getElementById(id).getAttribute('data-senha');
+    confirmaSenhaUsuario = document.getElementById(id).getAttribute('data-confirmaSenha');
+
+    $('#nomeAlterar').val(nome);
+    $('#emailAlterar').val(email);
+    $('#grupoAlterar').val(grupo);
+    $('#cpfAlterar').val(cpf);
+    $('#statusUsuarioAlterar').val(status);
+
+    $('#idUsuarioAlterar').val(id);
+
+    // Abra o modal de alteração
+    $('#modalAlterar').modal('show');
+}
+
+
+function abrirModalCadastro() {
+    $('#myModalCadastroBootstrap').modal('show');
+}
+
+function fecharModal() {
+    $('#myModalCadastroBootstrap').modal('hide');
+}
+
+
+function fecharModalAlterar() {
+    $('#modalAlterar').modal('hide');
+}
+
+
+    // Funcionamento do modal de cadastro
+$(document).ready(function () {
+    $('#myModalCadastroBootstrap').on('show.bs.modal', function () {
+        $('#modalMessages').empty(); // Limpa as mensagens quando o modal é aberto
+    });
+
+    $('#formCadastro').on('submit', function (event) {
+        event.preventDefault();
+
+        var formData = $(this).serialize();
+        var modal = $('#myModalCadastroBootstrap');
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/cadastrar',
+            data: formData,
+            success: function (data) {
+                $('#modalMessages').empty();
+
+                if (data.startsWith('Sucesso:')) {
+                    var mensagemSucesso = data.replace('Sucesso:', '');
+                    $('#modalMessages').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+
+                    $('#formCadastro')[0].reset();
+
+                    setTimeout(function () {
+                        $('#myModalCadastroBootstrap').modal('hide');
+                    }, 3500);
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3500);
+
+                } else if (data.startsWith('Erro:')) {
+                    var mensagemErro = data.replace('Erro:', '');
+                    $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                }
+            },
+            error: function (xhr) {
+                $('#modalMessages').empty();
+
+                var mensagemErro = xhr.responseText;
+                $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+            }
+        });
+    });
+
+    $('#myModalCadastroBootstrap').on('hidden.bs.modal', function () {
+        $('#modalMessages .alert').popover('hide');
+    });
+});
+
+$(document).ready(function () {
+    $('#modalAlterar').on('show.bs.modal', function () {
+        $('#modalMessagesAlterar').empty(); // Limpa as mensagens quando o modal é aberto
+    });
+
+console.log("oi:" +senhaUsuario);
+console.log("oi:" +confirmaSenhaUsuario);
+
+    $('#formAlterar').on('submit', function (event) {
+        event.preventDefault();
+        var novaSenha = $('#senhaAlterar').val();
+        var novaConfirmaSenha = $('#confirmaSenhaAlterar').val();
+
+        var formData = $(this).serialize();
+
+        // Verifique se ambos os campos de senha estão vazios
+        if (novaSenha === '' && novaConfirmaSenha === '') {
+            // Se estiverem vazios, use as senhas existentes (senhaUsuario e confirmaSenhaUsuario)
+            formData = formData.replace('senhaAlterar=&', 'senha=' + senhaUsuario + '&');
+            formData = formData.replace('confirmaSenhaAlterar=&', 'confirmaSenha=' + confirmaSenhaUsuario + '&');
+        }
+
+        var modal = $('#modalAlterar');
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/alterar',
+            data: formData,
+            success: function (data) {
+                $('#modalMessagesAlterar').empty();
+
+                if (data.startsWith('Sucesso:')) {
+                    var mensagemSucesso = data.replace('Sucesso:', '');
+                    $('#modalMessagesAlterar').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+
+                    $('#formAlterar')[0].reset();
+
+                    setTimeout(function () {
+                        $('#modalAlterar').modal('hide');
+                    }, 3500);
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3500);
+
+                } else if (data.startsWith('Erro:')) {
+                    var mensagemErro = data.replace('Erro:', '');
+                    $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                                    $('#formAlterar')[0].reset();
+
+                }
+            },
+            error: function (xhr) {
+                $('#modalMessagesAlterar').empty();
+
+                var mensagemErro = xhr.responseText;
+                $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+            }
+        });
+    });
+
+    $('#modalAlterar').on('hidden.bs.modal', function () {
+        $('#modalMessagesAlterar .alert').popover('hide');
+    });
+});
+
+</script>
+
 </body>
 </html>

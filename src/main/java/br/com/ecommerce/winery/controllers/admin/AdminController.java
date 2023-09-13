@@ -8,6 +8,9 @@ import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import br.com.ecommerce.winery.services.PoderAdminService;
 import br.com.ecommerce.winery.utils.MensagemRetorno;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,107 +35,41 @@ public class AdminController {
     @Autowired
     private MensagemRetorno mensagemRetorno;
 
-    @RequestMapping(value = "/cadastrar", method = RequestMethod.GET)
-    public String getCadastroForm() {
-        return "cadastroUsuario";
-    }
-
-    @PostMapping("/cadastrar")
-    public String cadastrarUsuario(@ModelAttribute Usuario usuario, Model model, HttpServletResponse response) {
-        try {
-            Usuario novoUsuario = cadastroUsuarioService.cadastrarUsuario(usuario);
-            mensagemRetorno.adicionarMensagem(model, "sucesso", "Usuário cadastrado com sucesso!");
-            response.setStatus(HttpStatus.CREATED.value());
-        } catch (BusinessException e) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao cadastrar usuário: " + e.getMessage());
-        }
-        return "cadastroUsuario";
-    }
-
-    @PutMapping("/alterarNome")
-    public ResponseEntity<?> atualizarNomeDoUsuario(@RequestBody Usuario usuario) {
-        try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getNome() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarNomeUsuario(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/alterarCpf")
-    public ResponseEntity<?> atualizarCpfDoUsuario(@RequestBody Usuario usuario) {
-        try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getCpf() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarCpfUsuario(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/alterarSenha")
-    public ResponseEntity<?> atualizarSenhaDoUsuario(@RequestBody Usuario usuario) {
-        try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getSenha() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarSenha(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    @PutMapping("/alterarGrupo")
-    public ResponseEntity<?> atualizarGrupoDoUsuario(@RequestBody Usuario usuario) {
-        try {
-            int usuarioId = usuario.getId();
-            Usuario usuarioAtualizado = cadastroUsuarioService.buscarUsuarioPorId(usuarioId);
-
-            if (usuario.getGrupo() != null) {
-                usuarioAtualizado = cadastroUsuarioService.alterarGrupo(usuario.getId(), usuario);
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
-        } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/listarUsuarioPorId")
-    public ResponseEntity<Usuario> listarPorId(@RequestBody Map<String, Integer> requestBody) {
-        int id = requestBody.get("id");
-
-        try {
-            Usuario usuario = cadastroUsuarioService.buscarUsuarioPorId(id);
-            return ResponseEntity.status(HttpStatus.OK).body(usuario);
-        } catch (BusinessException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @GetMapping("/listar")
     public String listarTodosUsuarios(Model model, HttpServletResponse response) {
         List<Usuario> usuarios = cadastroUsuarioService.listarTodosUsuarios();
         model.addAttribute("usuarios", usuarios);
         response.setStatus(HttpStatus.OK.value());
         return "listaUsuario";
+    }
+
+    @GetMapping("/filtro")
+    public String filtroPorNome(@RequestParam("nome") String nome, Model model, HttpServletResponse response) {
+        nome = nome.toLowerCase(); // Converter o nome para letras minúsculas
+        List<Usuario> usuarios = this.usuarioRepository.findByNomeContains(nome);
+        model.addAttribute("usuarios", usuarios);
+        response.setStatus(HttpStatus.OK.value());
+        return "listaUsuario";
+    }
+
+    @PostMapping("/cadastrar")
+    public ResponseEntity<String> cadastrarUsuario(@ModelAttribute Usuario usuario, HttpServletResponse response) {
+        try {
+            Usuario novoUsuario = cadastroUsuarioService.cadastrarUsuario(usuario);
+            return ResponseEntity.ok("Sucesso:Usuário cadastrado com sucesso!");
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
+        }
+    }
+
+    @PostMapping("/alterar")
+    public ResponseEntity<String> alterarDadosUsuario(@ModelAttribute("usuario") Usuario usuario) {
+        try {
+            Usuario usuarioAtualizado = cadastroUsuarioService.alterarUsuario(usuario);
+            return ResponseEntity.ok("Sucesso: Usuário alterado com sucesso! ");
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/alterarStatus", method = {RequestMethod.GET, RequestMethod.POST})
@@ -151,64 +88,83 @@ public class AdminController {
     }
 
 
-    @GetMapping("/filtro")
-    public String filtroPorNome(@RequestParam("nome") String nome, Model model, HttpServletResponse response) {
-        nome = nome.toLowerCase(); // Converter o nome para letras minúsculas
-        List<Usuario> usuarios = this.usuarioRepository.findByNomeContains(nome);
-        model.addAttribute("usuarios", usuarios);
+    //   ---------------> CONTROLLER DE PRODUTO <------------------
+
+
+    @GetMapping("/listarProdutos")
+    public String listarTodosOsProdutos(Model model, @RequestParam(defaultValue = "0") int page, HttpServletResponse response) throws BusinessException {
+        Pageable pageable = PageRequest.of(page, 10); // 10 produtos por página
+        Page<Produto> produtosPage = cadastroProdutoService.listarTodosProdutosDecrescente(pageable);
+        model.addAttribute("produtos", produtosPage); // Adicione a página ao modelo, não apenas a lista
         response.setStatus(HttpStatus.OK.value());
-        return "listaUsuario";
+        return "listaProduto";
+    }
+
+    @GetMapping("/listarUsuarioPorId")
+    public ResponseEntity<Usuario> listarPorId(@RequestBody Map<String, Integer> requestBody) {
+        int id = requestBody.get("id");
+
+        try {
+            Usuario usuario = cadastroUsuarioService.buscarUsuarioPorId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(usuario);
+        } catch (BusinessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/cadastrarProdutos")
-    public ResponseEntity<?> cadastrarProdutos(@RequestBody Produto produto) {
+    public ResponseEntity<String> cadastrarProdutos(@ModelAttribute Produto produto, HttpServletResponse response) {
         try {
             Produto novoProduto = cadastroProdutoService.cadastrarProdutos(produto);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Produto cadastrado com sucesso!");
+            return ResponseEntity.ok("Sucesso:Produto cadastrado com sucesso!");
         } catch (BusinessException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar produto!");
+            return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
     }
-
 
     @GetMapping("/filtroNomeProduto")
     public String filtroNomeDoProduto(@RequestParam("nomeProduto") String nomeProduto, Model model, HttpServletResponse response) {
-        nomeProduto = nomeProduto.toLowerCase();
-        List<Produto> produtos = this.produtoRepository.findByNomeProdutoContainingIgnoreCase(nomeProduto);
-        model.addAttribute("produtos", produtos);
+        Pageable pageable = PageRequest.of(0, 10); // Escolha a página atual e o tamanho da página como desejar
+        Page<Produto> produtosFiltrados = this.produtoRepository.findByNomeProdutoContainingIgnoreCaseOrderByIdProdutoDesc(nomeProduto, pageable);
+        model.addAttribute("produtos", produtosFiltrados);
         response.setStatus(HttpStatus.OK.value());
-        return "listaProdutos";
+        return "listaProduto";
     }
 
-
-    @GetMapping("/listarProdutosDecrescente")
-    public String listarTodosOsProdutosDecrescente(Model model) throws BusinessException {
-
-        List<Produto> produtos = cadastroProdutoService.listarTodosProdutosDecrescente();
-        model.addAttribute("produtos", produtos);
-        return "listaProdutosDecrescente";
-    }
-
-    @GetMapping("/listarProdutos")
-    public String listarTodosOsProdutos(Model model) throws BusinessException {
-
-        List<Produto> produtos = cadastroProdutoService.listarTodosProdutos();
-        model.addAttribute("produtos", produtos);
-        return "listaProdutos";
-    }
-
-    @RequestMapping(value = "/alterarStatusProduto", method = {RequestMethod.GET, RequestMethod.POST})
-    public String alterarStatusDoProduto(@RequestParam("idProduto") int idProduto, Model model, HttpServletResponse response) {
+    @RequestMapping(value = "/ativarProduto", method = {RequestMethod.GET, RequestMethod.POST})
+    public String ativarProduto(@RequestParam("idProduto") int idProduto,
+                                @RequestParam(name = "page", defaultValue = "0") int page,
+                                Model model,
+                                HttpServletResponse response) {
         try {
-            Produto produtoAlterado = cadastroProdutoService.alterarStatusDoProduto(idProduto);
-            List<Produto> produtos = cadastroProdutoService.listarTodosProdutosDecrescente();
+            Produto produtoAlterado = cadastroProdutoService.ativarProduto(idProduto);
+
             response.setStatus(HttpStatus.OK.value());
-            model.addAttribute("produtos", produtos);
-            return "redirect:/admin/listarProdutos";
+            return "redirect:/admin/listarProdutos?page=" + page; // Redireciona de volta para a página atual
         } catch (BusinessException e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
-            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao alterar status do produto: " + e.getMessage());
-            return "listaProdutosDecrescente";
+            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao ativar o produto: " + e.getMessage());
+            return "listaProduto";
         }
     }
+
+    @RequestMapping(value = "/inativarProduto", method = {RequestMethod.GET, RequestMethod.POST})
+    public String inativarProduto(@RequestParam("idProduto") int idProduto,
+                                  @RequestParam(name = "page", defaultValue = "0") int page,
+                                  Model model,
+                                  HttpServletResponse response) {
+        try {
+            Produto produtoAlterado = cadastroProdutoService.inativarProduto(idProduto);
+
+            response.setStatus(HttpStatus.OK.value());
+            return "redirect:/admin/listarProdutos?page=" + page; // Redireciona de volta para a página atual
+        } catch (BusinessException e) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao inativar o produto: " + e.getMessage());
+            return "listaProduto";
+        }
+    }
+
+
+
 }

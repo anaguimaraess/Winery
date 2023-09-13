@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/listaProdutoStyle.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    <!-- Inclua as folhas de estilo e o JavaScript do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Lista Produtos</title>
+</head>
+<body>
+<div class="containerHeader">
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Produto</a></li>
+                <li><a href="#">Usuário</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <button class="buttonSearch">SAIR</button>
+        </div>
+    </header>
+</div>
+<div class="card-listagem">
+    <div class="card-header">
+        <h1>Lista de Produtos</h1>
+    </div>
+    <div class="div-funcoes">
+        <button onclick="abrirModal()" class="botaoNovo">+ Novo</button>
+        <div class="div-funcoes2">
+            <form th:action="@{/admin/filtroNomeProduto}" method="get">
+                <input type="text" class="input-buscar" placeholder="Pesquisar ..." name="nomeProduto">
+                <button type="submit" class="lupa-button"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="th">Código do Produto</th>
+            <th class="th">Nome do Produto</th>
+            <th class="th">Quantidade em Estoque</th>
+            <th class="th">Valor</th>
+            <th class="th">Status</th>
+            <th class="th">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="produto : ${produtos.content}">
+            <input type="hidden"  th:id="${produto.idProduto}"  th:attr="data-id=${produto.idProduto},data-nome=${produto.nomeProduto},data-avaliacao=${produto.avaliacaoProduto},data-descricao=${produto.descricaoProduto}, data-preco= ${produto.precoProduto},  data-estoque= ${produto.qtdEstoque}, data-status=${produto.statusProduto}">
+
+            <td  th:text="${produto.idProduto}"></td>
+            <td th:text="${produto.nomeProduto}"></td>
+            <td th:text="${produto.qtdEstoque}"></td>
+            <td th:text="${produto.precoProduto}"></td>
+            <td th:text="${produto.statusProduto}"></td>
+            <td class="botoes-div">
+                <button class="botoes" th:attr="data-produto-id=${produto.idProduto}" th:onclick="'abrirModalAlterar(\'' + ${produto.idProduto} + '\')'">Alterar</button>
+
+                <!-- Ativar Produto -->
+                <form th:action="@{/admin/ativarProduto}" th:method="post" id="ativarProdutoForm">
+                    <input type="hidden" name="idProduto" th:value="${produto.idProduto}" />
+                    <input type="hidden" name="page" />
+                    <button class="botoes" data-id="${produto.idProduto}" onclick="alterarStatus('${produto.idProduto}', 'ativar')">Ativar</button>
+                </form>
+
+                <!-- Inativar Produto -->
+                <form th:action="@{/admin/inativarProduto}" th:method="post" id="inativarProdutoForm">
+                    <input type="hidden" name="idProduto" th:value="${produto.idProduto}" />
+                    <input type="hidden" name="page" />
+                    <button class="botoes" data-id="${produto.idProduto}" onclick="alterarStatus('${produto.idProduto}', 'inativar')">Inativar</button>
+                </form>
+
+
+                <button class="botoes">Exibir</button>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- ANA AQUI É O INICIO DO MUDAR AS PAGINAS -->
+    <nav>
+        <ul>
+            <!-- Link para a página anterior -->
+            <li th:if="${produtos.hasPrevious()}">
+                <a th:href="@{/admin/listarProdutos(page=${produtos.previousPageable().pageNumber})}" class="page-link">Anterior</a>
+            </li>
+
+            <!-- Links para páginas numéricas -->
+            <li th:each="i : ${#numbers.sequence(0, produtos.totalPages - 1)}">
+                <a th:href="@{/admin/listarProdutos(page=${i})}" class="page-link" th:text="${i + 1}"></a>
+            </li>
+
+            <!-- Link para a próxima página -->
+            <li th:if="${produtos.hasNext()}">
+                <a th:href="@{/admin/listarProdutos(page=${produtos.nextPageable().pageNumber})}" class="page-link">Próximo</a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- ANA AQUI É O FIM DO MUDAR AS PAGINAS -->
+</div>
+
+<!-- Modal CADASTRO PRODUTO -->
+<div class="modal" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="container">
+        <div class="form-image">
+            <input class="buttonFile" id="imagem" type="file" multiple>
+            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="preview">
+                    <!-- As imagens carregadas pelo JavaScript serão adicionadas aqui -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+
+                </button>
+            </div>
+        </div>
+        <div id="modalMessages" class="position-absolute"></div>
+        <div class="form">
+            <form th:action="@{/admin/cadastrarProdutos}" method="post" th:object="${produto}" id="formCadastroProduto">
+                <div class="form-header">
+                    <div class="title">
+                        <h1 class="tituloForm" >Cadastro do Produto</h1>
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <div class="input-box">
+                        <input id="" type="text" name="nomeProduto" maxlength="200" placeholder="Digite o nome do produto: " required>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="" name="precoProduto" oninput="formatarNumero(this)" placeholder="Digite o preço:" required>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" id="" name="qtdEstoque"  oninput="formatarNumeroInteiro(this)" placeholder="Digite a quantidade em estoque:" required>
+                    </div>
+                    <div class="input-box">
+                        <textarea class="textAreaDescricao" id="" name="descricaoProduto" rows="4" maxlength="2000" placeholder="Descrição Detalhada" required></textarea>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="number" id="valor" name="avaliacaoProduto" min="0" max="5" step="0.5" oninput="formatarNumero(this)" placeholder="Avaliação" >
+                    </div>
+                </div>
+
+
+
+                <div class="cadastrar-button">
+                    <button type="submit"  data-dismiss-modal="false" >Cadastrar</button>
+                </div>
+
+                <div class="cancelar-button">
+                    <button type="button" class="btn btn-secondary" onclick=fecharModal() data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fim MODAL CADASTRO -->
+
+<!-- Modal Alterar PRODUTO -->
+<div id="modalAlterar" class="modal">
+    <div class="container">
+        <div class="form-image">
+            <input class="buttonFile" id="imagem" type="file" multiple>
+            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="preview">
+                    <!-- As imagens carregadas pelo JavaScript serão adicionadas aqui -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+
+                </button>
+            </div>
+        </div>
+        <div class="form">
+            <form th:action="@{/admin/alterarProduto}" method="post" th:object="${usuario}" id="formAlterar">
+                <div class="form-header">
+                    <div class="title">
+                        <h1 class="tituloForm" >Alterar Cadastro do Produto</h1>
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <div class="input-box">
+                        <input id="" type="text" name="" maxlength="200" placeholder="Digite o nome do produto: " required>
+                    </div>
+
+
+                    <div class="input-box">
+                        <input type="text" id="" name="" oninput="formatarNumero(this)" placeholder="Digite o preço:" required>
+                    </div>
+
+
+
+                    <div class="input-box">
+                        <textarea class="textAreaDescricao" id="" name="" rows="4" maxlength="2000" placeholder="Descrição Detalhada" required></textarea>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="number" id="valor" name="valor" min="0" max="5" step="0.5" oninput="formatarNumero(this)" placeholder="Avaliação" >
+                    </div>
+                </div>
+
+
+
+                <div class="cadastrar-button">
+                    <button>Alterar</button>
+                </div>
+                <div class="cancelar-button">
+                    <button onclick="fecharModalAlterar()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Fim MODAL Alterar -->
+
+<script>
+    function formatarNumero(input) {
+            // Remove qualquer caractere que não seja número ou ponto decimal
+            input.value = input.value.replace(/[^0-9.]/g, '');
+
+            // Limita o valor ao intervalo de 0 a 5
+            if (input.value < 0) {
+                input.value = 0;
+            } else if (input.value > 5) {
+                input.value = 5;
+            }
+
+            // Formata o valor para ter uma casa decimal, se necessário
+            if (input.value.includes('.')) {
+                var parts = input.value.split('.');
+                if (parts[1].length > 1) {
+                    input.value = parseFloat(input.value).toFixed(1);
+                }
+            }
+        }
+    // Função para abrir o modal CADASTRO
+    function abrirModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "flex";
+    }
+
+    // Função para fechar o modal CADASTRO
+    function fecharModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+
+    // Função para abrir o modal ALTERAR
+    function abrirModalAlterar() {
+        var modal = document.getElementById("modalAlterar");
+        modal.style.display = "flex";
+    }
+
+    // Função para fechar o modal ALTERAR
+    function fecharModalAlterar() {
+        var modal = document.getElementById("modalAlterar");
+        modal.style.display = "none";
+    }
+    function formatarNumeroInteiro(input) {
+    // Remove qualquer caractere que não seja número
+    input.value = input.value.replace(/[^0-9]/g, '');
+}
+
+
+    function formatarNumero(input) {
+        // Remove qualquer caractere que não seja número ou ponto decimal
+        input.value = input.value.replace(/[^0-9.]/g, '');
+
+        // Divide a entrada em parte inteira e parte decimal
+        const partes = input.value.split('.');
+
+        // Limita a parte decimal a duas casas decimais
+        if (partes[1] && partes[1].length > 2) {
+            partes[1] = partes[1].slice(0, 2);
+        }
+
+        // Recria o valor formatado
+        input.value = partes.join('.');
+    }
+    function updateRadioInputs() {
+      var preview = document.getElementById('preview');
+      var radios = preview.querySelectorAll('.form-check-input');
+      var labels = preview.querySelectorAll('.form-check-label');
+      for (var i = 0; i < radios.length; i++) {
+        radios[i].id = 'exampleRadios' + i;
+        radios[i].value = i;
+        labels[i].htmlFor = 'exampleRadios' + i;
+      }
+    }
+
+    function removeImage(card, file) {
+      var input = document.getElementById('imagem');
+      var preview = document.getElementById('preview');
+
+      preview.removeChild(card);
+
+      // Cria um novo objeto de FormData
+      var dataTransfer = new DataTransfer();
+      for (var i = 0; i < input.files.length; i++) {
+        if (input.files[i] !== file) {
+          dataTransfer.items.add(input.files[i]);
+        }
+      }
+
+      // Atualiza o input com os arquivos restantes
+      input.files = dataTransfer.files;
+    }
+
+    function handleFile(file, i) {
+    console.log(file.name);
+    if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+        alert('Só são permitidos arquivos de imagem (jpg, jpeg, png).');
+        this.value = '';
+        return;
+    }
+
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = 'Imagem-produto';
+        img.className = 'carousel-item';
+
+        var cardBody = document.createElement('div');
+        cardBody.className = 'card-body d-flex flex-column';
+
+        var formCheck = document.createElement('div');
+        formCheck.className = 'form-check mt-auto';
+
+        var radioInput = document.createElement('input');
+        radioInput.className = 'form-check-input';
+        radioInput.type = 'radio';
+        radioInput.name = 'imgPrincipal';
+        radioInput.id = 'exampleRadios' + i;
+        radioInput.value = i;
+        var radioLabel = document.createElement('label');
+        radioLabel.className = 'form-check-label';
+        radioLabel.htmlFor = 'exampleRadios' + i;
+        radioLabel.textContent = 'Imagem principal';
+
+        formCheck.appendChild(radioInput);
+        formCheck.appendChild(radioLabel);
+        cardBody.appendChild(formCheck);
+
+        var closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.className = 'btn-close';
+        closeButton.setAttribute('aria-label', 'Close');
+
+        var card = document.createElement('div');
+        card.className = 'card p-2 m-1';
+        card.appendChild(closeButton);
+        card.appendChild(img);
+        card.appendChild(cardBody);
+
+        closeButton.addEventListener('click', function () {
+            removeImage(card, file);
+            updateRadioInputs();
+        });
+
+        preview.appendChild(card);
+    };
+
+    reader.readAsDataURL(file);
+}
+
+
+    document.body.addEventListener('change', function (event) {
+      if (event.target.id === 'imagem') {
+        var preview = document.getElementById('preview');
+        preview.innerHTML = '';
+
+
+        for (var i = 0; i < event.target.files.length; i++) {
+          handleFile(event.target.files[i], i);
+        }
+      }
+    });
+
+
+    document.getElementById('modalCadastroProd').addEventListener('submit', function (e) {
+      var radios = document.getElementsByName('imgPrincipal');
+      var formValid = false;
+
+      var i = 0;
+      while (!formValid && i < radios.length) {
+        if (radios[i].checked) formValid = true;
+        i++;
+      }
+
+      if (!formValid) {
+        alert("Por favor, selecione uma imagem principal.");
+        e.preventDefault();
+      }
+    });
+
+//alterar status do produto
+
+
+ function alterarStatus(idProduto, action) {
+        var page = 0;
+
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('page')) {
+            page = parseInt(urlParams.get('page'));
+        }
+
+        var confirmMessage = 'Tem certeza de que deseja ativar este produto?';
+        if (action === 'inativar') {
+            confirmMessage = 'Tem certeza de que deseja inativar este produto?';
+        }
+
+        if (confirm(confirmMessage)) {
+            // Faça uma chamada AJAX para ativar ou inativar o produto
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/admin/' + action + 'Produto', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Redireciona de volta para a página atual após o sucesso
+                    window.location.href = '/admin/listarProdutos?page=' + page;
+                } else {
+                    window.location.href = '/admin/listarProdutos?page=' + page;
+                }
+            };
+
+            // Envie os dados do produto
+            var data = 'idProduto=' + idProduto + '&page=' + page;
+            xhr.send(data);
+        }
+    }
+
+
+
+
+
+//-------------------------------->FUNCIONAMENTO DOS MODAIS<--------------------------------
+  // Funcionamento do modal de cadastro
+$(document).ready(function () {
+    $('#myModal').on('show.bs.modal', function () {
+        $('#modalMessages').empty(); // Limpa as mensagens quando o modal é aberto
+    });
+
+    $('#formCadastroProduto').on('submit', function (event) {
+        event.preventDefault();
+
+        var formData = $(this).serialize();
+        var modal = $('#myModal');
+
+        $.ajax({
+            type: 'POST',
+            url: '/admin/cadastrarProdutos',
+            data: formData,
+            success: function (data) {
+                $('#modalMessages').empty();
+
+                if (data.startsWith('Sucesso:')) {
+                    var mensagemSucesso = data.replace('Sucesso:', '');
+                    $('#modalMessages').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+
+                    $('#formCadastroProduto')[0].reset();
+
+                    setTimeout(function () {
+                        $('#myModal').modal('hide');
+                    }, 3500);
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3500);
+
+                } else if (data.startsWith('Erro:')) {
+                    var mensagemErro = data.replace('Erro:', '');
+                    $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                }
+            },
+            error: function (xhr) {
+                $('#modalMessages').empty();
+
+                var mensagemErro = xhr.responseText;
+                $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+            }
+        });
+    });
+
+    $('#myModal').on('hidden.bs.modal', function () {
+        $('#modalMessages .alert').popover('hide');
+    });
+});
+
+
+
+</script>
+
+</body>
+</html>

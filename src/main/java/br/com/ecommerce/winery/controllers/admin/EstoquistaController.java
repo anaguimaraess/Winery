@@ -25,14 +25,6 @@ public class EstoquistaController {
     @Autowired
     private ProdutoRepository produtoRepostory;
 
-    @GetMapping("/listarProdutosDecrescente")
-    public String listarTodosOsProdutosDecrescente(Model model) throws BusinessException {
-
-        List<Produto> produtos = cadastroProdutoService.listarTodosProdutosDecrescente();
-        model.addAttribute("produtos", produtos);
-        return "listaProdutosDecrescente";
-    }
-
     @GetMapping("/filtroNomeProduto")
     public String filtroNomeDoProduto(@RequestParam("nomeProduto") String nomeProduto, Model model, HttpServletResponse response) {
         nomeProduto = nomeProduto.toLowerCase();

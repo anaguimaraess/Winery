@@ -6,10 +6,10 @@ body{
     background-attachment: fixed;
 
 }
-.card {
+.card-listagem{
     border: 1px solid #ddd;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    max-width: 90%;
+    max-width: 1400px;
     border-radius: 14px;
     margin: 0 auto;
     margin-bottom: 30px;
@@ -36,8 +36,6 @@ body{
     color: #fff;
 }
 
-
-
 .botoes-div{
     display: flex;
     justify-content: space-between;
@@ -54,9 +52,8 @@ body{
     height: 30px;
     width: 90px;
     margin-bottom: 3px;
-    cursor: pointer;
+    cursor:pointer;
 }
-
 
 
 .table tr:nth-child(even) {
@@ -148,22 +145,12 @@ nav ul li a:hover {
     padding: 5px 10px;
     cursor: pointer;
 }
-/* CSS para a classe position-absolute */
-.position-absolute {
-    position: absolute;
-    top: 50%; /* Coloca o elemento no centro vertical */
-    left: 50%; /* Coloca o elemento no centro horizontal */
-    transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
-}
-
-
 
 .botaoNovo{
     border: none;
     color: white;
-    width: 200px;
-    height: 30px;
-    padding: 5px;
+    width: 100px;
+    height: 20px;
     background: linear-gradient(to bottom, #4F0599, #7A0707);
     cursor:pointer;
 }
@@ -187,27 +174,26 @@ nav ul li a:hover {
 }
 
 .container {
-    width: 80%;
-    height: 80%;
-    margin: auto;
+    width: 90%;
+    height: 90vh;
     display: flex;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.212);
 }
 
 .form-image {
-    width: 50%;
+    width: 50%; /* Mantém a largura igual à metade da largura do form */
+    height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 15px;
     background-color: #fde3a7d7;
     padding: 1rem;
 }
 
-.form-image img {
-    width: 31rem;
-}
-
 .form {
-    width: 50%;
+    width: 50%; /* Mantém a largura igual à metade da largura do form */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -219,6 +205,12 @@ nav ul li a:hover {
     background: linear-gradient(to bottom, #000000, #000000f0);
     padding: 3rem;
 }
+
+.form-image img {
+    width: 31rem;
+}
+
+
 
 .form-header {
     margin-bottom: 3rem;
@@ -237,7 +229,7 @@ nav ul li a:hover {
     background-color: red;
     color: white;
     padding: 0.62rem;
-    margin-top: 15px;
+    margin-top: 9px;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -267,7 +259,7 @@ nav ul li a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0;
 }
 
 .input-box {
@@ -279,7 +271,7 @@ nav ul li a:hover {
 
 .input-box input {
     margin: 0.6rem 0;
-    padding: 0.8rem 1.2rem;
+    padding: 0.2rem 1.2rem;
     border: none;
     border-radius: 10px;
     box-shadow: 1px 1px 6px #0000001c;
@@ -299,26 +291,6 @@ nav ul li a:hover {
     background-color: transparent;
     color: white;
     font-size: 0.8rem;
-}
-
-.selectGrupo{
-
-    margin: 0.6rem 0;
-    padding: 0.8rem 1.2rem;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 1px 1px 6px #0000001c;
-    border-bottom: 1px solid #ccc;
-    background-color: transparent;
-    color: white;
-    font-size: 0.8rem;
-
-}
-
-.optionGrupo{
-
-    background-color: black;
-    color: white;
 }
 
 
@@ -361,7 +333,6 @@ nav ul li a:hover {
 
 .cadastrar-button button {
     width: 100%;
-    margin-top: 2.5rem;
     border: none;
     background: linear-gradient(to bottom, #4F0599, #7A0707);
     color: white;
@@ -375,55 +346,14 @@ nav ul li a:hover {
 }
 
 
-@media screen and (max-width: 1330px) {
-    .form-image {
-        display: none;
-    }
-    .container {
-        width: 50%;
-        margin: auto;
-        height: 80%;
-
-    }
-    .form {
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 1064px) {
-    .container {
-        width: 90%;
-        margin: auto;
-        height: 80%;
-    }
-    .input-group {
-        flex-direction: column;
-        z-index: 5;
-        padding-right: 5rem;
-        max-height: 10rem;
-        overflow-y: scroll;
-        flex-wrap: nowrap;
-    }
-    .gender-inputs {
-        margin-top: 2rem;
-    }
-    .gender-group {
-        flex-direction: column;
-    }
-    .gender-title h6 {
-        margin: 0;
-    }
-    .gender-input {
-        margin-top: 0.5rem;
-    }
-}
 
 .modal{
         display: none;
-        position: relative;
-        top: 0;
+        position: fixed;
+        top: 5%;
         left: 0;
         width: 100%;
+        height: 90%;
         background-color: transparent;
         justify-content: center;
         align-items: center;
@@ -435,4 +365,40 @@ nav ul li a:hover {
     width: 300px;
     height: 300px;
 }
+
+.buttonFile{
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.carousel {
+    flex-direction: column; /* Torna o carrossel vertical */
+}
+
+.carousel-inner {
+    white-space: normal; /* Permite que o conteúdo flua normalmente em colunas */
+    max-height: 500px; /* Define uma altura máxima para o carrossel vertical */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+}
+
+.carousel-item {
+    display: block; /* Garante que cada item seja exibido como um bloco */
+    margin: 5px 0; /* Espaçamento entre as imagens */
+    max-width: 100%; /* Garante que as imagens não ultrapassem a largura do modal */
+}
+
+.card {
+    width: calc(50% - 20px); /* 50% da largura do pai, com um espaço de 20px entre as imagens */
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px;
+    box-sizing: border-box;
+  }
+  /* CSS para a classe position-absolute */
+  .position-absolute {
+      position: absolute;
+      top: 50%; /* Coloca o elemento no centro vertical */
+      left: 50%; /* Coloca o elemento no centro horizontal */
+      transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
+  }
 

@@ -1,12 +1,19 @@
 package br.com.ecommerce.winery.services;
 
 import br.com.ecommerce.winery.models.*;
+import br.com.caelum.stella.validation.CPFValidator;
+import br.com.caelum.stella.validation.InvalidStateException;
+import br.com.ecommerce.winery.models.CustomUserDetails;
+import br.com.ecommerce.winery.models.Status;
+import br.com.ecommerce.winery.models.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ImagemRepository;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,19 +35,34 @@ public class PoderAdminService {
     private ImagemRepository imagemRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private final CPFValidator cpfValidator = new CPFValidator();
 
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
-        validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
-        validarEmailUnico(usuario.getEmail());
 
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        usuario.setConfirmaSenha(passwordEncoder.encode(usuario.getConfirmaSenha()));
+        validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
+
+        String senha = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senha);
+        usuario.setConfirmaSenha(senha);
+        validarEmailUnico(usuario.getEmail());
+        validarCpf(usuario.getCpf());
         usuario.setStatus(Status.ATIVO);
 
         log.info("Usuário cadastrado com sucesso.");
         return usuarioRepository.save(usuario);
     }
 
+    private boolean validarCpf(String cpf) throws BusinessException {
+        try {
+            cpfValidator.assertValid(cpf);
+            System.out.println("CPF válido.");
+            return true;
+
+        } catch (InvalidStateException e) {
+            throw new BusinessException("CPF inválido.");
+        }
+    }
 
     public void validarSenhasIguais(String senha, String confirmacaoSenha) throws BusinessException {
         if (!Objects.equals(senha, confirmacaoSenha)) {
@@ -76,70 +98,45 @@ public class PoderAdminService {
         throw new BusinessException("Usuário não encontrado!");
     }
 
+    public Usuario alterarUsuario(Usuario usuarioAtualizado) throws BusinessException {
+        Usuario usuarioCadastrado = usuarioRepository.findById(usuarioAtualizado.getId()).orElse(null);
+        log.info("tem q ser igual " + usuarioAtualizado);
+        log.info("cadastrado: aaa" + usuarioCadastrado);
+        usuarioCadastrado.setNome(usuarioAtualizado.getNome());
 
-    public Usuario alterarNomeUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
-        Usuario usuarioCadastrado = buscarUsuarioPorId(id);
-        System.out.println(usuarioCadastrado.getNome());
-
-        if (!usuarioCadastrado.getNome().equals(usuarioAtualizado.getNome())) {
-            usuarioCadastrado.setNome(usuarioAtualizado.getNome());
-            log.info("Nome de usuário alterado com sucesso!");
-            return usuarioRepository.save(usuarioCadastrado);
-        } else {
-            log.error("Inserir nome diferente do anterior!");
-            throw new BusinessException("Nome não pode ser igual ao anterior!");
-        }
-    }
-
-    public Usuario alterarCpfUsuario(int id, Usuario usuarioAtualizado) throws BusinessException {
-        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
-
-        if (!usuarioCadastrado.getCpf().equals(usuarioAtualizado.getCpf())) {
+        if (validarCpf(usuarioAtualizado.getCpf())) {
             usuarioCadastrado.setCpf(usuarioAtualizado.getCpf());
-            log.info("CPF alterado com sucesso!");
-            return usuarioRepository.save(usuarioCadastrado);
         }
-        log.error("Inserir número de CPF diferente do anterior!");
-        throw new BusinessException("CPF não pode ser igual ao anterior!");
-    }
 
-    public Usuario alterarSenha(int id, Usuario usuarioAtualiado) throws BusinessException {
-        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
-
-        if (!usuarioCadastrado.getSenha().equals(usuarioAtualiado.getSenha())) {
-            usuarioCadastrado.setSenha(passwordEncoder.encode(usuarioAtualiado.getSenha()));
-            usuarioCadastrado.setConfirmaSenha(passwordEncoder.encode(usuarioAtualiado.getConfirmaSenha()));
-            if (usuarioAtualiado.getSenha().equals(usuarioAtualiado.getConfirmaSenha())) {
-                log.info("Senha alterada com sucesso!");
-                return usuarioRepository.save(usuarioCadastrado);
-            } else {
-                log.error("Senhas não são iguais!");
-                throw new BusinessException("As senhas não são iguais!");
-            }
+        validarSenhasIguais(usuarioAtualizado.getSenha(), usuarioAtualizado.getConfirmaSenha());
+        if (usuarioAtualizado.getSenha().isBlank() || usuarioAtualizado.getSenha().isEmpty()) {
+            usuarioAtualizado.setSenha(usuarioCadastrado.getSenha());
+            usuarioAtualizado.setConfirmaSenha(usuarioCadastrado.getConfirmaSenha());
         } else {
-            log.error("Não foi possível alterar, a senha não pode ser igual a anterior!");
-            throw new BusinessException("A senha não pode ser igual a anterior!");
-        }
-    }
 
-    public Usuario alterarGrupo(int id, Usuario usuarioAtualizado) throws BusinessException {
+            String senha = passwordEncoder.encode(usuarioAtualizado.getSenha());
+            usuarioAtualizado.setSenha(senha);
+            usuarioAtualizado.setConfirmaSenha(senha);
+            log.info("Senha alterada com sucesso!");
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Usuario usuarioCadastrado = usuarioRepository.findById(id).orElse(null);
 
         if (authentication != null && authentication.isAuthenticated()) {
             CustomUserDetails usuarioLogado = (CustomUserDetails) authentication.getPrincipal();
 
-            if (usuarioLogado.getUsername().equals(usuarioCadastrado.getEmail())) {
+            if (!usuarioLogado.getUsername().equals(usuarioCadastrado.getEmail())) {
+                usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
+                usuarioRepository.save(usuarioCadastrado);
+            } else {
                 log.error("Acesso negado! Usuário não pode alterar o grupo do seu usuário");
                 throw new BusinessException("Acesso negado! Não é possível alterar o grupo do seu usuário");
-            } else {
-                usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
-                log.info("Grupo atualizado com sucesso!");
-                usuarioRepository.save(usuarioCadastrado);
             }
         }
+        log.info("atualizado: " + usuarioAtualizado);
+        log.info("cadastrado: " + usuarioCadastrado);
 
-        return usuarioCadastrado;
+        return usuarioRepository.save(usuarioAtualizado);
     }
 
     public Usuario buscarUsuarioPorId(int id) throws BusinessException {
@@ -156,7 +153,7 @@ public class PoderAdminService {
 
         produto.setNomeProduto(produto.getNomeProduto());
 
-        if (produto.getAvaliacaoProduto() >= 1 && produto.getAvaliacaoProduto() <= 5) {
+        if (produto.getAvaliacaoProduto() >= 0.5 && produto.getAvaliacaoProduto() <= 5) {
             produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
         } else {
             log.error("Avaliação fora dos parametros permitidos!");
@@ -166,6 +163,7 @@ public class PoderAdminService {
         produto.setDescricaoProduto(produto.getDescricaoProduto());
         produto.setPrecoProduto(produto.getPrecoProduto());
         produto.setQtdEstoque(produto.getQtdEstoque());
+        produto.setStatusProduto(Status.ATIVO);
 
         log.info("Produto cadastrado com sucesso.");
         return produtoRepository.save(produto);
@@ -189,20 +187,30 @@ public class PoderAdminService {
         }
     }
 
-    public List<Produto> listarTodosProdutosDecrescente() {
-        return produtoRepository.findAllByOrderByIdProdutoDesc();
+    public Page<Produto> listarTodosProdutosDecrescente(Pageable pageable) {
+        return produtoRepository.findAllByOrderByIdProdutoDesc(pageable);
     }
 
-    public Produto alterarStatusDoProduto(int idProduto) throws BusinessException {
+    public Produto ativarProduto(int idProduto) throws BusinessException {
+        Produto produto = produtoRepository.findById(idProduto).orElse(null);
+        if (produto != null) {
+            if (produto.getStatusProduto().equals(Status.INATIVO)) {
+                produto.setStatusProduto(Status.ATIVO);
+
+                log.info("Produto ativado com sucesso!");
+            }
+            return produtoRepository.save(produto);
+        }
+        log.error("Produto não encontrado!");
+        throw new BusinessException("Produto não encontrado!");
+    }
+    public Produto inativarProduto(int idProduto) throws BusinessException {
         Produto produto = produtoRepository.findById(idProduto).orElse(null);
         if (produto != null) {
             if (produto.getStatusProduto().equals(Status.ATIVO)) {
                 produto.setStatusProduto(Status.INATIVO);
 
                 log.info("Produto inativado com sucesso!");
-            } else if (produto.getStatusProduto().equals(Status.INATIVO)) {
-                produto.setStatusProduto(Status.ATIVO);
-                log.info("Produto reativado com sucesso!");
             }
             return produtoRepository.save(produto);
         }
