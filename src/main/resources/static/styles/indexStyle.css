@@ -26,11 +26,12 @@ body {
   width: 329px;
   padding: 10px;
   margin-bottom: 10px;
+  margin-left: 17px;
   border: none;
   border-bottom: 1px solid #ccc;
   border-radius: 5px;
-  background-color: transparent; /* Alterado para transparent */
-  color: white; /* Adicionado para definir a cor do texto */
+  background-color: transparent; 
+  color: white; 
 }
 
 .login-button {
@@ -41,6 +42,7 @@ body {
   border: none;
   border-radius: 5px;
   margin-top: 40px;
+  margin-left: 17px;
   cursor: pointer;
 }
 

@@ -1,5 +1,6 @@
 package br.com.ecommerce.winery.security;
 
+import br.com.caelum.stella.validation.CPFValidator;
 import br.com.ecommerce.winery.security.handler.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CPFValidator cpfValidator() {
+        return new CPFValidator();
     }
 
     @Autowired

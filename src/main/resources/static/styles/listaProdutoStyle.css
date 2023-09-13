@@ -1,0 +1,395 @@
+        body{
+            margin: 0;
+            background-image: url('../imagens/3.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+        }
+        .card-listagem{
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            max-width: 1400px;
+            border-radius: 14px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: linear-gradient(to bottom, #000000, #000000f0);
+        }
+
+        .card-header {
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .table .th, .table td {
+            border: 1px solid #ddd;
+            text-align: left;
+            font-size: 20px;
+            padding: 8px;
+            color: #fff;
+        }
+
+        .botoes-div{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .botoes{
+            background: transparent;
+            border-radius: 20px;
+            outline: none;
+            border: 4px solid transparent ;
+            border-image: linear-gradient(to bottom, #4F0599, #7A0707) 1;
+            color: white;
+            height: 30px;
+            width: 90px;
+            margin-bottom: 3px;
+        }
+
+
+        .table tr:nth-child(even) {
+            background: linear-gradient(to bottom, #292929, #202020c5);
+        }
+
+        .table th {
+            background: linear-gradient(to bottom, #4F0599, #7A0707);
+            color: white;
+        }
+        .table button{
+            margin-left: 5px;
+        }
+        header {
+            background: linear-gradient(to bottom, #000000, #000000f0);
+            color: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        nav ul li a:hover {
+            border-bottom: 2px solid #fff;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 6px;
+            border: none;
+            border-radius: 4px;
+            margin-right: 30px;
+        }
+
+
+        .containerHeader {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 25px;
+
+        }
+
+        .buttonSearch{
+            width: 100px;
+            padding: 10px;
+            border: 1px;
+            border-radius: 14px;
+            background: linear-gradient(to bottom, #4F0599, #7A0707);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+
+        .div-funcoes {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .div-funcoes2 {
+            display: flex;
+        }
+
+        .lupa-button {
+            background: linear-gradient(to bottom, #4F0599, #7A0707);
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .botaoNovo{
+            border: none;
+            color: white;
+            width: 100px;
+            height: 20px;
+            background: linear-gradient(to bottom, #4F0599, #7A0707);
+        }
+
+        .input-buscar{
+            border: none;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Open+Sans:wght@300;400;500;600&display=swap');
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+
+        .tituloForm{
+            font-style: bold;
+            color: white;
+        }
+
+        .container {
+            width: 90%;
+            height: 90vh;
+            display: flex;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.212);
+        }
+
+        .form-image {
+            width: 50%; /* Mantém a largura igual à metade da largura do form */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: #fde3a7d7;
+            padding: 1rem;
+        }
+        
+        .form {
+            width: 50%; /* Mantém a largura igual à metade da largura do form */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 15px;
+            background: linear-gradient(to bottom, #000000, #000000f0);
+            padding: 3rem;
+        }
+
+        .form-image img {
+            width: 31rem;
+        }
+
+        
+
+        .form-header {
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cancelar-button {
+            display: flex;
+            align-items: center;
+        }
+
+        .cancelar-button button {
+            width: 100%;
+            border: none;
+            background-color: red;
+            color: white;
+            padding: 0.62rem;
+            margin-top: 9px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cancelar-button button:hover {
+            background-color: #03021ff1;
+        }
+
+        .cancelar-button button a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .form-header h1::after {
+            content: '';
+            display: block;
+            width: 5rem;
+            height: 0.3rem;
+            background: linear-gradient(to bottom, #4F0599, #7A0707);
+            margin: 0 auto;
+            position: absolute;
+            border-radius: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+            margin-bottom: 1.1rem;
+        }
+
+        .input-box input {
+            margin: 0.6rem 0;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 1px 1px 6px #0000001c;
+            border-bottom: 1px solid #ccc;
+            background-color: transparent;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .textAreaDescricao {
+            margin: 0.6rem 0;
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 1px 1px 6px #0000001c;
+            border-bottom: 1px solid #ccc;
+            background-color: transparent;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+
+        .input-box label,
+        .gender-title h6 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .input-box input::placeholder {
+            color: white;
+        }
+
+        .textAreaDescricao::placeholder {
+            color: white;
+        }
+
+        .gender-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.62rem;
+            padding: 0 .5rem;
+        }
+
+        .gender-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .gender-input input {
+            margin-right: 0.35rem;
+        }
+
+        .gender-input label {
+            font-size: 0.81rem;
+            font-weight: 600;
+            color: #000000c0;
+        }
+
+        .cadastrar-button button {
+            width: 100%;
+            border: none;
+            background: linear-gradient(to bottom, #4F0599, #7A0707);
+            color: white;
+            padding: 0.62rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cadastrar-button button:hover {
+            background-color: yellow;
+        }
+
+
+    
+        .modal{
+                display: none;
+                position: fixed;
+                top: 5%;
+                left: 0;
+                width: 100%;
+                height: 90%;
+                background-color: transparent;
+                justify-content: center;
+                align-items: center;
+
+
+        }
+
+        .input-image{
+            width: 300px;
+            height: 300px;
+        }
+
+        .buttonFile{
+            margin: auto;
+            margin-bottom: 10px;
+        }
+        
+        .carousel {
+            flex-direction: column; /* Torna o carrossel vertical */
+        }
+        
+        .carousel-inner {
+            white-space: normal; /* Permite que o conteúdo flua normalmente em colunas */
+            max-height: 500px; /* Define uma altura máxima para o carrossel vertical */
+            overflow-y: auto; /* Adiciona uma barra de rolagem vertical quando necessário */
+        }
+        
+        .carousel-item {
+            display: block; /* Garante que cada item seja exibido como um bloco */
+            margin: 5px 0; /* Espaçamento entre as imagens */
+            max-width: 100%; /* Garante que as imagens não ultrapassem a largura do modal */
+        }
+
+        .card {
+            width: calc(50% - 20px); /* 50% da largura do pai, com um espaço de 20px entre as imagens */
+            display: inline-block;
+            vertical-align: top;
+            margin: 10px;
+            box-sizing: border-box;
+          }
+
