@@ -284,19 +284,22 @@ $(document).ready(function () {
         $('#modalMessagesAlterar').empty(); // Limpa as mensagens quando o modal é aberto
     });
 
+console.log("oi:" +senhaUsuario);
+console.log("oi:" +confirmaSenhaUsuario);
+
     $('#formAlterar').on('submit', function (event) {
         event.preventDefault();
-    var novaSenha = $('#senhaAlterar').val();
-    var novaConfirmaSenha = $('#confirmaSenhaAlterar').val();
+        var novaSenha = $('#senhaAlterar').val();
+        var novaConfirmaSenha = $('#confirmaSenhaAlterar').val();
 
-    var formData = $(this).serialize();
+        var formData = $(this).serialize();
 
-    // Verifique se ambos os campos de senha estão vazios
-    if (novaSenha === '' && novaConfirmaSenha === '') {
-        // Se estiverem vazios, use as senhas existentes (senhaUsuario e confirmaSenhaUsuario)
-        formData += '&senha=' + senhaUsuario;
-        formData += '&confirmaSenha=' + confirmaSenhaUsuario;
-    }
+        // Verifique se ambos os campos de senha estão vazios
+        if (novaSenha === '' && novaConfirmaSenha === '') {
+            // Se estiverem vazios, use as senhas existentes (senhaUsuario e confirmaSenhaUsuario)
+            formData = formData.replace('senhaAlterar=&', 'senha=' + senhaUsuario + '&');
+            formData = formData.replace('confirmaSenhaAlterar=&', 'confirmaSenha=' + confirmaSenhaUsuario + '&');
+        }
 
         var modal = $('#modalAlterar');
 

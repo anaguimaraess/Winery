@@ -89,22 +89,24 @@ public class PoderAdminService {
 
     public Usuario alterarUsuario(Usuario usuarioAtualizado) throws BusinessException {
         Usuario usuarioCadastrado = usuarioRepository.findById(usuarioAtualizado.getId()).orElse(null);
-
+        log.info("tem q ser igual " + usuarioAtualizado);
+        log.info("cadastrado: aaa" + usuarioCadastrado);
         usuarioCadastrado.setNome(usuarioAtualizado.getNome());
 
         if (validarCpf(usuarioAtualizado.getCpf())) {
             usuarioCadastrado.setCpf(usuarioAtualizado.getCpf());
         }
 
-        if (passwordEncoder.matches(usuarioAtualizado.getSenha(), usuarioCadastrado.getSenha())) {
-            log.info("Senha não alterada.");
-        } else if (usuarioAtualizado.getSenha().equals(usuarioAtualizado.getConfirmaSenha())) {
-            String encript = passwordEncoder.encode(usuarioAtualizado.getSenha());
-            usuarioCadastrado.setSenha(encript);
-            usuarioCadastrado.setConfirmaSenha(encript);
-            log.info("Senha alterada com sucesso!");
-        } else {
-            throw new BusinessException("As senhas não coincidem, tente novamente!");
+        if (!usuarioAtualizado.getSenha().equals(usuarioCadastrado.getSenha())) {
+            if (usuarioAtualizado.getSenha().equals(usuarioAtualizado.getConfirmaSenha())) {
+                String encript = passwordEncoder.encode(usuarioAtualizado.getSenha());
+
+                usuarioCadastrado.setSenha(encript);
+                usuarioCadastrado.setConfirmaSenha(encript);
+                log.info("Senha alterada com sucesso!");
+            } else {
+                throw new BusinessException("As senhas não coincidem, tente novamente!");
+            }
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -119,6 +121,9 @@ public class PoderAdminService {
                 throw new BusinessException("Acesso negado! Não é possível alterar o grupo do seu usuário");
             }
         }
+        log.info("atualizado: " + usuarioAtualizado);
+        log.info("cadastrado: " + usuarioCadastrado);
+
         return usuarioRepository.save(usuarioCadastrado);
     }
 
