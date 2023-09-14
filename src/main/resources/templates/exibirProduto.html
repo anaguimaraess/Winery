@@ -4,7 +4,22 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <!-- Inclua o CSS e o jQuery -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+ <!-- Latest compiled and minified JavaScript -->
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+    <!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+    <!--        crossorigin="anonymous"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"-->
+    <!--        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"-->
+    <!--        crossorigin="anonymous"></script>-->
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"-->
+    <!--        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"-->
+    <!--        crossorigin="anonymous"></script>-->
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -45,9 +60,6 @@
     cursor: pointer;
 }
 
-.star.active {
-    color: gold; /* Cor das estrelas ativas (amarelo) */
-}
 .fundo-container{
     background: linear-gradient(to bottom, #000000, #000000f0);
 }
@@ -81,21 +93,21 @@ body{
         </div>
         <div class="col-md-6">
             <form class="form-horizontal">
-                <!-- Nome do produto -->
-<!--                <h2 th:text="${produto.nomeProduto}" class="teeexto"></h2>-->
-                <!-- Preço do produto -->
                 <div class="form-group price_elem row">
                     <label class="col-sm-3 col-md-3 form-control-label nopaddingtop teeexto">Preço:</label>
                     <div class="col-sm-8 col-md-9">
                         <span th:text="'R$ ' + ${produto.precoProduto}" class="product-form-price teeexto"></span>
                     </div>
                 </div>
-                <!-- Outros campos do produto (Avaliação, Descrição, etc.) -->
                 <div class="form-group row">
                     <label class="col-sm-3 col-md-3 form-control-label teeexto">Avaliação:</label>
                     <div class="col-sm-8 col-md-9">
-                        <span th:text="${produto.avaliacaoProduto}" class="teeexto"></span>
+                        <div style="display: flex; align-items: center;">
+                            <div id="star-rating"></div>
+                            <span style="margin-left: 5px; color: #ccc;">(<span th:text="${produto.avaliacaoProduto}"></span>)</span>
+                        </div>
                     </div>
+
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-3 col-md-3 form-control-label teeexto">Descrição detalhada:</label>
@@ -143,17 +155,6 @@ body{
         </div>
     </div>
 </div>
-<!-- JavaScript (Opcional) -->
-<!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
 
 <script>
         function atualizarImagemPrincipal(imagem) {
@@ -161,28 +162,18 @@ body{
         }
     </script>
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    const stars = document.querySelectorAll('.star');
-    const starRating = document.getElementById('star-rating');
 
-    stars.forEach(function (star) {
-        star.addEventListener('click', function () {
-            const value = parseInt(star.getAttribute('data-value'));
-            // Atualize a cor das estrelas selecionadas para amarelo (gold)
-            stars.forEach(function (s) {
-                s.classList.remove('active');
-            });
-            for (let i = 1; i <= value; i++) {
-                stars[i - 1].classList.add('active');
-            }
+const avaliacaoProdutoThymeleaf = parseFloat([[${produto.avaliacaoProduto}]]);
 
-            // Você pode fazer algo com o valor da avaliação aqui
-            console.log('Avaliação selecionada: ' + value);
-        });
-    });
+$("#star-rating").rateYo({
+    rating: avaliacaoProdutoThymeleaf,
+    starWidth: "16px",
+    halfStar: true,
+    readOnly: true
 });
 
 
-      </script>
+</script>
+
 </body>
 </html>
