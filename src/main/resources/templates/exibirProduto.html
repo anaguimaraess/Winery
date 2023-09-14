@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Winery:: Produto</title>
+</head>
+<style>
+    .carousel-control-next-icon {
+        color: black;
+        background-color: black;
+    }
+
+    .carousel-control-prev-icon {
+        color: black;
+        background-color: black;
+    }
+
+    .custom-carousel-image {
+        max-width: 200px;
+        max-height: 100px;
+    }
+
+    .custom-carousel {
+        margin-top: 20px;
+    }
+
+    .tamanho-carousel {
+        width: 50%;
+        height: 110px;
+        margin-top: 15px;
+    }
+    .tamanho-imagem-principal{
+      width: 100%;
+      height: 100%;
+    }
+    .star {
+    color: lightgray; /* Cor das estrelas inativas */
+    cursor: pointer;
+}
+
+.star.active {
+    color: gold; /* Cor das estrelas ativas (amarelo) */
+}
+.fundo-container{
+    background: linear-gradient(to bottom, #000000, #000000f0);
+}
+.text-center{
+    color: white;
+}
+hr{
+    background-color: white;
+}
+
+.teeexto{
+    color: white;
+}
+.botao-padrao{
+    background: linear-gradient(to bottom, #4F0599, #7A0707);
+    border: none;
+}
+
+body{
+    background: linear-gradient(to bottom, #000000, #000000f0);
+}
+
+</style>
+<body>
+<div class="container fundo-container">
+    <h1 class="text-center" th:text="${produto.nomeProduto}"></h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <img id="imagemPrincipal" src="./imagem2.jpg" class="rounded mx-auto d-block tamanho-imagem-principal" alt="...">
+        </div>
+        <div class="col-md-6">
+            <form class="form-horizontal">
+                <!-- Nome do produto -->
+<!--                <h2 th:text="${produto.nomeProduto}" class="teeexto"></h2>-->
+                <!-- Preço do produto -->
+                <div class="form-group price_elem row">
+                    <label class="col-sm-3 col-md-3 form-control-label nopaddingtop teeexto">Preço:</label>
+                    <div class="col-sm-8 col-md-9">
+                        <span th:text="'R$ ' + ${produto.precoProduto}" class="product-form-price teeexto"></span>
+                    </div>
+                </div>
+                <!-- Outros campos do produto (Avaliação, Descrição, etc.) -->
+                <div class="form-group row">
+                    <label class="col-sm-3 col-md-3 form-control-label teeexto">Avaliação:</label>
+                    <div class="col-sm-8 col-md-9">
+                        <span th:text="${produto.avaliacaoProduto}" class="teeexto"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-md-3 form-control-label teeexto">Descrição detalhada:</label>
+                    <div class="col-sm-8 col-md-9 description teeexto">
+                        <p th:text="${produto.descricaoProduto}"></p>
+                    </div>
+                </div>
+                <!-- Botão de compra -->
+                <button type="button" class="btn btn-primary btn-lg btn-block botao-padrao">Comprar</button>
+            </form>
+        </div>
+    </div>
+    <!-- Carrossel de Imagens -->
+    <div class="row">
+        <div class="col-md-12">
+            <div id="image-carousel" class="carousel slide tamanho-carousel" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#image-carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#image-carousel" data-slide-to="1"></li>
+                    <li data-target="#image-carousel" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="imagem2.jpg" class="rounded mx-auto d-block custom-carousel-image"
+                             alt="Imagem 1" onclick="atualizarImagemPrincipal('imagem2.jpg')">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="imagem2.jpg" class="rounded mx-auto d-block custom-carousel-image"
+                             alt="Imagem 2" onclick="atualizarImagemPrincipal('imagem2.jpg')">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="imagem3.jpg" class="rounded mx-auto d-block custom-carousel-image"
+                             alt="Imagem 3" onclick="atualizarImagemPrincipal('imagem3.jpg')">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#image-carousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#image-carousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Próximo</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript (Opcional) -->
+<!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+<script>
+        function atualizarImagemPrincipal(imagem) {
+            document.getElementById('imagemPrincipal').src = imagem;
+        }
+    </script>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const stars = document.querySelectorAll('.star');
+    const starRating = document.getElementById('star-rating');
+
+    stars.forEach(function (star) {
+        star.addEventListener('click', function () {
+            const value = parseInt(star.getAttribute('data-value'));
+            // Atualize a cor das estrelas selecionadas para amarelo (gold)
+            stars.forEach(function (s) {
+                s.classList.remove('active');
+            });
+            for (let i = 1; i <= value; i++) {
+                stars[i - 1].classList.add('active');
+            }
+
+            // Você pode fazer algo com o valor da avaliação aqui
+            console.log('Avaliação selecionada: ' + value);
+        });
+    });
+});
+
+
+      </script>
+</body>
+</html>

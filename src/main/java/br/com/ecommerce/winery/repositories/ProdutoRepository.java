@@ -11,6 +11,8 @@ import java.util.List;
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
     List<Produto> findAll();
 
+   Produto findByIdProduto(int id);
+
     List<Produto> findByNomeProdutoContainingIgnoreCase(String nomeProduto);
 
     Page<Produto> findAllByOrderByIdProdutoDesc(Pageable pageable);

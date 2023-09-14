@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,19 @@ public class AdminController {
         model.addAttribute("usuarios", usuarios);
         response.setStatus(HttpStatus.OK.value());
         return "listaUsuario";
+    }
+
+
+    @GetMapping("/exibirProduto")
+    public String exibirProduto(@RequestParam("id") int id, Model model, HttpServletResponse response) {
+        try {
+            Produto produto = cadastroProdutoService.buscarProdutoPorId(id);
+            model.addAttribute("produto", produto);
+            response.setStatus(HttpStatus.OK.value());
+            return "exibirProduto";
+        } catch (BusinessException e) {
+            return "erro"; // Você pode criar uma página "erro.html" para lidar com erros.
+        }
     }
 
     @PostMapping("/cadastrar")
@@ -111,6 +125,8 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
     @PostMapping("/cadastrarProdutos")
     public ResponseEntity<String> cadastrarProdutos(@ModelAttribute Produto produto, HttpServletResponse response) {

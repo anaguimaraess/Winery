@@ -176,14 +176,15 @@ public class PoderAdminService {
     }
 
     public Produto buscarProdutoPorId(int id) throws BusinessException {
-        Optional<Produto> produtoOptional = produtoRepository.findById(id);
+        Produto produto = produtoRepository.findByIdProduto(id);
 
-        if (produtoOptional.isPresent()) {
-            return produtoOptional.get();
+        if (produto != null) {
+            return produto;
         } else {
             throw new BusinessException("Produto não encontrado com o ID: " + id);
         }
     }
+
 
     public Page<Produto> listarTodosProdutosDecrescente(Pageable pageable) {
         return produtoRepository.findAllByOrderByIdProdutoDesc(pageable);

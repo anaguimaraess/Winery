@@ -77,7 +77,10 @@
                 </form>
 
 
-                <button class="botoes">Exibir</button>
+                <form th:action="@{/admin/exibirProduto}" method="get">
+                    <input type="hidden" name="id" th:value="${produto.idProduto}" />
+                    <button class="botoes" type="submit">Exibir</button>
+                </form>
             </td>
 
         </tr>
@@ -235,6 +238,7 @@
     </div>
 </div>
 <!-- Fim MODAL Alterar -->
+
 
 <script>
     function formatarNumero(input) {
@@ -510,7 +514,6 @@ $(document).ready(function () {
         $('#modalMessages .alert').popover('hide');
     });
 });
-
 
 
 </script>

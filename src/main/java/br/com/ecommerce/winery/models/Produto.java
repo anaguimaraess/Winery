@@ -30,4 +30,7 @@ public class Produto {
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     private List<Imagem> imagens;
+
+    public Produto(int id, String nome, double avaliacao, String descricao, double preco, int estoque) {
+    }
 }
