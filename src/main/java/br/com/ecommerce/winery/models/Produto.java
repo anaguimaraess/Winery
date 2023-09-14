@@ -3,6 +3,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -25,4 +27,7 @@ public class Produto {
     private int qtdEstoque;
     @Enumerated(EnumType.STRING)
     private Status statusProduto;
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    private List<Imagem> imagens;
 }
