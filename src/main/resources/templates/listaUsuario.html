@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Lista Usuario</title>
 </head>
+
 <body>
 <div class="containerHeader">
     <header>
@@ -56,14 +58,14 @@
         </thead>
         <tbody>
         <tr th:each="usuario : ${usuarios}">
-            <input type="hidden"  th:id="${usuario.id}"  th:attr="data-id=${usuario.id},data-nome=${usuario.nome},data-email=${usuario.email},data-cpf=${usuario.cpf}, data-grupo= ${usuario.grupo},  data-senha= ${usuario.senha}, data-confirmaSenha = ${usuario.confirmaSenha}, data-status=${usuario.status}">
+            <input type="hidden" th:id="${usuario.id}" th:attr="data-id=${usuario.id},data-nome=${usuario.nome},data-email=${usuario.email},data-cpf=${usuario.cpf}, data-grupo= ${usuario.grupo},  data-senha= ${usuario.senha}, data-confirmaSenha = ${usuario.confirmaSenha}, data-status=${usuario.status}">
             <td th:text="${usuario.nome}"></td>
             <td th:text="${usuario.email}"></td>
             <td th:text="${usuario.status}"></td>
             <td th:text="${usuario.grupo}"></td>
             <td class="botoes-div">
                 <button class="botoes" th:attr="data-usuario-id=${usuario.id}" th:onclick="'abrirModalAlterar(\'' + ${usuario.id} + '\')'">Alterar</button>
-               <form th:action="@{/admin/alterarStatus}" th:method="post">
+                <form th:action="@{/admin/alterarStatus}" th:method="post">
                     <input type="hidden" name="id" th:value="${usuario.id}" />
                     <input type="hidden" name="action" th:if="${usuario.status == 'ATIVO'}" th:value="inativar" />
                     <input type="hidden" name="action" th:if="${usuario.status == 'INATIVO'}" th:value="ativar" />
@@ -74,8 +76,11 @@
             </td>
         </tr>
         </tbody>
+
+
         <tr>
     </table>
+
 </div>
 
 <div class="modal" id="myModalCadastroBootstrap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -120,7 +125,7 @@
                     </div>
                 </div>
                 <div class="cadastrar-button">
-                    <button type="submit"  data-dismiss-modal="false">Cadastrar</button>
+                    <button type="submit" data-dismiss-modal="false">Cadastrar</button>
                 </div>
                 <div class="cancelar-button">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -155,10 +160,10 @@
                     </div>
                     <!-- Adicione os campos restantes aqui com IDs correspondentes -->
                     <div class="input-box">
-                        <input id="senhaAlterar" type="password" name="senha" placeholder="Digite a senha:" >
+                        <input id="senhaAlterar" type="password" name="senha" placeholder="Digite a senha:">
                     </div>
                     <div class="input-box">
-                        <input id="confirmaSenhaAlterar" type="password" name="confirmaSenha" placeholder="Digite a senha novamente:" >
+                        <input id="confirmaSenhaAlterar" type="password" name="confirmaSenha" placeholder="Digite a senha novamente:">
                     </div>
 
 
@@ -185,164 +190,165 @@
 
 
 <script>
-var senhaUsuario = "";
-var confirmaSenhaUsuario = "";
+        var senhaUsuario = "";
+        var confirmaSenhaUsuario = "";
 
-function abrirModalAlterar(id) {
-    var nome = document.getElementById(id).getAttribute('data-nome');
-    var email = document.getElementById(id).getAttribute('data-email');
-    var cpf = document.getElementById(id).getAttribute('data-cpf');
-    var grupo = document.getElementById(id).getAttribute('data-grupo');
-    var status = document.getElementById(id).getAttribute('data-status');
-    senhaUsuario = document.getElementById(id).getAttribute('data-senha');
-    confirmaSenhaUsuario = document.getElementById(id).getAttribute('data-confirmaSenha');
+        function abrirModalAlterar(id) {
+            var nome = document.getElementById(id).getAttribute('data-nome');
+            var email = document.getElementById(id).getAttribute('data-email');
+            var cpf = document.getElementById(id).getAttribute('data-cpf');
+            var grupo = document.getElementById(id).getAttribute('data-grupo');
+            var status = document.getElementById(id).getAttribute('data-status');
+            senhaUsuario = document.getElementById(id).getAttribute('data-senha');
+            confirmaSenhaUsuario = document.getElementById(id).getAttribute('data-confirmaSenha');
 
-    $('#nomeAlterar').val(nome);
-    $('#emailAlterar').val(email);
-    $('#grupoAlterar').val(grupo);
-    $('#cpfAlterar').val(cpf);
-    $('#statusUsuarioAlterar').val(status);
+            $('#nomeAlterar').val(nome);
+            $('#emailAlterar').val(email);
+            $('#grupoAlterar').val(grupo);
+            $('#cpfAlterar').val(cpf);
+            $('#statusUsuarioAlterar').val(status);
 
-    $('#idUsuarioAlterar').val(id);
+            $('#idUsuarioAlterar').val(id);
 
-    // Abra o modal de alteração
-    $('#modalAlterar').modal('show');
-}
-
-
-function abrirModalCadastro() {
-    $('#myModalCadastroBootstrap').modal('show');
-}
-
-function fecharModal() {
-    $('#myModalCadastroBootstrap').modal('hide');
-}
-
-
-function fecharModalAlterar() {
-    $('#modalAlterar').modal('hide');
-}
-
-
-    // Funcionamento do modal de cadastro
-$(document).ready(function () {
-    $('#myModalCadastroBootstrap').on('show.bs.modal', function () {
-        $('#modalMessages').empty(); // Limpa as mensagens quando o modal é aberto
-    });
-
-    $('#formCadastro').on('submit', function (event) {
-        event.preventDefault();
-
-        var formData = $(this).serialize();
-        var modal = $('#myModalCadastroBootstrap');
-
-        $.ajax({
-            type: 'POST',
-            url: '/admin/cadastrar',
-            data: formData,
-            success: function (data) {
-                $('#modalMessages').empty();
-
-                if (data.startsWith('Sucesso:')) {
-                    var mensagemSucesso = data.replace('Sucesso:', '');
-                    $('#modalMessages').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
-
-                    $('#formCadastro')[0].reset();
-
-                    setTimeout(function () {
-                        $('#myModalCadastroBootstrap').modal('hide');
-                    }, 3500);
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3500);
-
-                } else if (data.startsWith('Erro:')) {
-                    var mensagemErro = data.replace('Erro:', '');
-                    $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
-                }
-            },
-            error: function (xhr) {
-                $('#modalMessages').empty();
-
-                var mensagemErro = xhr.responseText;
-                $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
-            }
-        });
-    });
-
-    $('#myModalCadastroBootstrap').on('hidden.bs.modal', function () {
-        $('#modalMessages .alert').popover('hide');
-    });
-});
-
-$(document).ready(function () {
-    $('#modalAlterar').on('show.bs.modal', function () {
-        $('#modalMessagesAlterar').empty(); // Limpa as mensagens quando o modal é aberto
-    });
-
-console.log("oi:" +senhaUsuario);
-console.log("oi:" +confirmaSenhaUsuario);
-
-    $('#formAlterar').on('submit', function (event) {
-        event.preventDefault();
-        var novaSenha = $('#senhaAlterar').val();
-        var novaConfirmaSenha = $('#confirmaSenhaAlterar').val();
-
-        var formData = $(this).serialize();
-
-        // Verifique se ambos os campos de senha estão vazios
-        if (novaSenha === '' && novaConfirmaSenha === '') {
-            // Se estiverem vazios, use as senhas existentes (senhaUsuario e confirmaSenhaUsuario)
-            formData = formData.replace('senhaAlterar=&', 'senha=' + senhaUsuario + '&');
-            formData = formData.replace('confirmaSenhaAlterar=&', 'confirmaSenha=' + confirmaSenhaUsuario + '&');
+            // Abra o modal de alteração
+            $('#modalAlterar').modal('show');
         }
 
-        var modal = $('#modalAlterar');
 
-        $.ajax({
-            type: 'POST',
-            url: '/admin/alterar',
-            data: formData,
-            success: function (data) {
-                $('#modalMessagesAlterar').empty();
+        function abrirModalCadastro() {
+            $('#myModalCadastroBootstrap').modal('show');
+        }
 
-                if (data.startsWith('Sucesso:')) {
-                    var mensagemSucesso = data.replace('Sucesso:', '');
-                    $('#modalMessagesAlterar').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+        function fecharModal() {
+            $('#myModalCadastroBootstrap').modal('hide');
+        }
 
-                    $('#formAlterar')[0].reset();
 
-                    setTimeout(function () {
-                        $('#modalAlterar').modal('hide');
-                    }, 3500);
+        function fecharModalAlterar() {
+            $('#modalAlterar').modal('hide');
+        }
 
-                    setTimeout(function () {
-                        location.reload();
-                    }, 3500);
 
-                } else if (data.startsWith('Erro:')) {
-                    var mensagemErro = data.replace('Erro:', '');
-                    $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
-                                    $('#formAlterar')[0].reset();
+        // Funcionamento do modal de cadastro
+        $(document).ready(function () {
+            $('#myModalCadastroBootstrap').on('show.bs.modal', function () {
+                $('#modalMessages').empty(); // Limpa as mensagens quando o modal é aberto
+            });
 
-                }
-            },
-            error: function (xhr) {
-                $('#modalMessagesAlterar').empty();
+            $('#formCadastro').on('submit', function (event) {
+                event.preventDefault();
 
-                var mensagemErro = xhr.responseText;
-                $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
-            }
+                var formData = $(this).serialize();
+                var modal = $('#myModalCadastroBootstrap');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/cadastrar',
+                    data: formData,
+                    success: function (data) {
+                        $('#modalMessages').empty();
+
+                        if (data.startsWith('Sucesso:')) {
+                            var mensagemSucesso = data.replace('Sucesso:', '');
+                            $('#modalMessages').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+
+                            $('#formCadastro')[0].reset();
+
+                            setTimeout(function () {
+                                $('#myModalCadastroBootstrap').modal('hide');
+                            }, 3500);
+
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3500);
+
+                        } else if (data.startsWith('Erro:')) {
+                            var mensagemErro = data.replace('Erro:', '');
+                            $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                        }
+                    },
+                    error: function (xhr) {
+                        $('#modalMessages').empty();
+
+                        var mensagemErro = xhr.responseText;
+                        $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                    }
+                });
+            });
+
+            $('#myModalCadastroBootstrap').on('hidden.bs.modal', function () {
+                $('#modalMessages .alert').popover('hide');
+            });
         });
-    });
 
-    $('#modalAlterar').on('hidden.bs.modal', function () {
-        $('#modalMessagesAlterar .alert').popover('hide');
-    });
-});
+        $(document).ready(function () {
+            $('#modalAlterar').on('show.bs.modal', function () {
+                $('#modalMessagesAlterar').empty(); // Limpa as mensagens quando o modal é aberto
+            });
 
-</script>
+            console.log("oi:" + senhaUsuario);
+            console.log("oi:" + confirmaSenhaUsuario);
+
+            $('#formAlterar').on('submit', function (event) {
+                event.preventDefault();
+                var novaSenha = $('#senhaAlterar').val();
+                var novaConfirmaSenha = $('#confirmaSenhaAlterar').val();
+
+                var formData = $(this).serialize();
+
+                // Verifique se ambos os campos de senha estão vazios
+                if (novaSenha === '' && novaConfirmaSenha === '') {
+                    // Se estiverem vazios, use as senhas existentes (senhaUsuario e confirmaSenhaUsuario)
+                    formData = formData.replace('senhaAlterar=&', 'senha=' + senhaUsuario + '&');
+                    formData = formData.replace('confirmaSenhaAlterar=&', 'confirmaSenha=' + confirmaSenhaUsuario + '&');
+                }
+
+                var modal = $('#modalAlterar');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/alterar',
+                    data: formData,
+                    success: function (data) {
+                        $('#modalMessagesAlterar').empty();
+
+                        if (data.startsWith('Sucesso:')) {
+                            var mensagemSucesso = data.replace('Sucesso:', '');
+                            $('#modalMessagesAlterar').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+
+                            $('#formAlterar')[0].reset();
+
+                            setTimeout(function () {
+                                $('#modalAlterar').modal('hide');
+                            }, 3500);
+
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3500);
+
+                        } else if (data.startsWith('Erro:')) {
+                            var mensagemErro = data.replace('Erro:', '');
+                            $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                            $('#formAlterar')[0].reset();
+
+                        }
+                    },
+                    error: function (xhr) {
+                        $('#modalMessagesAlterar').empty();
+
+                        var mensagemErro = xhr.responseText;
+                        $('#modalMessagesAlterar').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                    }
+                });
+            });
+
+            $('#modalAlterar').on('hidden.bs.modal', function () {
+                $('#modalMessagesAlterar .alert').popover('hide');
+            });
+        });
+
+    </script>
 
 </body>
+
 </html>

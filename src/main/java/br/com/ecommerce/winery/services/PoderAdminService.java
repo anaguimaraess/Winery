@@ -58,7 +58,6 @@ public class PoderAdminService {
             cpfValidator.assertValid(cpf);
             System.out.println("CPF válido.");
             return true;
-
         } catch (InvalidStateException e) {
             throw new BusinessException("CPF inválido.");
         }
@@ -100,8 +99,7 @@ public class PoderAdminService {
 
     public Usuario alterarUsuario(Usuario usuarioAtualizado) throws BusinessException {
         Usuario usuarioCadastrado = usuarioRepository.findById(usuarioAtualizado.getId()).orElse(null);
-        log.info("tem q ser igual " + usuarioAtualizado);
-        log.info("cadastrado: aaa" + usuarioCadastrado);
+
         usuarioCadastrado.setNome(usuarioAtualizado.getNome());
 
         if (validarCpf(usuarioAtualizado.getCpf())) {
@@ -128,13 +126,13 @@ public class PoderAdminService {
             if (!usuarioLogado.getUsername().equals(usuarioCadastrado.getEmail())) {
                 usuarioCadastrado.setGrupo(usuarioAtualizado.getGrupo());
                 usuarioRepository.save(usuarioCadastrado);
+            } else if (usuarioAtualizado.getGrupo().equals(usuarioCadastrado.getGrupo())) {
+                log.info("nao atualizou o grupo. OK");
             } else {
                 log.error("Acesso negado! Usuário não pode alterar o grupo do seu usuário");
                 throw new BusinessException("Acesso negado! Não é possível alterar o grupo do seu usuário");
             }
         }
-        log.info("atualizado: " + usuarioAtualizado);
-        log.info("cadastrado: " + usuarioCadastrado);
 
         return usuarioRepository.save(usuarioAtualizado);
     }

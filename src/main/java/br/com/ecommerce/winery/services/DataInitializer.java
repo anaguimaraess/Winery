@@ -15,7 +15,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Override
@@ -24,9 +23,9 @@ public class DataInitializer implements CommandLineRunner {
             Usuario admin = new Usuario();
             admin.setNome("Admin User");
             admin.setEmail("admin@winery.com");
-            admin.setCpf("00011122200");
+            admin.setCpf("58213161033");
             admin.setSenha(passwordEncoder.encode("2023"));
-            admin.setConfirmaSenha(passwordEncoder.encode("2023"));
+            admin.setConfirmaSenha(admin.getSenha());
             admin.setGrupo(ADMIN);
             admin.setStatus(ATIVO);
             usuarioRepository.save(admin);

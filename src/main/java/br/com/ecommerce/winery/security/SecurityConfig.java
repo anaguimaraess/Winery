@@ -3,6 +3,7 @@ package br.com.ecommerce.winery.security;
 import br.com.caelum.stella.validation.CPFValidator;
 import br.com.ecommerce.winery.security.handler.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -33,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
     @Autowired
+    @Qualifier("customUserDetailsService")
     private UserDetailsService userDetailsService;
 
     @Override
@@ -49,9 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/home").permitAll()
-                .antMatchers("/admin/**").permitAll()//hasAnyAuthority("ADMIN") // Adicionado o prefixo 'ROLE_'
-                .antMatchers("/usuario/**").permitAll()//hasAnyAuthority("ADMIN") // Configuração para o endpoint /usuario/**
-                .antMatchers("/estoque/**").permitAll()//hasAnyAuthority("ESTOQUISTA", "ADMIN")
+                .antMatchers("/admin/**").hasAnyAuthority("ADMIN") // Adicionado o prefixo 'ROLE_'
+                .antMatchers("/usuario/**").hasAnyAuthority("ADMIN") // Configuração para o endpoint /usuario/**
+                .antMatchers("/estoque/**").hasAnyAuthority("ESTOQUISTA", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/authentication/login")
@@ -74,6 +76,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/js/**");
         web.ignoring().antMatchers("/imagens/**");
     }
-
 
 }

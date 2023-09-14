@@ -5,6 +5,9 @@ import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.services.PoderAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,15 +26,15 @@ public class EstoquistaController {
     private PoderAdminService cadastroProdutoService;
 
     @Autowired
-    private ProdutoRepository produtoRepostory;
+    private ProdutoRepository produtoRepository;
 
     @GetMapping("/filtroNomeProduto")
     public String filtroNomeDoProduto(@RequestParam("nomeProduto") String nomeProduto, Model model, HttpServletResponse response) {
-        nomeProduto = nomeProduto.toLowerCase();
-        List<Produto> produtos = this.produtoRepostory.findByNomeProdutoContainingIgnoreCase(nomeProduto);
-        model.addAttribute("produtos", produtos);
+        Pageable pageable = PageRequest.of(0, 10); // Escolha a página atual e o tamanho da página como desejar
+        Page<Produto> produtosFiltrados = this.produtoRepository.findByNomeProdutoContainingIgnoreCaseOrderByIdProdutoDesc(nomeProduto, pageable);
+        model.addAttribute("produtos", produtosFiltrados);
         response.setStatus(HttpStatus.OK.value());
-        return "listaProdutos";
+        return "listaProdutoEstoquista";
     }
 
     @PutMapping("/alterarEstoque")
@@ -47,5 +50,12 @@ public class EstoquistaController {
         }
     }
 
-
+    @GetMapping("/listarProdutos")
+    public String listarTodosOsProdutos(Model model, @RequestParam(defaultValue = "0") int page, HttpServletResponse response) throws BusinessException {
+        Pageable pageable = PageRequest.of(page, 10); // 10 produtos por página
+        Page<Produto> produtosPage = cadastroProdutoService.listarTodosProdutosDecrescente(pageable);
+        model.addAttribute("produtos", produtosPage); // Adicione a página ao modelo, não apenas a lista
+        response.setStatus(HttpStatus.OK.value());
+        return "listaProdutoEstoquista";
+    }
 }
