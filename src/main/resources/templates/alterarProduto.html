@@ -64,11 +64,11 @@
 
             <div class="mb-3">
                 <label for="imagem" class="form-label text-white">Imagens</label>
-                <input type="file" class="form-control inputPadrao text-white" id="imagem" name="imagem" multiple required>
+                <input type="file" class="form-control inputPadrao text-white" id="imagem" name="imagemInput" multiple required>
             </div>
             <input type="hidden" id="imagensParaRemover" name="imagensParaRemover">
             <th:block th:each="imagem, iterStat : ${produto.imagens}">
-                <input th:if="${imagem.imagemPrincipal}" type="hidden" id="imagemPrincipalNova" name="imagemPrincipalNova" th:value="${imagem.imagem_id}">
+                <input th:if="${imagem.imagemPrincipal}" type="hidden" id="imagemPrincipal" name="imagemPrincipalNova" th:value="${imagem.imagem_id}">
             </th:block>
             <div id="preview" class="row p-2 justify-content-center">
             </div>
@@ -227,7 +227,7 @@
 
 
     document.addEventListener("DOMContentLoaded", function () {
-  const imagemPrincipalNova = document.getElementById("imagemPrincipalNova");
+  const imagemPrincipalNova = document.getElementById("imagemPrincipal");
   const imgPrincipalRadios = document.querySelectorAll(
     'input[name="imgPrincipal"]'
   );
@@ -235,7 +235,7 @@
   imgPrincipalRadios.forEach((radio, index) => {
     radio.addEventListener("change", function () {
       if (this.checked) {
-        imagemPrincipalNova.value = this.value;
+        imagemPrincipal.value = this.value;
       }
     });
   });
@@ -313,7 +313,7 @@ function handleFile(file, i) {
 
     radioInput.addEventListener("change", function () {
       if (this.checked) {
-        imagemPrincipalNova.value = "";
+        imagemPrincipal.value = "";
         radioInput.value = this.value;
       }
     });
