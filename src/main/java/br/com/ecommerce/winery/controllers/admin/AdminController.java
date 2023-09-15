@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/admin")
@@ -190,7 +191,7 @@ public class AdminController {
 
     }
 
-    @RequestMapping(value = "/alterarProduto", method = {RequestMethod.GET, RequestMethod.POST})
+    @PostMapping("/alterarProduto")
     public ResponseEntity<String> editarProduto(@ModelAttribute Produto produto,
                                                 @RequestParam(required = false) MultipartFile[] imagemInput,
                                                 @RequestParam("imagensParaRemover") String imagensParaRemover,
@@ -205,6 +206,12 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
     }
-
+    @GetMapping("/buscarProduto")
+    public String buscarProdutoParaAlterar(@RequestParam(name = "id", required = false) int id, Model model, HttpServletResponse response) {
+        Optional<Produto> produto = produtoRepository.findById(id);
+        model.addAttribute("produto", produto.get());
+        response.setStatus(HttpStatus.OK.value());
+        return "alterarProduto";
+    }
 
 }

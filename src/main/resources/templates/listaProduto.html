@@ -68,7 +68,7 @@
             <td th:text="${produto.precoProduto}"></td>
             <td th:text="${produto.statusProduto}"></td>
             <td class="botoes-div">
-                <form th:action="@{/admin/alterarProduto}" method="POST">
+                <form th:action="@{/admin/buscarProduto}" method="get">
                     <input type="hidden" name="id" th:value="${produto.idProduto}" />
                     <button class="botoes" type="submit">Alterar</button>
                 </form>
