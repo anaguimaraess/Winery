@@ -37,6 +37,7 @@
         <p class="text-center fs-1 text-white">Alterar o Cadastro do Produto</p>
         <hr class="text-white">
         <form th:action="@{/admin/alterarProduto}" method="post" th:object="${produto}" id="formCadastroProduto" enctype="multipart/form-data">
+            <input type="hidden" id="id" name="idProduto" th:value="${produto.idProduto}">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="nome" class="form-label text-white">Nome</label>
