@@ -68,8 +68,10 @@
             <td th:text="${produto.precoProduto}"></td>
             <td th:text="${produto.statusProduto}"></td>
             <td class="botoes-div">
-                <button class="botoes" th:attr="data-produto-id=${produto.idProduto}" th:onclick="'abrirModalAlterar(\'' + ${produto.idProduto} + '\')'">Alterar</button>
-
+                <form th:action="@{/admin/alterarProduto}" method="POST">
+                    <input type="hidden" name="id" th:value="${produto.idProduto}" />
+                    <button class="botoes" type="submit">Alterar</button>
+                </form>
                 <!-- Ativar Produto -->
                 <form th:action="@{/admin/ativarProduto}" th:method="post" id="ativarProdutoForm">
                     <input type="hidden" name="idProduto" th:value="${produto.idProduto}" />

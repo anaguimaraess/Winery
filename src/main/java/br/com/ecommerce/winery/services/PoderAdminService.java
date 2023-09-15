@@ -10,7 +10,6 @@ import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ImagemRepository;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,8 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -273,6 +272,151 @@ public class PoderAdminService {
 
         produto.setQtdEstoque(novaQuantidade);
         produtoRepository.save(produto);
+    }
+
+    public Optional<Produto> findProdutoById(int id) {
+        return produtoRepository.findById(id);
+    }
+
+    public Produto alteraProduto(int id, Produto produto) {
+        Optional<Produto> optionalProduto = findProdutoById(id);
+
+        if (optionalProduto.isPresent()) {
+            Produto produtoExistente = optionalProduto.get();
+
+            produtoExistente.setNomeProduto(produto.getNomeProduto());
+            produtoExistente.setPrecoProduto(produto.getPrecoProduto());
+            produtoExistente.setQtdEstoque(produto.getQtdEstoque());
+            produtoExistente.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+            produtoExistente.setDescricaoProduto(produto.getDescricaoProduto());
+            produtoExistente.setImagens(produto.getImagens());
+
+            produtoRepository.save(produtoExistente);
+
+            return produtoExistente;
+        } else {
+            throw new NoSuchElementException("Erro: Produto com ID " + id + " não encontrado.");
+        }
+    }
+
+    public void editarProduto(Produto produto, MultipartFile[] imagemInput, String imagensParaRemover,
+                              String imagensParaAtualizar, String imgPrincipal, RedirectAttributes redirect) {
+        try {
+            Optional<Produto> produtoOptional = produtoRepository.findById(produto.getIdProduto());
+
+            if (!produtoOptional.isPresent()) {
+                throw new BusinessException("Produto não encontrado!");
+            } else {
+                produtoRepository.save(produto);
+            }
+            int indiceImgPrincipal = -1;
+
+            Boolean fotoPrinipalInImagens = false;
+            if (imgPrincipal != null) {
+                if ((!imgPrincipal.isEmpty() || !imgPrincipal.isBlank())
+                        && (imagensParaAtualizar.isEmpty() || imagensParaAtualizar.isBlank())) {
+                    fotoPrinipalInImagens = true;
+                    try {
+                        indiceImgPrincipal = Integer.parseInt(imgPrincipal);
+                    } catch (NumberFormatException e) {
+                        String msg=  e.getMessage();
+                        throw new BusinessException(msg);
+                    }
+
+                }
+            }
+
+            if (imgPrincipal != null) {
+                for (String id : imagensParaRemover.split(",")) {
+                    if (!id.isBlank() || !id.isEmpty()) {
+                        System.out.println("id para remover :" + id);
+                        var imagemDell = imagemRepository.findById(Integer.parseInt(id));
+                        if (imagemDell.isPresent()) {
+                            System.out.println(imagemDell.get());
+                            var img = imagemDell.get();
+                            imagemRepository.deleteById(img.getImagem_id());
+                            removeImagem(img.getUrl());
+
+                        }
+                    }
+                }
+            }
+
+            if (imgPrincipal != null) {
+                if (!fotoPrinipalInImagens) {
+                    var imgList = imagemRepository.findAllByProduto(produto);
+                    var IdImgUpdate = Long.parseLong(imagensParaAtualizar);
+                    System.out.println("IdImgUpdate: " + IdImgUpdate);
+                    for (Imagem img : imgList) {
+                        if (img.getImagem_id() == IdImgUpdate) {
+                            img.setImagemPrincipal(true);
+                            imagemRepository.save(img);
+                        } else {
+                            img.setImagemPrincipal(false);
+                            imagemRepository.save(img);
+                        }
+                    }
+                } else {
+                    var imgList = imagemRepository.findAllByProduto(produto);
+                    for (Imagem img : imgList) {
+                        if (img.isImagemPrincipal()) {
+                            img.setImagemPrincipal(false);
+                            imagemRepository.save(img);
+                        }
+                    }
+                }
+            }
+
+            if (imagemInput != null) {
+                MultipartFile[] imagens = (MultipartFile[]) imagemInput;
+                int p = 0;
+                for (MultipartFile img : imagens) {
+                    if (img != null && !img.isEmpty()) {
+                        try {
+                            String imgFileName = salvaImagem(img, produto.getNomeProduto());
+                            Imagem novaImagem = new Imagem();
+
+                            if (indiceImgPrincipal == p && fotoPrinipalInImagens) {
+                                novaImagem.setImagemPrincipal(true);
+                            } else {
+                                novaImagem.setImagemPrincipal(false);
+                            }
+                            p++;
+                            novaImagem.setUrl("imagensProdutos/" + imgFileName);
+                            novaImagem.setProduto(produto);
+                            imagemRepository.save(novaImagem);
+                        } catch (Exception e) {
+                            String nomeImg = img.getOriginalFilename();
+                            System.out.println("Falha ao armazenar a imagem " + nomeImg + e);
+                            String nomeImagem2 = "default.jpg";
+                            String caminho2 = "imagensProdutos/" + nomeImagem2;
+                            Imagem novaImagem = new Imagem();
+                            novaImagem.setUrl(caminho2);
+                            novaImagem.setProduto(produto);
+                            novaImagem.setImagemPrincipal(true);
+                            imagemRepository.save(novaImagem);
+                            break;
+                        }
+
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+
+        }
+    }
+
+    private void removeImagem(String nomeArquivo) {
+        Path caminho = Paths.get("src/main/resources/static/" + nomeArquivo);
+        try {
+            Files.delete(caminho);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

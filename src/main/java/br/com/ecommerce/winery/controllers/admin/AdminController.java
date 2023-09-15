@@ -186,6 +186,24 @@ public class AdminController {
             mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao inativar o produto: " + e.getMessage());
             return "listaProduto";
         }
+
+
+    }
+
+    @RequestMapping(value = "/alterarProduto", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<String> editarProduto(@ModelAttribute Produto produto,
+                                                @RequestParam(required = false) MultipartFile[] imagemInput,
+                                                @RequestParam("imagensParaRemover") String imagensParaRemover,
+                                                @RequestParam("imagemPrincipalNova") String imagensParaAtualizar,
+                                                @RequestParam(required = false) String imgPrincipal, RedirectAttributes redirect, Model model, HttpServletResponse response) {
+        try {
+            cadastroProdutoService.editarProduto(produto, imagemInput, imagensParaRemover, imagensParaAtualizar, imgPrincipal, redirect);
+            model.addAttribute("produto", produto);
+            response.setStatus(HttpStatus.OK.value());
+            return ResponseEntity.ok("Sucesso: Produto alterado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
+        }
     }
 
 
