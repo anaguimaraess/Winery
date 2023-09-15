@@ -153,60 +153,6 @@ public class PoderAdminService {
         }
     }
 
-//    public Produto cadastrarProdutos(Produto produto,
-//                                     MultipartFile[] imagens,
-//                                     int imgPrincipal) throws BusinessException{
-//
-//        produto.setNomeProduto(produto.getNomeProduto());
-//
-//        if (produto.getAvaliacaoProduto() >= 0.5 && produto.getAvaliacaoProduto() <= 5) {
-//            produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
-//        } else {
-//            log.error("Avaliação fora dos parametros permitidos!");
-//            throw new BusinessException("Avaliação fora dos parametros!");
-//        }
-//
-//        produto.setDescricaoProduto(produto.getDescricaoProduto());
-//        produto.setPrecoProduto(produto.getPrecoProduto());
-//        produto.setQtdEstoque(produto.getQtdEstoque());
-//        produto.setStatusProduto(Status.ATIVO);
-//
-//        log.info("Produto cadastrado com sucesso.");
-//        int p = 0;
-//        for (MultipartFile imagem : imagens) {
-//            if (imagem != null && !imagem.isEmpty()) {
-//                try {
-//                    String imgFileName = salvaImagem(imagem,produto.getNomeProduto());
-//                    Imagem novaImagem = new Imagem();
-//                    if (imgPrincipal == p) {
-//                        novaImagem.setImagemPrincipal(true);
-//                    }
-//                    p++;
-//                    novaImagem.setUrl("imagens/produtos/" + imgFileName);
-//                    novaImagem.setProduto(produto);
-//                    imagemRepository.save(novaImagem);
-//                } catch (Exception e) {
-//                    String nomeImg = imagem.getOriginalFilename();
-//                    System.out.println("Falha ao armazenar a imagem " + nomeImg + e);
-//                    String nomeImagem2 = "default.jpg";
-//                    String caminho2 = "imagens/produtos/" + nomeImagem2;
-//                    Imagem novaImagem = new Imagem();
-//                    novaImagem.setUrl(caminho2);
-//                    novaImagem.setProduto(produto);
-//                    novaImagem.setImagemPrincipal(true);
-//                    imagemRepository.save(novaImagem);
-//                    break;
-//                }
-//
-//            } else {
-//                break;
-//            }
-//        }
-//
-//        return produtoRepository.save(produto);
-//
-//    }
-
 
     public Produto cadastrarProdutos(Produto produto,
                                      MultipartFile[] imagens,
@@ -214,14 +160,6 @@ public class PoderAdminService {
 
         try {
             produto.setNomeProduto(produto.getNomeProduto());
-
-//            if (produto.getAvaliacaoProduto() >= 0.5 && produto.getAvaliacaoProduto() <= 5) {
-//                produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
-//            } else {
-//                log.error("Avaliação fora dos parâmetros permitidos!");
-//                throw new BusinessException("Avaliação fora dos parâmetros!");
-//            }
-
             produto.setDescricaoProduto(produto.getDescricaoProduto());
             produto.setPrecoProduto(produto.getPrecoProduto());
             produto.setQtdEstoque(produto.getQtdEstoque());
