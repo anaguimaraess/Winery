@@ -134,6 +134,20 @@
         </div>
     </div>
 </div>
+<!-- Modal de Sucesso -->
+<div id="modalSucesso" class="modal">
+    <div class="modal-content">
+        <div id="modalSucessoMessage"></div>
+    </div>
+</div>
+
+<!-- Modal de Erro -->
+<div id="modalErro" class="modal">
+    <div class="modal-content">
+        <div id="modalErroMessage"></div>
+    </div>
+</div>
+
 <!-- Modal Alterar USUARIO -->
 <div class="modal" id="modalAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="container">
@@ -286,8 +300,6 @@
                 $('#modalMessagesAlterar').empty(); // Limpa as mensagens quando o modal é aberto
             });
 
-            console.log("oi:" + senhaUsuario);
-            console.log("oi:" + confirmaSenhaUsuario);
 
             $('#formAlterar').on('submit', function (event) {
                 event.preventDefault();
@@ -346,6 +358,26 @@
                 $('#modalMessagesAlterar .alert').popover('hide');
             });
         });
+
+
+        function exibirModal(tipo, mensagem) {
+    var modalId = tipo === "success" ? "modalSucesso" : "modalErro";
+    var modalMessageId = tipo === "success" ? "modalSucessoMessage" : "modalErroMessage";
+
+    var modal = document.getElementById(modalId);
+    var modalMessage = document.getElementById(modalMessageId);
+
+    modalMessage.innerHTML = mensagem;
+
+    // Exibir o modal
+    modal.style.display = "block";
+
+    // Fechar o modal após alguns segundos (opcional)
+    setTimeout(function () {
+        modal.style.display = "none";
+    }, 3000); // Oculta após 3 segundos (3000 milissegundos)
+}
+
 
     </script>
 

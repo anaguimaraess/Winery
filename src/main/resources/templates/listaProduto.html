@@ -5,11 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/styles/listaProdutoStyle.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-    <!-- Inclua as folhas de estilo e o JavaScript do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../jquery/jquery.mask.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Winery:: Lista Produtos</title>
 </head>
+<style>
+
+
+</style>
 <body>
 <div class="containerHeader">
     <header>
@@ -119,6 +129,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+            <div id="modalMessages" class="position-absolute"></div>
+
             <form th:action="@{/admin/cadastrarProdutos}" method="post" th:object="${produto}" id="formCadastroProduto" enctype="multipart/form-data">
                 <div class="row">
                   <div class="col-md-6 mb-3">
@@ -135,7 +147,7 @@
                     <label for="quantidade" class="form-label">Quantidade</label>
                     <input type="number" class="form-control" id="quantidade" name="qtdEstoque" min="1" required>
                   </div>
-                  <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3">
                     <label for="avaliacao" class="form-label">Avaliação</label>
                     <input type="number" class="form-control" id="avaliacao" name="avaliacaoProduto" min="0" max="5" step="0.5" required>
                   </div>
@@ -151,8 +163,8 @@
                 <div id="preview" class="row p-2 justify-content-center">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary"id="botaoSalvar" >Salvar</button>
                   </div>
               </form>
         </div>
@@ -160,135 +172,6 @@
       </div>
     </div>
   </div>
-
-<!-- Modal CADASTRO PRODUTO -->
-<!-- <div class="modal" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="container">
-        <div class="form-image">
-            <input class="buttonFile" id="imagem" type="file" multiple>
-            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner" id="preview">
-                
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-                </button>
-            </div>
-        </div>
-        <div id="modalMessages" class="position-absolute"></div>
-        <div class="form">
-            <form th:action="@{/admin/cadastrarProdutos}" method="post" th:object="${produto}" id="formCadastroProduto">
-                <div class="form-header">
-                    <div class="title">
-                        <h1 class="tituloForm" >Cadastro do Produto</h1>
-                    </div>
-
-                </div>
-
-                <div class="input-group">
-                    <div class="input-box">
-                        <input id="" type="text" name="nomeProduto" maxlength="200" placeholder="Digite o nome do produto: " required>
-                    </div>
-
-                    <div class="input-box">
-                        <input type="text" id="" name="precoProduto" oninput="formatarNumero(this)" placeholder="Digite o preço:" required>
-                    </div>
-
-                    <div class="input-box">
-                        <input type="text" id="" name="qtdEstoque"  oninput="formatarNumeroInteiro(this)" placeholder="Digite a quantidade em estoque:" required>
-                    </div>
-                    <div class="input-box">
-                        <textarea class="textAreaDescricao" id="" name="descricaoProduto" rows="4" maxlength="2000" placeholder="Descrição Detalhada" required></textarea>
-                    </div>
-
-                    <div class="input-box">
-                        <input type="number" id="valor" name="avaliacaoProduto" min="0" max="5" step="0.5" oninput="formatarNumero(this)" placeholder="Avaliação" >
-                    </div>
-                </div>
-
-
-
-                <div class="cadastrar-button">
-                    <button type="submit"  data-dismiss-modal="false" >Cadastrar</button>
-                </div>
-
-                <div class="cancelar-button">
-                    <button type="button" class="btn btn-secondary" onclick=fecharModal() data-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-<!-- Fim MODAL CADASTRO -->
-
-<!-- Modal Alterar PRODUTO -->
-<!-- <div id="modalAlterar" class="modal">
-    <div class="container">
-        <div class="form-image">
-            <input class="buttonFile" id="imagem" type="file" multiple>
-            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner" id="preview">
-            
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-                </button>
-            </div>
-        </div>
-        <div class="form">
-            <form th:action="@{/admin/alterarProduto}" method="post" th:object="${usuario}" id="formAlterar">
-                <div class="form-header">
-                    <div class="title">
-                        <h1 class="tituloForm" >Alterar Cadastro do Produto</h1>
-                    </div>
-
-                </div>
-
-                <div class="input-group">
-                    <div class="input-box">
-                        <input id="" type="text" name="" maxlength="200" placeholder="Digite o nome do produto: " required>
-                    </div>
-
-
-                    <div class="input-box">
-                        <input type="text" id="" name="" oninput="formatarNumero(this)" placeholder="Digite o preço:" required>
-                    </div>
-
-
-
-                    <div class="input-box">
-                        <textarea class="textAreaDescricao" id="" name="" rows="4" maxlength="2000" placeholder="Descrição Detalhada" required></textarea>
-                    </div>
-
-                    <div class="input-box">
-                        <input type="number" id="valor" name="valor" min="0" max="5" step="0.5" oninput="formatarNumero(this)" placeholder="Avaliação" >
-                    </div>
-                </div>
-
-
-
-                <div class="cadastrar-button">
-                    <button>Alterar</button>
-                </div>
-                <div class="cancelar-button">
-                    <button onclick="fecharModalAlterar()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> -->
-<!-- Fim MODAL Alterar -->
-
 
 <script>
 
@@ -394,7 +277,7 @@ function updateRadioInputs() {
     });
 
 
-    document.getElementById('modalCadastroProd').addEventListener('submit', function (e) {
+    document.getElementById('exampleModal').addEventListener('submit', function (e) {
       var radios = document.getElementsByName('imgPrincipal');
       var formValid = false;
 
@@ -411,9 +294,7 @@ function updateRadioInputs() {
     });
 
 
-//alterar status do produto
-
-
+//------------------------------alterar status do produto
  function alterarStatus(idProduto, action) {
         var page = 0;
 
@@ -447,63 +328,58 @@ function updateRadioInputs() {
         }
     }
 
+//------------------------------cadastrar produto
 
 
-
-
-//-------------------------------->FUNCIONAMENTO DOS MODAIS<--------------------------------
-  // Funcionamento do modal de cadastro
 $(document).ready(function () {
-    $('#myModal').on('show.bs.modal', function () {
+    $('#exampleModal').on('show.bs.modal', function () {
         $('#modalMessages').empty(); // Limpa as mensagens quando o modal é aberto
     });
 
     $('#formCadastroProduto').on('submit', function (event) {
         event.preventDefault();
 
-        var formData = $(this).serialize();
-        var modal = $('#myModal');
+        var formData = new FormData(this);
+        var modal = $('#exampleModal');
 
         $.ajax({
             type: 'POST',
             url: '/admin/cadastrarProdutos',
             data: formData,
+            processData: false, // Não processar os dados
+            contentType: false, // Não configurar o tipo de conteúdo
             success: function (data) {
                 $('#modalMessages').empty();
 
                 if (data.startsWith('Sucesso:')) {
                     var mensagemSucesso = data.replace('Sucesso:', '');
-                    $('#modalMessages').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
+                    $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
 
                     $('#formCadastroProduto')[0].reset();
 
                     setTimeout(function () {
-                        $('#myModal').modal('hide');
-                    }, 3500);
-
-                    setTimeout(function () {
+                        $('#exampleModal').modal('hide');
                         location.reload();
                     }, 3500);
 
                 } else if (data.startsWith('Erro:')) {
                     var mensagemErro = data.replace('Erro:', '');
-                    $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                    $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
                 }
             },
             error: function (xhr) {
                 $('#modalMessages').empty();
 
                 var mensagemErro = xhr.responseText;
-                $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
             }
         });
     });
 
-    $('#myModal').on('hidden.bs.modal', function () {
-        $('#modalMessages .alert').popover('hide');
+    $('#exampleModal').on('hidden.bs.modal', function () {
+        $('#modalMessages .alert').remove();
     });
 });
-
 
 </script>
 

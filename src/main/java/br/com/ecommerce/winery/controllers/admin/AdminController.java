@@ -14,10 +14,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -127,12 +129,17 @@ public class AdminController {
     }
 
 
-
     @PostMapping("/cadastrarProdutos")
-    public ResponseEntity<String> cadastrarProdutos(@ModelAttribute Produto produto, HttpServletResponse response) {
+    @Transactional
+    public ResponseEntity<String> cadastrarProduto(
+            @ModelAttribute("produto") Produto produto,
+            @RequestParam("imagem") MultipartFile[] imagens,
+            @RequestParam("imgPrincipal") int imgPrincipal,
+            RedirectAttributes redirect
+    ) {
         try {
-            Produto novoProduto = cadastroProdutoService.cadastrarProdutos(produto);
-            return ResponseEntity.ok("Sucesso:Produto cadastrado com sucesso!");
+            Produto produtoCadastrado = cadastroProdutoService.cadastrarProdutos(produto, imagens, imgPrincipal);
+            return ResponseEntity.ok("Sucesso:Usuário cadastrado com sucesso!");
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
@@ -180,7 +187,6 @@ public class AdminController {
             return "listaProduto";
         }
     }
-
 
 
 }

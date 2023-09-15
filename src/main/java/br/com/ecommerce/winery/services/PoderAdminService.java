@@ -10,6 +10,7 @@ import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ImagemRepository;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,10 +19,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -147,24 +153,116 @@ public class PoderAdminService {
         }
     }
 
-    public Produto cadastrarProdutos(Produto produto) throws BusinessException {
+//    public Produto cadastrarProdutos(Produto produto,
+//                                     MultipartFile[] imagens,
+//                                     int imgPrincipal) throws BusinessException{
+//
+//        produto.setNomeProduto(produto.getNomeProduto());
+//
+//        if (produto.getAvaliacaoProduto() >= 0.5 && produto.getAvaliacaoProduto() <= 5) {
+//            produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+//        } else {
+//            log.error("Avaliação fora dos parametros permitidos!");
+//            throw new BusinessException("Avaliação fora dos parametros!");
+//        }
+//
+//        produto.setDescricaoProduto(produto.getDescricaoProduto());
+//        produto.setPrecoProduto(produto.getPrecoProduto());
+//        produto.setQtdEstoque(produto.getQtdEstoque());
+//        produto.setStatusProduto(Status.ATIVO);
+//
+//        log.info("Produto cadastrado com sucesso.");
+//        int p = 0;
+//        for (MultipartFile imagem : imagens) {
+//            if (imagem != null && !imagem.isEmpty()) {
+//                try {
+//                    String imgFileName = salvaImagem(imagem,produto.getNomeProduto());
+//                    Imagem novaImagem = new Imagem();
+//                    if (imgPrincipal == p) {
+//                        novaImagem.setImagemPrincipal(true);
+//                    }
+//                    p++;
+//                    novaImagem.setUrl("imagens/produtos/" + imgFileName);
+//                    novaImagem.setProduto(produto);
+//                    imagemRepository.save(novaImagem);
+//                } catch (Exception e) {
+//                    String nomeImg = imagem.getOriginalFilename();
+//                    System.out.println("Falha ao armazenar a imagem " + nomeImg + e);
+//                    String nomeImagem2 = "default.jpg";
+//                    String caminho2 = "imagens/produtos/" + nomeImagem2;
+//                    Imagem novaImagem = new Imagem();
+//                    novaImagem.setUrl(caminho2);
+//                    novaImagem.setProduto(produto);
+//                    novaImagem.setImagemPrincipal(true);
+//                    imagemRepository.save(novaImagem);
+//                    break;
+//                }
+//
+//            } else {
+//                break;
+//            }
+//        }
+//
+//        return produtoRepository.save(produto);
+//
+//    }
 
-        produto.setNomeProduto(produto.getNomeProduto());
 
-        if (produto.getAvaliacaoProduto() >= 0.5 && produto.getAvaliacaoProduto() <= 5) {
-            produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
-        } else {
-            log.error("Avaliação fora dos parametros permitidos!");
-            throw new BusinessException("Avaliação fora dos parametros!");
+    public Produto cadastrarProdutos(Produto produto,
+                                     MultipartFile[] imagens,
+                                     int imgPrincipal) throws BusinessException {
+
+        try {
+            produto.setNomeProduto(produto.getNomeProduto());
+
+//            if (produto.getAvaliacaoProduto() >= 0.5 && produto.getAvaliacaoProduto() <= 5) {
+//                produto.setAvaliacaoProduto(produto.getAvaliacaoProduto());
+//            } else {
+//                log.error("Avaliação fora dos parâmetros permitidos!");
+//                throw new BusinessException("Avaliação fora dos parâmetros!");
+//            }
+
+            produto.setDescricaoProduto(produto.getDescricaoProduto());
+            produto.setPrecoProduto(produto.getPrecoProduto());
+            produto.setQtdEstoque(produto.getQtdEstoque());
+            produto.setStatusProduto(Status.ATIVO);
+
+            log.info("Produto cadastrado com sucesso.");
+            int p = 0;
+            for (MultipartFile imagem : imagens) {
+                if (imagem != null && !imagem.isEmpty()) {
+                    try {
+                        String imgFileName = salvaImagem(imagem, produto.getNomeProduto());
+                        Imagem novaImagem = new Imagem();
+                        if (imgPrincipal == p) {
+                            novaImagem.setImagemPrincipal(true);
+                        }
+                        p++;
+                        novaImagem.setUrl("imagens/produtos/" + imgFileName);
+                        novaImagem.setProduto(produto);
+                        imagemRepository.save(novaImagem);
+                    } catch (Exception e) {
+                        log.error("Falha ao armazenar uma imagem.", e);
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            return produtoRepository.save(produto);
+
+        } catch (Exception e) {
+            log.error("Erro desconhecido ao cadastrar o produto.", e);
+            throw new BusinessException("Erro ao cadastrar o produto.");
         }
+    }
 
-        produto.setDescricaoProduto(produto.getDescricaoProduto());
-        produto.setPrecoProduto(produto.getPrecoProduto());
-        produto.setQtdEstoque(produto.getQtdEstoque());
-        produto.setStatusProduto(Status.ATIVO);
-
-        log.info("Produto cadastrado com sucesso.");
-        return produtoRepository.save(produto);
+    private String salvaImagem(MultipartFile imagem, String produto) throws IOException {
+        produto = produto.replaceAll("\\s+", "");
+        String nomeArquivo = UUID.randomUUID() + "-" + produto;
+        Path caminho = Paths.get("src/main/resources/static/imagensProdutos/" + nomeArquivo);
+        Files.copy(imagem.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
+        return nomeArquivo;
     }
 
     private void desmarcarOutrasImagens(Produto produto) {

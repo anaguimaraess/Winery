@@ -15,11 +15,11 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_produto")
     private int idProduto;
-    @Column(name = "nome_produto")
+    @Column(name = "nome_produto", length = 200)
     private String nomeProduto;
     @Column(name = "avaliacao")
     private float avaliacaoProduto;
-    @Column(name = "descricao_detalhada")
+    @Column(name = "descricao_detalhada", length = 2000)
     private String descricaoProduto;
     @Column(name = "preco")
     private double precoProduto;
