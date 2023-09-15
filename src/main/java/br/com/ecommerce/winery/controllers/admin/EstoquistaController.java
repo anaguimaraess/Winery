@@ -27,6 +27,11 @@ public class EstoquistaController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @GetMapping("/homeEstoque")
+    public String homeBackOffice() {
+        return "homeBackOfficeEstoquista";
+    }
+
     @GetMapping("/filtroNomeProduto")
     public String filtroNomeDoProduto(@RequestParam("nomeProduto") String nomeProduto, Model model, HttpServletResponse response) {
         Pageable pageable = PageRequest.of(0, 10); // Escolha a página atual e o tamanho da página como desejar
