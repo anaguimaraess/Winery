@@ -58,9 +58,10 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="descricao" class="form-label text-white">Descrição</label>
-                <textarea class="form-control inputPadrao" id="descricao" name="descricaoProduto" rows="4" maxlength="2000"   th:value="${produto.descricaoProduto}" required></textarea>
+                <label for="descricao" class="form-label">Descrição</label>
+                <textarea class="form-control" id="descricao" name="descricaoProduto" rows="3" maxlength="1998" style="border: none; box-shadow: 1px 1px 6px #0000001c; border-bottom: 1px solid #ccc; color: white; background-color: transparent;" th:text="${produto.descricaoProduto}" required></textarea>
             </div>
+
             <div class="mb-3">
                 <label for="imagem" class="form-label text-white">Imagens</label>
                 <input type="file" class="form-control inputPadrao text-white" id="imagem" name="imagem" multiple required>
@@ -92,7 +93,7 @@
 
             <div class="d-flex justify-content-end mt-4">
                 <button type="submit" class="btn btn-primary btn-sm me-2 buttonSalvar">Salvar Alteração</button>
-                <button type="button" href="/admin/listarProdutos" class="btn btn-secondary btn-sm">Cancelar</button>
+                <a href="/admin/listarProdutos" class="btn btn-secondary btn-sm">Cancelar</a>
             </div>
         </form>
     </div>
