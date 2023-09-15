@@ -139,7 +139,7 @@ public class AdminController {
     ) {
         try {
             Produto produtoCadastrado = cadastroProdutoService.cadastrarProdutos(produto, imagens, imgPrincipal);
-            return ResponseEntity.ok("Sucesso:Usuário cadastrado com sucesso!");
+            return ResponseEntity.ok("Sucesso: Produto cadastrado com sucesso!");
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
