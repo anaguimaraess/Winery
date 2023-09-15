@@ -38,6 +38,10 @@ public class AdminController {
     private ProdutoRepository produtoRepository;
     @Autowired
     private MensagemRetorno mensagemRetorno;
+    @GetMapping("/home")
+    public String homeBackOffice() {
+        return "homeBackOffice";
+    }
 
     @GetMapping("/listar")
     public String listarTodosUsuarios(Model model, HttpServletResponse response) {

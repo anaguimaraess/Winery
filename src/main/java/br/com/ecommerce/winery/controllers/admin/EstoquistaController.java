@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/estoque")
@@ -55,5 +56,13 @@ public class EstoquistaController {
         model.addAttribute("produtos", produtosPage); // Adicione a página ao modelo, não apenas a lista
         response.setStatus(HttpStatus.OK.value());
         return "listaProdutoEstoquista";
+    }
+
+    @GetMapping("/buscarProduto")
+    public String buscarProdutoParaAlterar(@RequestParam(name = "id", required = false) int id, Model model, HttpServletResponse response) {
+        Optional<Produto> produto = produtoRepository.findById(id);
+        model.addAttribute("produto", produto.get());
+        response.setStatus(HttpStatus.OK.value());
+        return "alterarProdutoEstoquista";
     }
 }

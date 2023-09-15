@@ -1,99 +1,102 @@
 body{
-    margin: 0;
-    background-image: url('../imagens/3.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    margin: 0 !important;
+    background-image: url('../imagens/3.png') !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
 
 }
 .card-listagem{
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    max-width: 1400px;
-    border-radius: 14px;
-    margin: 0 auto;
-    margin-bottom: 30px;
-    padding: 10px;
-    background: linear-gradient(to bottom, #000000, #000000f0);
+    border: 1px solid #ddd !important;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2) !important;
+    max-width: 90% !important;
+    border-radius: 14px !important;
+    margin: 0 auto !important;
+    margin-bottom: 30px !important;
+    padding: 10px !important;
+    margin-top: 50px !important;
+    background: linear-gradient(to bottom, #000000, #000000f0) !important;
 }
 
 .card-header {
-    color: white;
-    padding: 10px;
-    text-align: center;
+    color: white !important;
+    padding: 10px !important;
+    text-align: center !important;
 }
 
 .table {
-    border-collapse: collapse;
-    width: 100%;
+    border-collapse: collapse !important;
+    width: 100% !important;
 }
 
 .table .th, .table td {
-    border: 1px solid #ddd;
-    text-align: left;
-    font-size: 20px;
-    padding: 8px;
-    color: #fff;
+    border: 1px solid #ddd !important;
+    text-align: left !important;
+    font-size: 20px !important;
+    background-color: transparent !important;
+    padding: 8px !important;
+    color: #fff !important;
 }
 
 .botoes-div{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
 }
 
 .botoes{
-    background: transparent;
-    border-radius: 20px;
-    outline: none;
+    background: transparent!important;
+    border-radius: 20px !important;
+    outline: none !important;
     border: 4px solid transparent ;
-    border-image: linear-gradient(to bottom, #4F0599, #7A0707) 1;
-    color: white;
-    height: 30px;
-    width: 90px;
-    margin-bottom: 3px;
-    cursor:pointer;
+    border-image: linear-gradient(to bottom, #4F0599, #7A0707) 1 !important;
+    color: white !important;
+    font-size: 15px;
+    height: 30px !important;
+    width: 90px !important;
+    margin-bottom: 3px !important;
+    cursor:pointer !important;
 }
 
 
 .table tr:nth-child(even) {
-    background: linear-gradient(to bottom, #292929, #202020c5);
+    background: linear-gradient(to bottom, #292929, #202020c5) !important;
 }
 
 .table th {
-    background: linear-gradient(to bottom, #4F0599, #7A0707);
-    color: white;
+    background: linear-gradient(to bottom, #4F0599, #7A0707) !important;
+    color: white !important;
 }
 .table button{
-    margin-left: 5px;
+    margin-left: 5px !important;
 }
 header {
-    background: linear-gradient(to bottom, #000000, #000000f0);
-    color: #fff;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: linear-gradient(to bottom, #000000, #000000f0) !important;
+    color: #fff !important;
+    padding: 10px 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
+/* nav ul {
+    list-style: none !important;
+    display: flex !important;
 }
 
 nav ul li {
-    margin: 0 15px;
+    margin: 0 15px !important;
 }
 
 nav ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
+    text-decoration: none !important;
+    color: #fff !important;
+    font-size: 18px !important;
 }
 
 nav ul li a:hover {
-    border-bottom: 2px solid #fff;
-}
+    border-bottom: 2px solid #fff !important;
+} */
 
 .search-bar {
     display: flex;
@@ -108,12 +111,12 @@ nav ul li a:hover {
 }
 
 
-.containerHeader {
+/* .containerHeader {
     width: 100%;
     text-align: center;
     margin-bottom: 25px;
 
-}
+} */
 
 .buttonSearch{
     width: 100px;
@@ -173,12 +176,12 @@ nav ul li a:hover {
     color: white;
 }
 
-.container {
+/* .container {
     width: 90%;
     height: 90vh;
     display: flex;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.212);
-}
+} */
 
 .form-image {
     width: 50%; /* Mantém a largura igual à metade da largura do form */
@@ -302,11 +305,11 @@ nav ul li a:hover {
 }
 
 .input-box input::placeholder {
-    color: white;
+    color: white !important;
 }
 
 .textAreaDescricao::placeholder {
-    color: white;
+    color: white !important;
 }
 
 .gender-group {
@@ -405,5 +408,30 @@ nav ul li a:hover {
       top: 50%; /* Coloca o elemento no centro vertical */
       left: 50%; /* Coloca o elemento no centro horizontal */
       transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
+  }
+
+  .bodyModal{
+    background-color: #000000f0;
+}
+
+.buttonSalvar{
+    background: linear-gradient(to bottom, #4F0599, #7A0707) !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.inputPadrao{
+    border: none !important;
+    box-shadow: 1px 1px 6px #0000001c !important;
+    border-bottom: 1px solid #ccc !important;
+    color: white !important;
+    background-color: transparent !important;
+}
+.inputPadrao:focus{
+    background-color: #000000f0 !important;
+    color: white !important;
+}
+.corFundo {
+    background: linear-gradient(to bottom, #000000, #000000f0);
   }
 

@@ -4,35 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/styles/listaProdutoStyle.css}" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-    <!-- Inclua as folhas de estilo e o JavaScript do Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="../jquery/jquery.min.js"></script>
+    <script src="../jquery/jquery.mask.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/popper.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <title>Lista Produtos</title>
+    <title>Winery:: Lista Produtos</title>
 </head>
 <body>
-<div class="containerHeader">
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Produto</a></li>
-                <li><a href="#">Usuário</a></li>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
+    <div class="container">
+        <a class="navbar-brand" href="/home">
+            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/admin/listarProdutos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                        </svg>
+                        Produtos
+                    </a>
+                </li>
             </ul>
-        </nav>
-        <div class="search-bar">
-            <button class="buttonSearch">SAIR</button>
+            <form class="d-flex" role="search">
+                <a class="nav-link text-white" href="/authentication/logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg>
+                    Sair
+                </a>
+            </form>
         </div>
-    </header>
-</div>
+    </div>
+</nav>
 <div class="card-listagem">
     <div class="card-header">
-        <h1>Lista de Produtos</h1>
+        <h1 >Lista de Produtos</h1>
     </div>
     <div class="div-funcoes">
+        <button class="botaoNovo" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Novo</button>
         <div class="div-funcoes2">
-            <form th:action="@{/estoque/filtroNomeProduto}" method="get">
+            <form th:action="@{/admin/filtroNomeProduto}" method="get">
                 <input type="text" class="input-buscar" placeholder="Pesquisar ..." name="nomeProduto">
                 <button type="submit" class="lupa-button"><i class="fas fa-search"></i></button>
             </form>
@@ -59,7 +86,10 @@
             <td th:text="${produto.precoProduto}"></td>
             <td th:text="${produto.statusProduto}"></td>
             <td class="botoes-div">
-                <button class="botoes" th:attr="data-produto-id=${produto.idProduto}" th:onclick="'abrirModalAlterar(\'' + ${produto.idProduto} + '\')'">Alterar</button>
+                <form th:action="@{/estoque/buscarProduto}" method="get">
+                    <input type="hidden" name="id" th:value="${produto.idProduto}" />
+                    <button class="botoes" type="submit">Alterar</button>
+                </form>
             </td>
 
         </tr>
@@ -71,17 +101,17 @@
         <ul>
             <!-- Link para a página anterior -->
             <li th:if="${produtos.hasPrevious()}">
-                <a th:href="@{/estoque/listarProdutos(page=${produtos.previousPageable().pageNumber})}" class="page-link">Anterior</a>
+                <a th:href="@{/admin/listarProdutos(page=${produtos.previousPageable().pageNumber})}" class="page-link">Anterior</a>
             </li>
 
             <!-- Links para páginas numéricas -->
             <li th:each="i : ${#numbers.sequence(0, produtos.totalPages - 1)}">
-                <a th:href="@{/estoque/listarProdutos(page=${i})}" class="page-link" th:text="${i + 1}"></a>
+                <a th:href="@{/admin/listarProdutos(page=${i})}" class="page-link" th:text="${i + 1}"></a>
             </li>
 
             <!-- Link para a próxima página -->
             <li th:if="${produtos.hasNext()}">
-                <a th:href="@{/estoque/listarProdutos(page=${produtos.nextPageable().pageNumber})}" class="page-link">Próximo</a>
+                <a th:href="@{/admin/listarProdutos(page=${produtos.nextPageable().pageNumber})}" class="page-link">Próximo</a>
             </li>
         </ul>
     </nav>
@@ -89,135 +119,9 @@
 
     <!-- ANA AQUI É O FIM DO MUDAR AS PAGINAS -->
 </div>
-
-<!-- Modal Alterar PRODUTO -->
-<div id="modalAlterar" class="modal">
-    <div class="container">
-        <div class="form-image">
-            <input class="buttonFile" id="imagem" type="file" multiple>
-            <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner" id="preview">
-                    <!-- As imagens carregadas pelo JavaScript serão adicionadas aqui -->
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-                </button>
-            </div>
-        </div>
-        <div class="form">
-            <form th:action="@{/estoque/alterarProduto}" method="post" th:object="${usuario}" id="formAlterar">
-                <div class="form-header">
-                    <div class="title">
-                        <h1 class="tituloForm" >Alterar Cadastro do Produto</h1>
-                    </div>
-
-                </div>
-
-                <div class="input-group">
-                    <div class="input-box">
-                        <input id="" type="text" name="" maxlength="200" placeholder="Digite o nome do produto: " required>
-                    </div>
-
-
-                    <div class="input-box">
-                        <input type="text" id="" name="" oninput="formatarNumero(this)" placeholder="Digite o preço:" required>
-                    </div>
-
-
-
-                    <div class="input-box">
-                        <textarea class="textAreaDescricao" id="" name="" rows="4" maxlength="2000" placeholder="Descrição Detalhada" required></textarea>
-                    </div>
-
-                    <div class="input-box">
-                        <input type="number" id="valor" name="valor" min="0" max="5" step="0.5" oninput="formatarNumero(this)" placeholder="Avaliação" >
-                    </div>
-                </div>
-
-
-
-                <div class="cadastrar-button">
-                    <button>Alterar</button>
-                </div>
-                <div class="cancelar-button">
-                    <button onclick="fecharModalAlterar()">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Fim MODAL Alterar -->
-
 <script>
-    function formatarNumero(input) {
-            // Remove qualquer caractere que não seja número ou ponto decimal
-            input.value = input.value.replace(/[^0-9.]/g, '');
 
-            // Limita o valor ao intervalo de 0 a 5
-            if (input.value < 0) {
-                input.value = 0;
-            } else if (input.value > 5) {
-                input.value = 5;
-            }
-
-            // Formata o valor para ter uma casa decimal, se necessário
-            if (input.value.includes('.')) {
-                var parts = input.value.split('.');
-                if (parts[1].length > 1) {
-                    input.value = parseFloat(input.value).toFixed(1);
-                }
-            }
-        }
-    // Função para abrir o modal CADASTRO
-    function abrirModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "flex";
-    }
-
-    // Função para fechar o modal CADASTRO
-    function fecharModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
-    }
-
-    // Função para abrir o modal ALTERAR
-    function abrirModalAlterar() {
-        var modal = document.getElementById("modalAlterar");
-        modal.style.display = "flex";
-    }
-
-    // Função para fechar o modal ALTERAR
-    function fecharModalAlterar() {
-        var modal = document.getElementById("modalAlterar");
-        modal.style.display = "none";
-    }
-    function formatarNumeroInteiro(input) {
-    // Remove qualquer caractere que não seja número
-    input.value = input.value.replace(/[^0-9]/g, '');
-}
-
-
-    function formatarNumero(input) {
-        // Remove qualquer caractere que não seja número ou ponto decimal
-        input.value = input.value.replace(/[^0-9.]/g, '');
-
-        // Divide a entrada em parte inteira e parte decimal
-        const partes = input.value.split('.');
-
-        // Limita a parte decimal a duas casas decimais
-        if (partes[1] && partes[1].length > 2) {
-            partes[1] = partes[1].slice(0, 2);
-        }
-
-        // Recria o valor formatado
-        input.value = partes.join('.');
-    }
-    function updateRadioInputs() {
+function updateRadioInputs() {
       var preview = document.getElementById('preview');
       var radios = preview.querySelectorAll('.form-check-input');
       var labels = preview.querySelectorAll('.form-check-label');
@@ -247,20 +151,20 @@
     }
 
     function handleFile(file, i) {
-    console.log(file.name);
-    if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+      console.log(file.name);
+      if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
         alert('Só são permitidos arquivos de imagem (jpg, jpeg, png).');
         this.value = '';
         return;
-    }
+      }
 
-    var reader = new FileReader();
+      var reader = new FileReader();
 
-    reader.onload = function (e) {
+      reader.onload = function (e) {
         var img = document.createElement('img');
         img.src = e.target.result;
         img.alt = 'Imagem-produto';
-        img.className = 'carousel-item';
+        img.className = 'card-img-top';
 
         var cardBody = document.createElement('div');
         cardBody.className = 'card-body d-flex flex-column';
@@ -290,21 +194,21 @@
 
         var card = document.createElement('div');
         card.className = 'card p-2 m-1';
+        card.style.width = '18rem';
         card.appendChild(closeButton);
         card.appendChild(img);
         card.appendChild(cardBody);
 
         closeButton.addEventListener('click', function () {
-            removeImage(card, file);
-            updateRadioInputs();
+          removeImage(card, file);
+          updateRadioInputs()
         });
 
         preview.appendChild(card);
-    };
+      };
 
-    reader.readAsDataURL(file);
-}
-
+      reader.readAsDataURL(file);
+    }
 
     document.body.addEventListener('change', function (event) {
       if (event.target.id === 'imagem') {
@@ -319,7 +223,7 @@
     });
 
 
-    document.getElementById('modalCadastroProd').addEventListener('submit', function (e) {
+    document.getElementById('exampleModal').addEventListener('submit', function (e) {
       var radios = document.getElementsByName('imgPrincipal');
       var formValid = false;
 
@@ -334,18 +238,6 @@
         e.preventDefault();
       }
     });
-
-
-
-
-
-
-
-
-
-//-------------------------------->FUNCIONAMENTO DO MODAL<--------------------------------
-  // Funcionamento do modal de ALTERAR
-
 
 </script>
 

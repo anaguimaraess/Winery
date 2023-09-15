@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/styles/listaProdutoStyle.css}" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
@@ -16,27 +17,53 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <title>Winery:: Lista Produtos</title>
 </head>
-<style>
-
-
-</style>
 <body>
-<div class="containerHeader">
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Produto</a></li>
-                <li><a href="#">Usuário</a></li>
-            </ul>
-        </nav>
-        <div class="search-bar">
-            <button class="buttonSearch">SAIR</button>
-        </div>
-    </header>
-</div>
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
+    <div class="container">
+        <a class="navbar-brand" href="/home">
+            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+        </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/admin/listarProdutos">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                  <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                </svg>
+                Produtos
+              </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/admin/listar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+                  <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+                </svg>
+                Usuários
+              </a>
+          </li>
+
+        </ul>
+        <form class="d-flex" role="search">
+            <a class="nav-link text-white" href="/authentication/logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                  <path fill-rule="evenodd" d="Ma15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                </svg>
+                Sair
+              </a>
+        </form>
+      </div>
+    </div>
+  </nav>
 <div class="card-listagem">
     <div class="card-header">
-        <h1>Lista de Produtos</h1>
+        <h1 >Lista de Produtos</h1>
     </div>
     <div class="div-funcoes">
         <button class="botaoNovo" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Novo</button>
@@ -83,7 +110,7 @@
                 <form th:action="@{/admin/inativarProduto}" th:method="post" id="inativarProdutoForm">
                     <input type="hidden" name="idProduto" th:value="${produto.idProduto}" />
                     <input type="hidden" name="page" />
-                    <button class="botoes" data-id="${produto.idProduto}" onclick="alterarStatus('${produto.idProduto}', 'inativar')">Inativar</button>
+                    <button class="botoes !important" data-id="${produto.idProduto}" onclick="alterarStatus('${produto.idProduto}', 'inativar')">Inativar</button>
                 </form>
 
 
@@ -126,47 +153,47 @@
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Cadastro de Produto</h1>
+        <div class="modal-header bodyModal">
+          <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">Cadastro de Produto</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bodyModal">
             <div id="modalMessages" class="position-absolute"></div>
 
             <form th:action="@{/admin/cadastrarProdutos}" method="post" th:object="${produto}" id="formCadastroProduto" enctype="multipart/form-data">
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="nome" class="form-label">Nome</label>
-                    <input type="text" class="form-control" id="nome" name="nomeProduto" maxlength="200" required>
+                    <label for="nome" class="form-label text-white">Nome</label>
+                    <input type="text" class="form-control inputPadrao" id="nome" name="nomeProduto" maxlength="200" required>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="valor" class="form-label">Valor</label>
-                    <input type="number" class="form-control" id="valor" name="precoProduto" step="0.01" min="1" required>
+                    <label for="valor" class="form-label text-white">Valor</label>
+                    <input type="number" class="form-control inputPadrao" id="valor" name="precoProduto" step="0.01" min="1" required>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="quantidade" class="form-label">Quantidade</label>
-                    <input type="number" class="form-control" id="quantidade" name="qtdEstoque" min="1" required>
+                    <label for="quantidade" class="form-label text-white">Quantidade</label>
+                    <input type="number" class="form-control inputPadrao" id="quantidade" name="qtdEstoque" min="1" required>
                   </div>
-                    <div class="col-md-6 mb-3">
-                    <label for="avaliacao" class="form-label">Avaliação</label>
-                    <input type="number" class="form-control" id="avaliacao" name="avaliacaoProduto" min="0" max="5" step="0.5" required>
+                  <div class="col-md-6 mb-3">
+                    <label for="avaliacao" class="form-label text-white">Avaliação</label>
+                    <input type="number" class="form-control inputPadrao" id="avaliacao" name="avaliacaoProduto" min="0" max="5" step="0.5" required>
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label for="descricao" class="form-label">Descrição</label>
-                  <textarea class="form-control" id="descricao" name="descricaoProduto" rows="4" maxlength="2000"></textarea>
+                  <label for="descricao" class="form-label text-white">Descrição</label>
+                  <textarea class="form-control inputPadrao" id="descricao" name="descricaoProduto" rows="4" maxlength="2000"></textarea>
                 </div>
                 <div class="mb-3">
                   <label for="imagem" class="form-label">Imagens</label>
-                  <input type="file" class="form-control" id="imagem" name="imagem" multiple required>
+                  <input type="file" class="form-control inputPadrao" id="imagem" name="imagem" multiple required>
                 </div>
                 <div id="preview" class="row p-2 justify-content-center">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary"id="botaoSalvar" >Salvar</button>
+                    <button type="submit" class="btn btn-primary buttonSalvar">Salvar alteração</button>
                   </div>
               </form>
         </div>
@@ -341,32 +368,30 @@ $(document).ready(function () {
     $('#formCadastroProduto').on('submit', function (event) {
         event.preventDefault();
 
-        var formData = new FormData(this);
-        var modal = $('#exampleModal');
+        var formData = $(this).serialize();
+        var modal = $('#myModal');
 
         $.ajax({
             type: 'POST',
             url: '/admin/cadastrarProdutos',
             data: formData,
-            processData: false, // Não processar os dados
-            contentType: false, // Não configurar o tipo de conteúdo
             success: function (data) {
                 $('#modalMessages').empty();
 
                 if (data.startsWith('Sucesso:')) {
                     var mensagemSucesso = data.replace('Sucesso:', '');
-                    $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
+                    $('#modalMessages').append('<div class="alert alert-success" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemSucesso + '</div>').find('.alert').popover('show');
 
                     $('#formCadastroProduto')[0].reset();
 
                     setTimeout(function () {
-                        $('#exampleModal').modal('hide');
+                        $('#myModal').modal('hide');
                         location.reload();
                     }, 3500);
 
                 } else if (data.startsWith('Erro:')) {
                     var mensagemErro = data.replace('Erro:', '');
-                    $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
+                    $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
                 }
             },
             error: function (xhr) {
@@ -378,8 +403,8 @@ $(document).ready(function () {
         });
     });
 
-    $('#exampleModal').on('hidden.bs.modal', function () {
-        $('#modalMessages .alert').remove();
+    $('#myModal').on('hidden.bs.modal', function () {
+        $('#modalMessages .alert').popover('hide');
     });
 });
 
