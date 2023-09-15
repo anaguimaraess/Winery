@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -195,8 +196,8 @@ public class PoderAdminService {
     }
 
     private String salvaImagem(MultipartFile imagem, String produto) throws IOException {
-        produto = produto.replaceAll("\\s+", "");
-        String nomeArquivo = UUID.randomUUID() + "-" + produto;
+        String nomeOriginal = StringUtils.cleanPath(imagem.getOriginalFilename()).replace(" ", "_");
+        String nomeArquivo = UUID.randomUUID() + "-"  + nomeOriginal;
         Path caminho = Paths.get("src/main/resources/static/imagensProdutos/" + nomeArquivo);
         Files.copy(imagem.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
         return nomeArquivo;
