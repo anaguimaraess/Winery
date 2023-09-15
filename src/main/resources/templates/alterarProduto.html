@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="shortcut icon" href="../static/imagens/faviconWinery.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <title>Winery:: Alterar Produto</title>
+    <style>
+        body{
+            background-color: #000000f0;
+        }
+        .buttonSalvar{
+            background: linear-gradient(to bottom, #4F0599, #7A0707);
+            color: #fff;
+            border: none;
+        }
+
+        .inputPadrao{
+            border: none;
+            box-shadow: 1px 1px 6px #0000001c;
+            border-bottom: 1px solid #ccc;
+            color: white;
+            background-color: transparent;
+        }
+        .inputPadrao:focus{
+            background-color: #000000f0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container fundoTela">
+        <p class="text-center fs-1 text-white">Alterar o Cadastro do Produto</p>
+        <hr class="text-white">
+        <form th:action="@{/admin/}" method="post" th:object="${produto}" id="formCadastroProduto" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="nome" class="form-label text-white">Nome</label>
+                    <input type="text" class="form-control inputPadrao" id="nome" name="nomeProduto" maxlength="200" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="valor" class="form-label text-white">Valor</label>
+                    <input type="number" class="form-control inputPadrao" id="valor" name="precoProduto" step="0.01" min="1" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="quantidade" class="form-label text-white">Quantidade</label>
+                    <input type="number" class="form-control inputPadrao" id="quantidade" name="qtdEstoque" min="1" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="avaliacao" class="form-label text-white">Avaliação</label>
+                    <input type="number" class="form-control inputPadrao" id="avaliacao" name="avaliacaoProduto" min="0" max="5" step="0.5" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="descricao" class="form-label text-white">Descrição</label>
+                <textarea class="form-control inputPadrao" id="descricao" name="descricaoProduto" rows="4" maxlength="2000"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="imagem" class="form-label text-white">Imagens</label>
+                <input type="file" class="form-control inputPadrao text-white" id="imagem" name="imagem" multiple required>
+            </div>
+            <div id="preview" class="row p-2 justify-content-center">
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" class="btn btn-primary btn-sm me-2 buttonSalvar">Salvar</button>
+                <button type="button" class="btn btn-secondary btn-sm">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function updateRadioInputs() {
+      var preview = document.getElementById('preview');
+      var radios = preview.querySelectorAll('.form-check-input');
+      var labels = preview.querySelectorAll('.form-check-label');
+      for (var i = 0; i < radios.length; i++) {
+        radios[i].id = 'exampleRadios' + i;
+        radios[i].value = i;
+        labels[i].htmlFor = 'exampleRadios' + i;
+      }
+    }
+
+    function removeImage(card, file) {
+      var input = document.getElementById('imagem');
+      var preview = document.getElementById('preview');
+
+      preview.removeChild(card);
+
+      // Cria um novo objeto de FormData
+      var dataTransfer = new DataTransfer();
+      for (var i = 0; i < input.files.length; i++) {
+        if (input.files[i] !== file) {
+          dataTransfer.items.add(input.files[i]);
+        }
+      }
+
+      // Atualiza o input com os arquivos restantes
+      input.files = dataTransfer.files;
+    }
+
+    function handleFile(file, i) {
+      console.log(file.name);
+      if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+        alert('Só são permitidos arquivos de imagem (jpg, jpeg, png).');
+        this.value = '';
+        return;
+      }
+
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = 'Imagem-produto';
+        img.className = 'card-img-top';
+
+        var cardBody = document.createElement('div');
+        cardBody.className = 'card-body d-flex flex-column';
+
+        var formCheck = document.createElement('div');
+        formCheck.className = 'form-check mt-auto';
+
+        var radioInput = document.createElement('input');
+        radioInput.className = 'form-check-input';
+        radioInput.type = 'radio';
+        radioInput.name = 'imgPrincipal';
+        radioInput.id = 'exampleRadios' + i;
+        radioInput.value = i;
+        var radioLabel = document.createElement('label');
+        radioLabel.className = 'form-check-label';
+        radioLabel.htmlFor = 'exampleRadios' + i;
+        radioLabel.textContent = 'Imagem principal';
+
+        formCheck.appendChild(radioInput);
+        formCheck.appendChild(radioLabel);
+        cardBody.appendChild(formCheck);
+
+        var closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.className = 'btn-close';
+        closeButton.setAttribute('aria-label', 'Close');
+
+        var card = document.createElement('div');
+        card.className = 'card p-2 m-1';
+        card.style.width = '18rem';
+        card.appendChild(closeButton);
+        card.appendChild(img);
+        card.appendChild(cardBody);
+
+        closeButton.addEventListener('click', function () {
+          removeImage(card, file);
+          updateRadioInputs()
+        });
+
+        preview.appendChild(card);
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    document.body.addEventListener('change', function (event) {
+      if (event.target.id === 'imagem') {
+        var preview = document.getElementById('preview');
+        preview.innerHTML = '';
+
+
+        for (var i = 0; i < event.target.files.length; i++) {
+          handleFile(event.target.files[i], i);
+        }
+      }
+    });
+
+
+    document.getElementById('modalCadastroProd').addEventListener('submit', function (e) {
+      var radios = document.getElementsByName('imgPrincipal');
+      var formValid = false;
+
+      var i = 0;
+      while (!formValid && i < radios.length) {
+        if (radios[i].checked) formValid = true;
+        i++;
+      }
+
+      if (!formValid) {
+        alert("Por favor, selecione uma imagem principal.");
+        e.preventDefault();
+      }
+    });
+    </script>
+</body>
+</html>
