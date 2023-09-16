@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -41,18 +44,18 @@ public class EstoquistaController {
         return "listaProdutoEstoquista";
     }
 
-    @PutMapping("/alterarEstoque")
-    public ResponseEntity<?> alterarQuantidade(@RequestBody Map<String, Integer> request){
-        try{
-            int idProduto = request.get("idProduto");
-            int novaQuantidade = request.get("qtdEstoque");
+    // @PostMapping("/alterarEstoque")
+    // public ResponseEntity<?> alterarQuantidade(@RequestBody Map<String, Integer> request){
+    //     try{
+    //         int idProduto = request.get("idProduto");
+    //         int novaQuantidade = request.get("qtdEstoque");
 
-            cadastroProdutoService.alterarQuantidade(idProduto,novaQuantidade);
-            return ResponseEntity.status(HttpStatus.OK).body("Quantidade atualizada com sucesso!");
-        }catch (BusinessException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao alterar o produto!");
-        }
-    }
+    //         cadastroProdutoService.alterarQuantidade(idProduto,novaQuantidade);
+    //         return ResponseEntity.status(HttpStatus.OK).body("Quantidade atualizada com sucesso!");
+    //     }catch (BusinessException e){
+    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao alterar o produto!");
+    //     }
+    // }
 
     @GetMapping("/listarProdutos")
     public String listarTodosOsProdutos(Model model, @RequestParam(defaultValue = "0") int page, HttpServletResponse response) throws BusinessException {
@@ -69,5 +72,23 @@ public class EstoquistaController {
         model.addAttribute("produto", produto.get());
         response.setStatus(HttpStatus.OK.value());
         return "alterarProdutoEstoquista";
+    }
+
+       @PostMapping("/alterarProduto")
+    public String editarProduto(@ModelAttribute Produto produto,
+                                                @RequestParam(required = false) MultipartFile[] imagemInput,
+                                                @RequestParam("imagensParaRemover") String imagensParaRemover,
+                                                @RequestParam("imagemPrincipalNova") String imagensParaAtualizar,
+                                                @RequestParam(required = false) String imgPrincipal, RedirectAttributes redirect, Model model, HttpServletResponse response) {
+        try {
+            cadastroProdutoService.editarProduto(produto, imagemInput, imagensParaRemover, imagensParaAtualizar, imgPrincipal, redirect);
+            model.addAttribute("produto", produto);
+            response.setStatus(HttpStatus.OK.value());
+            // return ResponseEntity.ok("Sucesso: Produto alterado com sucesso!");
+           return "redirect:/estoque/listarProdutos";
+        } catch (Exception e) {
+            return "redirect:/estoque/listarProdutos";
+            // return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
+        }
     }
 }
