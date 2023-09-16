@@ -196,7 +196,7 @@ public class AdminController {
     }
 
     @PostMapping("/alterarProduto")
-    public ResponseEntity<String> editarProduto(@ModelAttribute Produto produto,
+    public String editarProduto(@ModelAttribute Produto produto,
                                                 @RequestParam(required = false) MultipartFile[] imagemInput,
                                                 @RequestParam("imagensParaRemover") String imagensParaRemover,
                                                 @RequestParam("imagemPrincipalNova") String imagensParaAtualizar,
@@ -205,9 +205,11 @@ public class AdminController {
             cadastroProdutoService.editarProduto(produto, imagemInput, imagensParaRemover, imagensParaAtualizar, imgPrincipal, redirect);
             model.addAttribute("produto", produto);
             response.setStatus(HttpStatus.OK.value());
-            return ResponseEntity.ok("Sucesso: Produto alterado com sucesso!");
+            // return ResponseEntity.ok("Sucesso: Produto alterado com sucesso!");
+           return "redirect:/admin/listarProdutos";
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
+            return "redirect:/admin/listarProdutos";
+            // return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
     }
     @GetMapping("/buscarProduto")

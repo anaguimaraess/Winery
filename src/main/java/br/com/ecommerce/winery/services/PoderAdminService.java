@@ -176,7 +176,7 @@ public class PoderAdminService {
                             novaImagem.setImagemPrincipal(true);
                         }
                         p++;
-                        novaImagem.setUrl("imagens/produtos/" + imgFileName);
+                        novaImagem.setUrl("imagensProdutos/" + imgFileName);
                         novaImagem.setProduto(produto);
                         imagemRepository.save(novaImagem);
                     } catch (Exception e) {
