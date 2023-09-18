@@ -197,10 +197,10 @@ public class AdminController {
 
     @PostMapping("/alterarProduto")
     public String editarProduto(@ModelAttribute Produto produto,
-                                                @RequestParam(required = false) MultipartFile[] imagemInput,
-                                                @RequestParam("imagensParaRemover") String imagensParaRemover,
-                                                @RequestParam("imagemPrincipalNova") String imagensParaAtualizar,
-                                                @RequestParam(required = false) String imgPrincipal, RedirectAttributes redirect, Model model, HttpServletResponse response) {
+                                @RequestParam(required = false) MultipartFile[] imagemInput,
+                                @RequestParam("imagensParaRemover") String imagensParaRemover,
+                                @RequestParam("imagenPrinclAt") String imagensParaAtualizar,
+                                @RequestParam(required = false) String imgPrincipal, RedirectAttributes redirect, Model model, HttpServletResponse response) {
         try {
             cadastroProdutoService.editarProduto(produto, imagemInput, imagensParaRemover, imagensParaAtualizar, imgPrincipal, redirect);
             model.addAttribute("produto", produto);
