@@ -5,58 +5,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Inclua o CSS e o jQuery -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery..min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- JavaScript (Opcional) -->
-    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
-    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
-    <!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
-    <!--        crossorigin="anonymous"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"-->
-    <!--        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"-->
-    <!--        crossorigin="anonymous"></script>-->
-    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"-->
-    <!--        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"-->
-    <!--        crossorigin="anonymous"></script>-->
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
     <title>Winery:: Produto</title>
 </head>
 <style>
-    .carousel-control-next-icon {
-        color: black;
-        background-color: black;
-    }
+.custom-carousel-image {
+    max-width: 190px;
+    max-height: 100px;
+}
 
-    .carousel-control-prev-icon {
-        color: black;
-        background-color: black;
-    }
+.custom-carousel {
+    margin-top: 20px;
+}
 
-    .custom-carousel-image {
-        max-width: 200px;
-        max-height: 100px;
-    }
-
-    .custom-carousel {
-        margin-top: 20px;
-    }
-
-    .tamanho-carousel {
-        width: 50%;
-        height: 110px;
-        margin-top: 15px;
-    }
-    .tamanho-imagem-principal{
-      width: 100%;
-      height: 100%;
-    }
-    .star {
-    color: lightgray; /* Cor das estrelas inativas */
-    cursor: pointer;
+.tamanho-carousel {
+    width: 50%;
+    height: 110px;
+    margin-top: 15px;
+}
+.tamanho-imagem-principal{
+  width: 100%;
+  height: 100%;
+}
+.star {
+color: lightgray; /* Cor das estrelas inativas */
+cursor: pointer;
 }
 
 .fundo-container{
@@ -81,13 +62,44 @@ body{
     background: linear-gradient(to bottom, #000000, #000000f0);
 }
 
+.sub-imagens-container {
+    max-width: 100%;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.sub-imagens-container .owl-carousel {
+    display: flex;
+}
+
+/* Estilos para o botão "Anterior" (esquerda) */
+.owl-carousel .owl-nav button.owl-prev {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 70px; /* Tamanho desejado dos botões (ajuste conforme necessário) */
+    color: white;
+}
+
+/* Estilos para o botão "Próximo" (direita) */
+.owl-carousel .owl-nav button.owl-next {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 70px; /* Tamanho desejado dos botões (ajuste conforme necessário) */
+    color: white; /* Cor dos ícones (ajuste conforme necessário) */
+}
+
+
 </style>
 <body>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px"  alt="Logo da Winery">
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,10 +145,24 @@ body{
     <hr>
     <div class="row">
         <th:block th:each="imagem, iterStat : ${produto.imagens}">
-            <div th:if="${imagem.imagemPrincipal}"  class="col-md-6">
-                <img id ='imagemPrincipal' th:src="${'/'+imagem.url}"  class="rounded mx-auto d-block tamanho-imagem-principal" alt="...">
+            <div th:if="${imagem.imagemPrincipal}"  class="col-md-6" >
+                <div style="position: relative; width: 100%; height: 400px">
+                    <img id='imagemPrincipal' th:src="${'/'+imagem.url}" class="rounded mx-auto d-block tamanho-imagem-principal quadrado" alt="...">
+                </div>
+                <div class="sub-imagens-container">
+                    <div class="owl-carousel">
+                        <th:block th:each="imagem, iterStat : ${produto.imagens}">
+                            <div>
+                                <img th:src="${'/'+imagem.url}" class="rounded mx-auto d-block custom-carousel-image"
+                                     th:alt="${'Imagem ' + iterStat.index}" th:data-imagem-url="${imagem.url}" onclick="atualizarImagemPrincipal(this)">
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
             </div>
         </th:block>
+
+
 
         <div class="col-md-6">
             <form class="form-horizontal">
@@ -167,45 +193,9 @@ body{
             </form>
         </div>
     </div>
-    <!-- Carrossel de Imagens -->
-    <div class="row">
-        <div class="col-md-12">
-            <div id="image-carousel" class="carousel slide tamanho-carousel" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <th:block th:each="imagem, iterStat : ${produto.imagens}">
-                        <li data-target="#image-carousel" th:data-bs-slide-to="${iterStat.index}" th:class="${imagem.imagemPrincipal} ? 'active' : ''"></li>
-                    </th:block>
-                </ol>
-                <div class="carousel-inner">
-                    <th:block th:each="imagem, iterStat : ${produto.imagens}">
-                        <div class="carousel-item active" >
-                            <img th:src="${'/'+imagem.url}" class="rounded mx-auto d-block custom-carousel-image"
-                            th:alt="${'Imagem' + iterStat.index}" th:data-imagem-url="${imagem.url}" onclick="atualizarImagemPrincipal(this)">
-                        </div>
-                    </th:block>
-                </div>
-                <a class="carousel-control-prev" href="#image-carousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Anterior</span>
-                </a>
-                <a class="carousel-control-next" href="#image-carousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Próximo</span>
-                </a>
-            </div>
-        </div>
-    </div>
 </div>
 
-<script>
-        function atualizarImagemPrincipal(element) {
-            
-         var url = element.getAttribute('data-imagem-url')
-         console.info(url)
-         var imagem = document.getElementById('imagemPrincipal');
-            imagem.src = url;
-        }
-    </script>
+
 <script>
 
 const avaliacaoProdutoThymeleaf = parseFloat([[${produto.avaliacaoProduto}]]);
@@ -217,6 +207,55 @@ $("#star-rating").rateYo({
     readOnly: true
 });
 
+
+function atualizarImagemPrincipal(element) {
+    var imagemUrl = $(element).attr('src');
+    $('#imagemPrincipal').attr('src', imagemUrl);
+}
+$(document).ready(function () {
+        $(".owl-carousel").owlCarousel({
+            items: 3, // Define o número de sub-imagens visíveis de cada vez
+            loop: true, // Ativa o loop do carrossel
+            margin: 10, // Espaçamento entre as sub-imagens
+            nav: true, // Exibe botões de navegação "previous" e "next"
+            responsive: {
+                0: {
+                    items: 1 // Número de sub-imagens visíveis em telas menores
+                },
+                768: {
+                    items: 3 // Número de sub-imagens visíveis em telas maiores
+                }
+            }
+        });
+    });
+
+    $(document).ready(function () {
+    var owl = $(".owl-carousel");
+
+    owl.owlCarousel({
+        items: 3, // Define o número de sub-imagens visíveis de cada vez
+        loop: true, // Ativa o loop do carrossel
+        margin: 10, // Espaçamento entre as sub-imagens
+        nav: false, // Desative os botões de navegação Owl Carousel
+        responsive: {
+            0: {
+                items: 1 // Número de sub-imagens visíveis em telas menores
+            },
+            768: {
+                items: 3 // Número de sub-imagens visíveis em telas maiores
+            }
+        }
+    });
+
+    // Adicione funcionalidade aos botões personalizados
+    $("#custom-prev").click(function () {
+        owl.trigger("prev.owl.carousel");
+    });
+
+    $("#custom-next").click(function () {
+        owl.trigger("next.owl.carousel");
+    });
+});
 
 </script>
 
