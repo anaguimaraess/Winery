@@ -166,13 +166,13 @@ body{
 
         <div class="col-md-6">
             <form class="form-horizontal">
-                <div class="form-group price_elem row">
+                <div class="form-group price_elem row mt-2">
                     <label class="col-sm-3 col-md-3 form-control-label nopaddingtop teeexto">Preço:</label>
                     <div class="col-sm-8 col-md-9">
                         <span th:text="'R$ ' + ${produto.precoProduto}" class="product-form-price teeexto"></span>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mt-5">
                     <label class="col-sm-3 col-md-3 form-control-label teeexto">Avaliação:</label>
                     <div class="col-sm-8 col-md-9">
                         <div style="display: flex; align-items: center;">
@@ -180,18 +180,20 @@ body{
                             <span style="margin-left: 5px; color: #ccc;">(<span th:text="${produto.avaliacaoProduto}"></span>)</span>
                         </div>
                     </div>
-
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mt-5">
                     <label class="col-sm-3 col-md-3 form-control-label teeexto">Descrição detalhada:</label>
                     <div class="col-sm-8 col-md-9 description teeexto">
                         <p th:text="${produto.descricaoProduto}"></p>
                     </div>
                 </div>
-                <!-- Botão de compra -->
-                <button type="button" class="btn btn-primary btn-lg btn-block botao-padrao">Comprar</button>
+                <!-- Botão de compra com espaçamento superior -->
+                <div class="form-group text-center mt-5 ">
+                    <button type="button" class="btn btn-primary btn-lg botao-padrao">Comprar</button>
+                </div>
             </form>
         </div>
+
     </div>
 </div>
 
