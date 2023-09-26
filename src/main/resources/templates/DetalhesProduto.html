@@ -20,6 +20,8 @@
 .corFundo {
     background: linear-gradient(to bottom, #000000, #000000f0);
   }
+
+
 .custom-carousel-image {
     max-width: 190px;
     max-height: 100px;
@@ -45,6 +47,7 @@ cursor: pointer;
 
 .fundo-container{
     background: linear-gradient(to bottom, #000000, #000000f0);
+    border-radius:10px;
 }
 .text-center{
     color: white;
@@ -64,7 +67,7 @@ hr{
 }
 
 body{
-    background: linear-gradient(to bottom, #000000, #000000f0);
+  background-image: url('../imagens/3.png');
 }
 
 .sub-imagens-container {
@@ -133,9 +136,9 @@ body{
             </ul>
         </div>
     </div>
-</nav><br>
-<br>
-<div class="container fundo-container">
+</nav>
+
+<div class="container fundo-container mt-3">
     <h1 class="text-center" th:text="${produto.nomeProduto}"></h1>
     <hr>
     <div class="row">

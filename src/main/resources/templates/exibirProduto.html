@@ -64,7 +64,7 @@ hr{
 }
 
 body{
-    background: linear-gradient(to bottom, #000000, #000000f0);
+  background-image: url('../imagens/3.png');
 }
 
 .sub-imagens-container {
@@ -143,8 +143,7 @@ body{
         </div>
     </div>
 </nav>
-<br>
-<br>
+
 <div class="container fundo-container">
     <h1 class="text-center" th:text="${produto.nomeProduto}"></h1>
     <hr>
@@ -170,35 +169,34 @@ body{
 
 
         <div class="col-md-6">
-            <form class="form-horizontal">
-                <div class="form-group price_elem row mt-2">
+            <form class="form-horizontal" style="padding: 50px;">
+                <div class="form-group price_elem row mt-4">
                     <label class="col-sm-3 col-md-3 form-control-label nopaddingtop teeexto">Preço:</label>
-                    <div class="col-sm-8 col-md-9">
+                    <div class="col-sm-8 col-md-9" style="padding: 10px;">
                         <span th:text="'R$ ' + ${produto.precoProduto}" class="product-form-price teeexto"></span>
                     </div>
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-3 col-md-3 form-control-label teeexto">Avaliação:</label>
-                    <div class="col-sm-8 col-md-9">
+                    <div class="col-sm-8 col-md-9" style="padding: 10px;">
                         <div style="display: flex; align-items: center;">
                             <div id="star-rating"></div>
                             <span style="margin-left: 5px; color: #ccc;">(<span th:text="${produto.avaliacaoProduto}"></span>)</span>
                         </div>
                     </div>
                 </div>
-                <div class="form-group row mt-5">
+                <div class="form-group row mt-6">
                     <label class="col-sm-3 col-md-3 form-control-label teeexto">Descrição detalhada:</label>
-                    <div class="col-sm-8 col-md-9 description teeexto">
+                    <div class="col-sm-9 col-md-9 description teeexto" style="padding-right: 20px;">
                         <p th:text="${produto.descricaoProduto}"></p>
                     </div>
                 </div>
                 <!-- Botão de compra com espaçamento superior -->
-                <div class="form-group text-center mt-5 ">
-                    <button type="button" class="btn btn-primary btn-lg botao-padrao">Comprar</button>
+                <div class="form-group text-center mt-5">
+                    <button type="button" class="btn btn-primary btn-lg botao-padrao" style="padding: 10px 20px;">Comprar</button>
                 </div>
             </form>
         </div>
-
     </div>
 </div>
 
