@@ -44,19 +44,6 @@ public class EstoquistaController {
         return "listaProdutoEstoquista";
     }
 
-    // @PostMapping("/alterarEstoque")
-    // public ResponseEntity<?> alterarQuantidade(@RequestBody Map<String, Integer> request){
-    //     try{
-    //         int idProduto = request.get("idProduto");
-    //         int novaQuantidade = request.get("qtdEstoque");
-
-    //         cadastroProdutoService.alterarQuantidade(idProduto,novaQuantidade);
-    //         return ResponseEntity.status(HttpStatus.OK).body("Quantidade atualizada com sucesso!");
-    //     }catch (BusinessException e){
-    //         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao alterar o produto!");
-    //     }
-    // }
-
     @GetMapping("/listarProdutos")
     public String listarTodosOsProdutos(Model model, @RequestParam(defaultValue = "0") int page, HttpServletResponse response) throws BusinessException {
         Pageable pageable = PageRequest.of(page, 10); // 10 produtos por página

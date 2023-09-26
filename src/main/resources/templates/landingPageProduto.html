@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Winery:: Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+
+</head>
+<style>
+.star {
+color: lightgray; /* Cor das estrelas inativas */
+cursor: pointer;
+}
+  .corFundo {
+    background: linear-gradient(to bottom, #000000, #000000f0);
+  }
+  .corButtonPadrao {
+    background: linear-gradient(to bottom, #4F0599, #7A0707);
+    color: #fff;
+    border: none;
+    width: 200px;
+  }
+
+  .cardsProduto{
+    margin-top: 15px;
+    margin-left: 30px;
+    margin-bottom: 15px;
+
+  }
+  .footerWinery{
+    margin-top: 30px;
+    background: linear-gradient(to bottom, #000000, #000000f0);;
+  }
+
+<!--     .card-text-limit {-->
+<!--        display: -webkit-box;-->
+<!--        -webkit-line-clamp: 2;-->
+<!--        -webkit-box-orient: vertical;-->
+<!--        overflow: hidden;-->
+<!--        text-overflow: ellipsis;-->
+<!--    }-->
+
+    /* Define uma largura fixa para todos os cards */
+    .card {
+        width: 280px;
+        margin: 10px;
+    }
+
+    /* Ajusta o layout dos cards para 4 por linha */
+    .cards-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+</style>
+<body class="corFundo">
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/Winery">
+            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item ml-auto">
+                    <a class="nav-link text-white" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                        </svg>
+                    </a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link text-white" href="#">
+                        Faça login/crie seu login
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid"> <!-- Início do container para o carrossel -->
+    <div id="carouselExampleCaptions" class="carousel slide" style="max-width: 100%; height: 500px; margin: 0 auto;">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img th:src="@{/imagens/fotoHome1.png}" class="d-block w-100" alt="..." style="max-width: 100%; height: 500px;">
+                <div class="carousel-caption d-none d-md-block">
+                    <!-- <h5>First slide label</h5>
+                    <p>Some representative placeholder content for the first slide.</p> -->
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img th:src="@{/imagens/fotoHome2.png}" class="d-block w-100" alt="..." style="max-width: 100%; height: 500px;">
+                <div class="carousel-caption d-none d-md-block">
+                    <!-- <h5>Second slide label</h5>
+                    <p>Some representative placeholder content for the second slide.</p> -->
+                </div>
+            </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="container text-center cardsProduto mx-auto">
+        <div class="cards-row" style="display: flex; flex-wrap: wrap; justify-content: center;">
+            <div class="col cardsProduto text-center mx-auto" th:each="produto : ${produtos}">
+                <input type="hidden" th:id="${produto.idProduto}" th:attr="data-id=${produto.idProduto},data-nome=${produto.nomeProduto},data-avaliacao=${produto.avaliacaoProduto},data-descricao=${produto.descricaoProduto},data-preco=${produto.precoProduto},data-estoque=${produto.qtdEstoque},data-status=${produto.statusProduto}">
+
+                <!-- Encontre a imagem principal dentro da lista de imagens do produto -->
+                <div th:each="imagem, iterStat : ${produto.imagens}">
+                    <div th:if="${imagem.imagemPrincipal}">
+                        <div class="card" style="height: 100%;"> <!-- Defina a altura do card igual à altura da imagem -->
+                            <img th:src="${'/'+imagem.url}" class="card-img-top" alt="..." style="width: 279px; height: 210px;">
+                            <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%;"> <!-- Centralize verticalmente todos os elementos -->
+                                <h5 class="card-title text-black " th:text="${produto.nomeProduto}"></h5>
+                                <div class="star-rating" th:attr="data-avaliacao=${produto.avaliacaoProduto}"></div>
+                                <p class="card-text text-black card-text-limit mt-3" th:text="'Preço: R$ ' + ${produto.precoProduto}"></p>
+                                <form th:action="@{/Winery/produto}" method="get">
+                                    <input type="hidden" name="id" th:value="${produto.idProduto}" />
+                                    <button class="btn corButtonPadrao" type="submit">Detalhes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ANA AQUI É O INICIO DO MUDAR AS PAGINAS -->
+<nav>
+    <ul>
+        <!-- Link para a página anterior -->
+        <li th:if="${produtos.hasPrevious()}">
+            <a th:href="@{/Winery(page=${produtos.previousPageable().pageNumber})}" class="page-link">Anterior</a>
+        </li>
+
+        <!-- Links para páginas numéricas -->
+        <li th:each="i : ${#numbers.sequence(0, produtos.totalPages - 1)}">
+            <a th:href="@{/Winery(page=${i})}" class="page-link" th:text="${i + 1}"></a>
+        </li>
+
+        <!-- Link para a próxima página -->
+        <li th:if="${produtos.hasNext()}">
+            <a th:href="@{/Winery(page=${produtos.nextPageable().pageNumber})}" class="page-link">Próximo</a>
+        </li>
+    </ul>
+</nav>
+
+
+
+
+
+<!-- Footer -->
+<footer class="text-center text-lg-start bg-light text-muted footerWinery">
+
+
+    <div class="text-center p-4 text-white" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2023 Winery:
+        <a class="text-reset fw-bold text-white" href="https://github.com/anaguimaraess/Winery">Download Project</a>
+    </div>
+</footer>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        // Selecionar todos os elementos com a classe "star-rating"
+        $(".star-rating").each(function() {
+            // Obter a avaliação do produto a partir do atributo "data-avaliacao"
+            const avaliacaoProdutoThymeleaf = parseFloat($(this).data("avaliacao"));
+
+            // Aplicar a função RateYo a cada elemento
+            $(this).rateYo({
+                rating: avaliacaoProdutoThymeleaf,
+                starWidth: "22px",
+                halfStar: true,
+                readOnly: true
+            });
+
+
+        });
+    });
+</script>
+
+
+</body>
+</html>
