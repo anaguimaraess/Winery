@@ -181,6 +181,7 @@ public class PoderAdminService {
                         imagemRepository.save(novaImagem);
                     } catch (Exception e) {
                         log.error("Falha ao armazenar uma imagem.", e);
+                        throw new BusinessException("Falha ao armazenar uma imagem.");
                     }
                 } else {
                     break;

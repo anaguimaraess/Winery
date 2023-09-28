@@ -189,7 +189,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary buttonSalvar" id="botaoSalvar">Salvar alteração</button>
+                    <button type="submit" class="btn btn-primary buttonSalvar" id="botaoSalvar">Cadastrar</button>
                   </div>
               </form>
         </div>
@@ -302,22 +302,6 @@ function updateRadioInputs() {
     });
 
 
-    document.getElementById('exampleModal').addEventListener('submit', function (e) {
-      var radios = document.getElementsByName('imgPrincipal');
-      var formValid = false;
-
-      var i = 0;
-      while (!formValid && i < radios.length) {
-        if (radios[i].checked) formValid = true;
-        i++;
-      }
-
-      if (!formValid) {
-        alert("Por favor, selecione uma imagem principal.");
-        e.preventDefault();
-      }
-    });
-
 
 //------------------------------alterar status do produto
  function alterarStatus(idProduto, action) {
@@ -366,6 +350,21 @@ $(document).ready(function () {
 
         var formData = new FormData(this);
         var modal = $('#exampleModal');
+
+        var radios = document.getElementsByName('imgPrincipal');
+        var formValid = false;
+
+        var i = 0;
+        while (!formValid && i < radios.length) {
+          if (radios[i].checked) formValid = true;
+          i++;
+        }
+
+        if (!formValid) {
+          alert("Por favor, selecione uma imagem principal.");
+        e.preventDefault();
+          return false;
+        }
 
         $.ajax({
             type: 'POST',
