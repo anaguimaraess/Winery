@@ -224,7 +224,11 @@ public class PoderAdminService {
 
 
     public Page<Produto> listarTodosProdutosDecrescente(Pageable pageable) {
-        return produtoRepository.findAllByOrderByIdProdutoDesc(pageable);
+        return produtoRepository.findAllByOrderByIdProdutoDesc( pageable);
+    }
+
+    public Page<Produto> listarTodosProdutosDecrescenteByStatus(Pageable pageable) {
+        return produtoRepository.findAllByOrderByIdProdutoDescAndStatus(Status.ATIVO, pageable);
     }
 
     public Produto ativarProduto(int idProduto) throws BusinessException {

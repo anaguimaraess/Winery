@@ -31,7 +31,7 @@ public class HomeController {
     @GetMapping("/Winery")
     public String listarTodosUsuarios(Model model, @RequestParam(defaultValue = "0") int page, HttpServletResponse response) {
         Pageable pageable = PageRequest.of(page, 12); // 10 produtos por página
-        Page<Produto> produtosPage = cadastroProdutoService.listarTodosProdutosDecrescente(pageable);
+        Page<Produto> produtosPage = cadastroProdutoService.listarTodosProdutosDecrescenteByStatus(pageable);
         model.addAttribute("produtos", produtosPage); // Adicione a página ao modelo, não apenas a lista
         response.setStatus(HttpStatus.OK.value());
         return "landingPageProduto";
