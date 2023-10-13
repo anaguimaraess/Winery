@@ -1,8 +1,6 @@
 package br.com.ecommerce.winery.services;
 
 import br.com.ecommerce.winery.models.*;
-import br.com.caelum.stella.validation.CPFValidator;
-import br.com.caelum.stella.validation.InvalidStateException;
 import br.com.ecommerce.winery.models.CustomUserDetails;
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.Usuario;
@@ -42,45 +40,19 @@ public class PoderAdminService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
-    private final CPFValidator cpfValidator = new CPFValidator();
+    private ValidacaoUtils validacaoUtils;
 
     public Usuario cadastrarUsuario(Usuario usuario) throws BusinessException {
 
-        validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
-
+        validacaoUtils.validarSenhasIguais(usuario.getSenha(), usuario.getConfirmaSenha());
         String senha = passwordEncoder.encode(usuario.getSenha());
         usuario.setSenha(senha);
         usuario.setConfirmaSenha(senha);
-        validarEmailUnico(usuario.getEmail());
-        validarCpf(usuario.getCpf());
+        validacaoUtils.validarEmailUnico(usuario.getEmail());
+        validacaoUtils.validarCpf(usuario.getCpf());
         usuario.setStatus(Status.ATIVO);
-
         log.info("Usuário cadastrado com sucesso.");
         return usuarioRepository.save(usuario);
-    }
-
-    private boolean validarCpf(String cpf) throws BusinessException {
-        try {
-            cpfValidator.assertValid(cpf);
-            System.out.println("CPF válido.");
-            return true;
-        } catch (InvalidStateException e) {
-            throw new BusinessException("CPF inválido.");
-        }
-    }
-
-    public void validarSenhasIguais(String senha, String confirmacaoSenha) throws BusinessException {
-        if (!Objects.equals(senha, confirmacaoSenha)) {
-            log.error("As senhas não coincidem entre si.");
-            throw new BusinessException("Senhas não coincidem");
-        }
-    }
-
-    void validarEmailUnico(String email) throws BusinessException {
-        if (usuarioRepository.existsByEmail(email)) {
-            log.error("Não é possível cadastrar usuário. O email já está em uso.");
-            throw new BusinessException("O email já está em uso.");
-        }
     }
 
     public List<Usuario> listarTodosUsuarios() {
@@ -108,11 +80,11 @@ public class PoderAdminService {
 
         usuarioCadastrado.setNome(usuarioAtualizado.getNome());
 
-        if (validarCpf(usuarioAtualizado.getCpf())) {
+        if (validacaoUtils.validarCpf(usuarioAtualizado.getCpf())) {
             usuarioCadastrado.setCpf(usuarioAtualizado.getCpf());
         }
 
-        validarSenhasIguais(usuarioAtualizado.getSenha(), usuarioAtualizado.getConfirmaSenha());
+        validacaoUtils.validarSenhasIguais(usuarioAtualizado.getSenha(), usuarioAtualizado.getConfirmaSenha());
         if (usuarioAtualizado.getSenha().isBlank() || usuarioAtualizado.getSenha().isEmpty()) {
             usuarioAtualizado.setSenha(usuarioCadastrado.getSenha());
             usuarioAtualizado.setConfirmaSenha(usuarioCadastrado.getConfirmaSenha());
