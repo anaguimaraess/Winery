@@ -24,7 +24,7 @@ public class ClienteService {
     private ValidacaoUtils validacaoUtils;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-    public void atualizarCliente(Cliente cliente) throws BusinessException {
+    public Cliente atualizarCliente(Cliente cliente) throws BusinessException {
         Cliente clienteCadastrado = clienteRepository.findById(cliente.getIdCliente()).orElse(null);
         if(clienteCadastrado == null){
             log.error("Cliente não encontrado!");
@@ -51,6 +51,7 @@ public class ClienteService {
             log.error("Cliente inválido!");
             throw new BusinessException ("Dados do cliente inválidos!");
         }
+        return clienteCadastrado;
     }
 
 
