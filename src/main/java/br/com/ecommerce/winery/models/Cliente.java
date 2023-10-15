@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
@@ -21,14 +18,20 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCliente;
+
+    @Column(nullable = false)
+    @Pattern(regexp = "[0-9]{11}", message = "CPF deve conter apenas dígitos")
+    private String cpf;
     @NotEmpty
     @Size(min = 5, max= 50)
-    private String nomeCliente;
+    @Column(name = "nome")
+    private String nome;
     @Past
     @NotNull
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
-
+    @Column(unique = true, nullable = false)
+    private String email;
     private String genero;
     @Column(nullable = false)
     @Size(min = 8, message = "Senha deve conter pelo menos 8 caracteres")
@@ -37,9 +40,11 @@ public class Cliente {
     @Column(nullable = false)
     private String confirmaSenha;
 
+    @NotNull(message = "Inserir todos os dados do endereço!")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCliente")
     private List<Endereco> endereco;
+
 
 
 
