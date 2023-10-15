@@ -1,5 +1,6 @@
 package br.com.ecommerce.winery.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Cliente {
     private String nome;
     @Past
     @NotNull
+    @JsonFormat
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
     @Column(unique = true, nullable = false)

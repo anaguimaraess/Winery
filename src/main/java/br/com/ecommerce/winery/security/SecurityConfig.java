@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/usuario/**").hasAnyAuthority("ADMIN") // Configuração para o endpoint /usuario/**
                 //.antMatchers("/estoque/**").hasAnyAuthority("ESTOQUISTA", "ADMIN")
                 .antMatchers("/cliente/cadastrarCliente").permitAll()
+                .antMatchers("/cliente/alterarCliente").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/authentication/login")

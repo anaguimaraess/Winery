@@ -83,7 +83,7 @@ public class ValidacaoUtils {
         Date dataNascimento = cliente.getDataNascimento();
         Date dataAtual = new Date();
 
-        if (dataNascimento != null || dataNascimento.before(dataAtual)) {
+        if (dataNascimento == null || dataNascimento.after(dataAtual)) {
             log.error("Data inserida inválida!");
             return false;
         }
@@ -103,11 +103,11 @@ public class ValidacaoUtils {
             throw new BusinessException("O nome do cliente deve conter pelo menos duas palavras.");
         }
 
-        for (String palavra : palavras) {
-            if (palavra.length() < 3) {
-                log.error("Nome deve conter pelo menos 3 letras!");
-                throw new BusinessException("Nome deve conter pelo menos 3 letras!");
-            }
+        String nomeSemEspacos = nome.replaceAll("\\s+", "");
+
+        if (nomeSemEspacos.length() < 3) {
+            log.error("Nome deve conter pelo menos 3 letras.");
+            throw new BusinessException("Nome deve conter pelo menos 3 letras.");
         }
     }
 

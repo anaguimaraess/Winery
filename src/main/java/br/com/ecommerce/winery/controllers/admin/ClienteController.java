@@ -19,7 +19,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping("/alterarCliente")
-    public ResponseEntity<String> alterarDadosCliente(@ModelAttribute("cliente") Cliente cliente) {
+    public ResponseEntity<String> alterarDadosCliente(@RequestBody Cliente cliente) {
         try {
             Cliente clienteAtualizado = clienteService.atualizarCliente(cliente);
             return ResponseEntity.ok("Sucesso: cliente alterado com sucesso! ");
