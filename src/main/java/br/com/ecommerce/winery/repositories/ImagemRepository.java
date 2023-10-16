@@ -15,7 +15,6 @@ public interface ImagemRepository extends JpaRepository<Imagem, Integer> {
 
     List<Imagem> findAllByProduto(Produto produto);
 
-
     Optional<Imagem> findById(int id);
 
 }
