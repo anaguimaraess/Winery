@@ -1,22 +1,24 @@
 package br.com.ecommerce.winery.controllers.admin;
 
-import br.com.ecommerce.winery.models.Cliente;
+import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(path = "/cliente")
+@RequestMapping(path = "/Winery")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
+
+    @GetMapping("/cliente")
+    public String cadastroCliente() {
+        return "cadastroCliente";
+    }
 
     @PostMapping("/alterarCliente")
     public ResponseEntity<String> alterarDadosCliente(@RequestBody Cliente cliente) {
@@ -29,7 +31,7 @@ public class ClienteController {
     }
 
     @PostMapping("/cadastrarCliente")
-    public Cliente cadastrarCliente(@RequestBody Cliente cliente) throws BusinessException {
+    public Cliente cadastrarCliente(@ModelAttribute Cliente cliente) throws BusinessException {
         return clienteService.cadastrarCliente(cliente);
     }
 

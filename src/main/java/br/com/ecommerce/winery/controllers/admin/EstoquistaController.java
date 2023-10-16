@@ -1,5 +1,5 @@
 package br.com.ecommerce.winery.controllers.admin;
-import br.com.ecommerce.winery.models.Produto;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.services.PoderAdminService;
@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller

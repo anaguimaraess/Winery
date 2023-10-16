@@ -1,10 +1,11 @@
 package br.com.ecommerce.winery.services;
 
-import br.com.ecommerce.winery.models.*;
 import br.com.ecommerce.winery.models.CustomUserDetails;
 import br.com.ecommerce.winery.models.Status;
-import br.com.ecommerce.winery.models.Usuario;
+import br.com.ecommerce.winery.models.backoffice.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.models.produtos.Imagem;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.repositories.ImagemRepository;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;

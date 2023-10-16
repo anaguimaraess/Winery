@@ -1,6 +1,6 @@
 package br.com.ecommerce.winery.repositories;
 
-import br.com.ecommerce.winery.models.Cliente;
+import br.com.ecommerce.winery.models.cliente.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

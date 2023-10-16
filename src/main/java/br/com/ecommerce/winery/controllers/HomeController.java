@@ -1,6 +1,5 @@
 package br.com.ecommerce.winery.controllers;
-import br.com.ecommerce.winery.models.Produto;
-import br.com.ecommerce.winery.models.Usuario;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.services.PoderAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Controller
 @RequestMapping(path = "")

@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.models;
+package br.com.ecommerce.winery.models.cliente;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

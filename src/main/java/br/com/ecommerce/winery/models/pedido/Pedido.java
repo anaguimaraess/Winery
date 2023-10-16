@@ -1,6 +1,6 @@
 package br.com.ecommerce.winery.models.pedido;
 
-import br.com.ecommerce.winery.models.Cliente;
+import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.pedido.formasPagamento.FormaPagamento;
 import lombok.AllArgsConstructor;
 import lombok.Data;

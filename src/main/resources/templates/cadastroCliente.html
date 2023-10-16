@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:color="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +26,7 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
         <div class="container-fluid">
             <a class="navbar-brand" href="/Winery">
-                <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
+                <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
             </a>
     
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,10 +89,10 @@
     </div>
     <div class="container corFundo">
         <h2 class="text-white">Formulario de Cadastro</h2>
-        <form class="row g-3">
+        <form class="row g-3" th:action="@{/Winery/cadastrarCliente}" method="post" th:object="${cliente}" id="formCadastroCliente"  enctype="multipart/form-data">
             <div class="col-md-6">
                 <label for="" class="form-label text-white">Nome completo</label>
-                <input type="text" class="form-control" id="">
+                <input type="text" class="form-control" id="nome" name="nome">
               </div>
               <div class="col-md-3">
                 <label for="inputGenero" class="form-label text-white">Gênero</label>
@@ -103,51 +103,55 @@
               </div>
               <div class="col-md-3">
                 <label for="" class="form-label text-white">Data de Nascimento</label>
-                <input type="text" class="form-control" id="">
+                <input type="text" class="form-control" id="dataNascimento" name="dataNascimento">
               </div>
               <div class="col-md-6">
                 <label for="" class="form-label text-white">CPF</label>
-                <input type="text" class="form-control" id="">
+                <input type="text" class="form-control" id="cpf" name="cpf">
               </div>
             <div class="col-md-6">
               <label for="" class="form-label text-white">Email</label>
-              <input type="email" class="form-control" id="">
+              <input type="email" class="form-control" id="email" name="email">
             </div>
             <div class="col-md-6">
               <label for="" class="form-label text-white">Digite a senha:</label>
-              <input type="password" class="form-control" id="">
+              <input type="password" class="form-control" id="senha" name="senha">
             </div>
             <div class="col-md-6">
                 <label for="" class="form-label text-white">Confirme a senha:</label>
-                <input type="password" class="form-control" id="">
+                <input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha">
               </div>
             <div class="col-6">
-              <label for="" class="form-label text-white">Endereço</label>
-              <input type="text" class="form-control" id="" placeholder="1234 Main St">
+              <label for="" class="form-label text-white">Logradouro</label>
+              <input type="text" class="form-control" id="logradouro" name="logradouro" placeholder="1234 Main St">
             </div>
             <div class="col-3">
                 <label for="" class="form-label text-white">Numero</label>
-                <input type="text" class="form-control" id="" placeholder="1234 Main St">
+                <input type="text" class="form-control" id="numero" name="numero" placeholder="1234 Main St">
               </div>
             <div class="col-3">
                 <label for="" class="form-label text-white">Complemento</label>
-                <input type="text" class="form-control" id="" placeholder="1234 Main St">
+                <input type="text" class="form-control" id="complemento" name="complemento" placeholder="1234 Main St">
               </div>
             <div class="col-md-3">
                 <label for="" class="form-label text-white">Bairro</label>
-                <input type="text" class="form-control" id="">
+                <input type="text" class="form-control" id="bairro" name="bairro">
               </div>
             <div class="col-md-3">
                 <label for="" class="form-label text-white">CEP</label>
-                <input type="text" class="form-control" id="">
+                <input type="text" class="form-control" id="cep" name="cep">
+            </div>
+            <div class="col-md-3">
+                <label for="" class="form-label text-white">UF</label>
+                <input type="text" class="form-control" id="uf" name="uf">
             </div>
             <div class="col-md-3">
               <label for="" class="form-label text-white">Cidade</label>
-              <input type="text" class="form-control" id="">
+              <input type="text" class="form-control" id="cidade" name="cidade">
             </div>
             <div class="col-md-3">
                 <label for="" class="form-label text-white">Estado</label>
-                <input type="text" class="form-control" id="">
+                <input type="text" class="form-control" id="estado" name="estado">
               </div>
             <div class="col-12">
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Endereço 2</button>
@@ -210,5 +214,37 @@
     
   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script>
+      $(document).ready(function () {
+    $('#formCadastroCliente').on('submit', function (event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '/Winery/cadastrarCliente',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                // Lide com a resposta do servidor
+                console.log(data);
+
+                // Exemplo: Redirecionar para outra página após o sucesso
+                window.location.href = '/pagina-de-sucesso';
+            },
+            error: function (xhr) {
+                // Lide com erros de requisição
+                console.error(xhr);
+
+                // Exemplo: Exibir mensagem de erro ao usuário
+                alert('Erro ao cadastrar cliente. Verifique os campos e tente novamente.');
+            }
+        });
+    });
+});
+
+  </script>
   </body>
 </html>

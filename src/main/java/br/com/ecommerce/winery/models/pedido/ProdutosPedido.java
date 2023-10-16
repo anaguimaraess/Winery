@@ -1,6 +1,6 @@
 package br.com.ecommerce.winery.models.pedido;
 
-import br.com.ecommerce.winery.models.Produto;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import lombok.Data;
 
 import javax.persistence.*;

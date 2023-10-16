@@ -1,5 +1,7 @@
 package br.com.ecommerce.winery.models;
 
+import br.com.ecommerce.winery.models.backoffice.Grupo;
+import br.com.ecommerce.winery.models.backoffice.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

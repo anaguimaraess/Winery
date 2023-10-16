@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.models;
+package br.com.ecommerce.winery.models.backoffice;
 public enum Grupo {
     ADMIN,
     ESTOQUISTA,

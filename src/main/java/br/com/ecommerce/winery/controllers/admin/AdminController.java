@@ -1,7 +1,7 @@
 package br.com.ecommerce.winery.controllers.admin;
 
-import br.com.ecommerce.winery.models.Produto;
-import br.com.ecommerce.winery.models.Usuario;
+import br.com.ecommerce.winery.models.produtos.Produto;
+import br.com.ecommerce.winery.models.backoffice.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;

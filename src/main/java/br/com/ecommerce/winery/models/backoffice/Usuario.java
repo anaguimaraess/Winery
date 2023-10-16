@@ -1,5 +1,6 @@
-package br.com.ecommerce.winery.models;
+package br.com.ecommerce.winery.models.backoffice;
 
+import br.com.ecommerce.winery.models.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -2,9 +2,9 @@ package br.com.ecommerce.winery.services;
 
 import br.com.caelum.stella.validation.CPFValidator;
 import br.com.caelum.stella.validation.InvalidStateException;
-import br.com.ecommerce.winery.models.Cliente;
-import br.com.ecommerce.winery.models.Endereco;
-import br.com.ecommerce.winery.models.ViaCEP;
+import br.com.ecommerce.winery.models.cliente.Cliente;
+import br.com.ecommerce.winery.models.cliente.Endereco;
+import br.com.ecommerce.winery.models.cliente.ViaCEP;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ClienteRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;

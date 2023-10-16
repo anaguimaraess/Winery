@@ -1,6 +1,6 @@
 package br.com.ecommerce.winery.repositories;
 
-import br.com.ecommerce.winery.models.Produto;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.models.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

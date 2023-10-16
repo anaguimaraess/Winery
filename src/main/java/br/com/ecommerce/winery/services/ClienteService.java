@@ -1,21 +1,16 @@
 package br.com.ecommerce.winery.services;
 
-import br.com.ecommerce.winery.models.Cliente;
-import br.com.ecommerce.winery.models.Endereco;
-import br.com.ecommerce.winery.models.Status;
-import br.com.ecommerce.winery.models.Usuario;
+import br.com.ecommerce.winery.models.cliente.Cliente;
+import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ClienteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 @Service
 @Slf4j
 public class ClienteService {
-
-
     @Autowired
     private ClienteRepository clienteRepository;
     @Autowired
@@ -60,7 +55,6 @@ public class ClienteService {
     }
 
     public Cliente cadastrarCliente(Cliente cliente) throws BusinessException {
-
         validacaoUtils.validarSenhasIguais(cliente.getSenha(), cliente.getConfirmaSenha());
         String senha = passwordEncoder.encode(cliente.getSenha());
         cliente.setSenha(senha);
@@ -71,13 +65,10 @@ public class ClienteService {
         validacaoUtils.validarNomeCliente(cliente.getNome());
         validacaoUtils.validarCEPCliente(cliente);
 
-        if(validacaoUtils.clienteValido(cliente)){
+        if (validacaoUtils.clienteValido(cliente)) {
             cliente.setDataNascimento(cliente.getDataNascimento());
         }
         log.info("Cliente cadastrado com sucesso.");
         return clienteRepository.save(cliente);
     }
-
-
-
 }

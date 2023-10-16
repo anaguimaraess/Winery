@@ -1,7 +1,7 @@
 package br.com.ecommerce.winery.repositories;
 
-import br.com.ecommerce.winery.models.Imagem;
-import br.com.ecommerce.winery.models.Produto;
+import br.com.ecommerce.winery.models.produtos.Imagem;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

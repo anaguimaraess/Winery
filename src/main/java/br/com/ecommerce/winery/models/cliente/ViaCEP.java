@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.models;
+package br.com.ecommerce.winery.models.cliente;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

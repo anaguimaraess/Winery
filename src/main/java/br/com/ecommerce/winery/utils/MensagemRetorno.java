@@ -1,6 +1,6 @@
 package br.com.ecommerce.winery.utils;
 
-import br.com.ecommerce.winery.models.Usuario;
+import br.com.ecommerce.winery.models.backoffice.Usuario;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 @Component
