@@ -29,7 +29,6 @@ public class Cliente {
     private String nome;
     @Past
     @NotNull
-    @JsonFormat
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
     @Column(unique = true, nullable = false)

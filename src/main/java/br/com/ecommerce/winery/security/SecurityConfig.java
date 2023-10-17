@@ -50,13 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/Winery").permitAll()
-                .antMatchers("/Winery/produto/**").permitAll()
                 //.antMatchers("/admin/**").hasAnyAuthority("ADMIN") // Adicionado o prefixo 'ROLE_'
                 //.antMatchers("/usuario/**").hasAnyAuthority("ADMIN") // Configuração para o endpoint /usuario/**
                 //.antMatchers("/estoque/**").hasAnyAuthority("ESTOQUISTA", "ADMIN")
-                .antMatchers("/cliente/cadastrarCliente").permitAll()
-                .antMatchers("/cliente/alterarCliente").permitAll()
+                .antMatchers("/Winery/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/authentication/login")

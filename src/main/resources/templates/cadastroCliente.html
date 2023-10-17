@@ -62,7 +62,7 @@
         </div>
     </nav>
     
-    <!-- Modal -->
+    <!-- Modal
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-conten fundoDoFormulario">
@@ -86,11 +86,13 @@
             </div>
         </div>
         </div>
-    </div>
+    </div> -->
     <div class="container corFundo">
         <h2 class="text-white">Formulario de Cadastro</h2>
         <form class="row g-3" th:action="@{/Winery/cadastrarCliente}" method="post" th:object="${cliente}" id="formCadastroCliente"  enctype="multipart/form-data">
-            <div class="col-md-6">
+          <div id="modalMessages" class="position-absolute"></div>
+  
+          <div class="col-md-6">
                 <label for="" class="form-label text-white">Nome completo</label>
                 <input type="text" class="form-control" id="nome" name="nome">
               </div>
@@ -103,7 +105,7 @@
               </div>
               <div class="col-md-3">
                 <label for="" class="form-label text-white">Data de Nascimento</label>
-                <input type="text" class="form-control" id="dataNascimento" name="dataNascimento">
+                <input type="date" class="form-control" id="dataNascimento" name="dataNascimento">
               </div>
               <div class="col-md-6">
                 <label for="" class="form-label text-white">CPF</label>
@@ -139,7 +141,7 @@
               </div>
             <div class="col-md-3">
                 <label for="" class="form-label text-white">CEP</label>
-                <input type="text" class="form-control" id="cep" name="cep">
+                <input type="text" class="form-control" id="cep" name="cep" minlength="8" maxlength="8">
             </div>
             <div class="col-md-3">
                 <label for="" class="form-label text-white">UF</label>
@@ -149,12 +151,8 @@
               <label for="" class="form-label text-white">Cidade</label>
               <input type="text" class="form-control" id="cidade" name="cidade">
             </div>
-            <div class="col-md-3">
-                <label for="" class="form-label text-white">Estado</label>
-                <input type="text" class="form-control" id="estado" name="estado">
-              </div>
             <div class="col-12">
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Endereço 2</button>
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar endereço de faturamento</button>
             </div>
             <div class="col-12">
               <button type="submit" class="btn btn-primary">Cadastrar</button>
@@ -162,23 +160,23 @@
           </form>
     </div>
     </div>
-     <!-- Modal Endereco -->
+     Modal Endereco
      <div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
         <div class="modal-content fundoDoFormulario">
             <div class="modal-header">
-            <h5 class="modal-title text-white" id="enderecoModalLabel">Endereço 2</h5>
+            <h5 class="modal-title text-white" id="enderecoModalLabel">Endereço de faturamento</h5>
             <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
             </div>
             <div class="modal-body">
             <form class="row g-3">
                 <div class="col-6">
-                    <label for="inputAddress" class="form-label text-white">Endereço</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    <label for="inputAddress" class="form-label text-white">Logradouro</label>
+                    <input type="text" class="form-control" id="inputLogradouro" placeholder="1234 Main St">
                   </div>
                   <div class="col-3">
                       <label for="inputComplemento" class="form-label text-white">Numero</label>
-                      <input type="text" class="form-control" id="inputComplemento" placeholder="1234 Main St">
+                      <input type="text" class="form-control" id="inputNumero" placeholder="1234 Main St">
                     </div>
                   <div class="col-3">
                       <label for="inputComplemento" class="form-label text-white">Complemento</label>
@@ -190,21 +188,19 @@
                     </div>
                   <div class="col-md-3">
                       <label for="inputCEP" class="form-label text-white">CEP</label>
-                      <input type="text" class="form-control" id="inputCEP">
+                      <input type="text" class="form-control" id="inputCep">
                   </div>
                   <div class="col-md-3">
                     <label for="inputCity" class="form-label text-white">Cidade</label>
-                    <input type="text" class="form-control" id="inputCity">
+                    <input type="text" class="form-control" id="inputCidade">
                   </div>
                   <div class="col-md-3">
-                      <label for="inputEstado" class="form-label text-white">Estado</label>
-                      <input type="text" class="form-control" id="inputEstado">
-                    </div>
+                    <label for="inputCity" class="form-label text-white">UF</label>
+                    <input type="text" class="form-control" id="inputUf">
+                  </div>
+                  
                     <div class="col-12">
-                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Endereço 2</button>
-                    </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Sign in</button>
+                      <button type="submit" class="btn btn-primary">Adicionar endereço ao cadastro</button>
                     </div>
             </form>
             </div>
@@ -213,37 +209,142 @@
     </div>
     
   
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script>
-      $(document).ready(function () {
+
+    $(document).ready(function () {
     $('#formCadastroCliente').on('submit', function (event) {
         event.preventDefault();
 
-        var formData = new FormData(this);
-
+        var cliente = {
+            nome: document.getElementById('nome').value,
+            genero: document.getElementById('inputGenero').value,
+            dataNascimento: document.getElementById('dataNascimento').value,
+            cpf: document.getElementById('cpf').value,
+            email: document.getElementById('email').value,
+            senha: document.getElementById('senha').value,
+            confirmaSenha: document.getElementById('confirmaSenha').value,
+            endereco: [
+                {
+                    logradouro: document.getElementById('logradouro').value,
+                    numero: document.getElementById('numero').value,
+                    complemento: document.getElementById('complemento').value,
+                    bairro: document.getElementById('bairro').value,
+                    cep: document.getElementById('cep').value,
+                    uf: document.getElementById('uf').value,
+                    cidade: document.getElementById('cidade').value,
+                    estado: document.getElementById('estado').value
+                }
+            
+            ]
+        };
+        console.log(JSON.stringify(cliente));
         $.ajax({
             type: 'POST',
             url: '/Winery/cadastrarCliente',
-            data: formData,
-            processData: false,
-            contentType: false,
+            data: JSON.stringify(cliente),
+            contentType: "application/json; charset=utf-8",
             success: function (data) {
-                // Lide com a resposta do servidor
-                console.log(data);
+                $('#modalMessages').empty();
 
-                // Exemplo: Redirecionar para outra página após o sucesso
-                window.location.href = '/pagina-de-sucesso';
+                if (data.startsWith('Sucesso:')) {
+                    var mensagemSucesso = data.replace('Sucesso:', '');
+                    $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
+
+                    $('#formCadastroCliente')[0].reset();
+
+                    setTimeout(function () {
+                        $('#myModal').modal('hide');
+                        location.reload();
+                    }, 3500);
+
+                } else if (data.startsWith('Erro:')) {
+                    var mensagemErro = data.replace('Erro:', '');
+                    $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
+                }
             },
             error: function (xhr) {
-                // Lide com erros de requisição
-                console.error(xhr);
+                $('#modalMessages').empty();
 
-                // Exemplo: Exibir mensagem de erro ao usuário
-                alert('Erro ao cadastrar cliente. Verifique os campos e tente novamente.');
+                var mensagemErro = xhr.responseText;
+                $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
             }
         });
     });
 });
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  addEventListeners();
+});
+
+const addEventListeners = () => {
+  document
+    .getElementById("cep")
+    .addEventListener("blur", handleCEPBlur());
+  document
+    .getElementById("inputCep")
+    .addEventListener("blur", handleCEPBlur());
+};
+
+const handleCEPBlur = () => (e) => {
+  if (e.target.value.length >= 8) {
+    var valor = e.target.id.toLowerCase();  // ou toUpperCase()
+console.log(valor)
+    if (valor.startsWith("input")) {
+      fetchAddress2();
+    } else {
+      fetchAddress();
+    }
+    
+  }
+};
+
+
+const fetchAddress = () => {
+  let cep = document.getElementById('cep');
+  // let addressFields = document.getElementById(`${prefix}AddressFieldsInfo`);
+
+  fetch(`https://viacep.com.br/ws/${cep.value}/json/`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.erro) {
+        alert("CEP não encontrado!");
+      } else {
+        document.getElementById('logradouro').value = data.logradouro;
+        document.getElementById('bairro').value = data.bairro;
+        document.getElementById('cidade').value = data.localidade;
+        document.getElementById('uf').value = data.uf;
+      }
+    })
+    .catch(() => {
+      alert("Erro ao buscar o CEP!");
+    });
+};
+
+const fetchAddress2 = () => {
+  let cep = document.getElementById('inputCep');
+  // let addressFields = document.getElementById(`${prefix}AddressFieldsInfo`);
+
+  fetch(`https://viacep.com.br/ws/${cep.value}/json/`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.erro) {
+        alert("CEP não encontrado!");
+      } else {
+        document.getElementById('inputLogradouro').value = data.logradouro;
+        document.getElementById('inputBairro').value = data.bairro;
+        document.getElementById('inputCidade').value = data.localidade;
+        document.getElementById('inputUf').value = data.uf;
+      }
+    })
+    .catch(() => {
+      alert("Erro ao buscar o CEP!");
+    });
+};
+
 
   </script>
   </body>
