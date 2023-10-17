@@ -8,7 +8,7 @@
   </head>
   <style>
     .bodyWinery {
-            background-image: url('../static/imagens/3.png') !important;
+            background-image: url('../imagens/3.png') !important;
             background-size: cover !important;
             background-repeat: no-repeat !important;
             background-attachment: fixed !important;
@@ -21,6 +21,26 @@
     .fundoDoFormulario {
         background: linear-gradient(to bottom, #000000, #000000f0);
     }
+    .position-absolute {
+    position: absolute;
+    top: 50%; /* Coloca o elemento no centro vertical */
+    left: 50%; /* Coloca o elemento no centro horizontal */
+    transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
+    align-items: center;
+}
+#modalMessages {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-danger {
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
   </style>
   <body class="bodyWinery">
     <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
@@ -88,13 +108,13 @@
         </div>
     </div> -->
     <div class="container corFundo">
-        <h2 class="text-white">Formulario de Cadastro</h2>
+        <h2 class="text-white">Formulário de Cadastro</h2>
         <form class="row g-3" th:action="@{/Winery/cadastrarCliente}" method="post" th:object="${cliente}" id="formCadastroCliente"  enctype="multipart/form-data">
           <div id="modalMessages" class="position-absolute"></div>
   
           <div class="col-md-6">
                 <label for="" class="form-label text-white">Nome completo</label>
-                <input type="text" class="form-control" id="nome" name="nome">
+                <input type="text" class="form-control" id="nome" name="nome" required>
               </div>
               <div class="col-md-3">
                 <label for="inputGenero" class="form-label text-white">Gênero</label>
@@ -105,62 +125,65 @@
               </div>
               <div class="col-md-3">
                 <label for="" class="form-label text-white">Data de Nascimento</label>
-                <input type="date" class="form-control" id="dataNascimento" name="dataNascimento">
+                <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" required>
               </div>
               <div class="col-md-6">
                 <label for="" class="form-label text-white">CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf">
+                <input type="text" class="form-control" id="cpf" name="cpf" minlength="11" maxlength="11" placeholder="Somente números" required>
               </div>
             <div class="col-md-6">
               <label for="" class="form-label text-white">Email</label>
-              <input type="email" class="form-control" id="email" name="email">
+              <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="col-md-6">
               <label for="" class="form-label text-white">Digite a senha:</label>
-              <input type="password" class="form-control" id="senha" name="senha">
+              <input type="password" class="form-control" id="senha" name="senha" required>
             </div>
             <div class="col-md-6">
                 <label for="" class="form-label text-white">Confirme a senha:</label>
-                <input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha">
+                <input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha" required>
               </div>
             <div class="col-6">
               <label for="" class="form-label text-white">Logradouro</label>
-              <input type="text" class="form-control" id="logradouro" name="logradouro" placeholder="1234 Main St">
+              <input type="text" class="form-control" id="logradouro" name="logradouro" required>
             </div>
-            <div class="col-3">
-                <label for="" class="form-label text-white">Numero</label>
-                <input type="text" class="form-control" id="numero" name="numero" placeholder="1234 Main St">
+            <div class="col-2">
+                <label for="" class="form-label text-white">Número</label>
+                <input type="text" class="form-control" id="numero" name="numero" required>
               </div>
-            <div class="col-3">
+            <div class="col-4">
                 <label for="" class="form-label text-white">Complemento</label>
-                <input type="text" class="form-control" id="complemento" name="complemento" placeholder="1234 Main St">
+                <input type="text" class="form-control" id="complemento" name="complemento">
               </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label for="" class="form-label text-white">Bairro</label>
-                <input type="text" class="form-control" id="bairro" name="bairro">
+                <input type="text" class="form-control" id="bairro" name="bairro" required>
               </div>
             <div class="col-md-3">
                 <label for="" class="form-label text-white">CEP</label>
-                <input type="text" class="form-control" id="cep" name="cep" minlength="8" maxlength="8">
+                <input type="text" class="form-control" id="cep" name="cep" minlength="8" maxlength="8" placeholder="Somente números" required>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-1">
                 <label for="" class="form-label text-white">UF</label>
-                <input type="text" class="form-control" id="uf" name="uf">
+                <input type="text" class="form-control" id="uf" name="uf" required>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <label for="" class="form-label text-white">Cidade</label>
-              <input type="text" class="form-control" id="cidade" name="cidade">
+              <input type="text" class="form-control" id="cidade" name="cidade" required>
+            </div>            
+            <div class="col-12 d-flex justify-content-between align-items-center">
+              <button type="submit" class="btn btn-success">Cadastrar</button>
+              
+              <div class="d-flex" justify-content-between align-items-center>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar endereço à parte para o faturamento</button>
+                <button type="button" class="btn btn-outline-info ms-2" data-bs-toggle="popover" data-bs-placement="top"  data-bs-content="O endereço que você preencher no formulário será usado para entrega do produto e faturamento. Caso queira um diferente somente para o faturamento da compra, cadastre um endereço à parte.">
+                  <span style="font-size: 1.0em;">?</span>
+                </button>
+              </div>
             </div>
-            <div class="col-12">
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar endereço de faturamento</button>
-            </div>
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">Cadastrar</button>
-            </div>
+            
           </form>
     </div>
-    </div>
-     Modal Endereco
      <div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
         <div class="modal-content fundoDoFormulario">
@@ -234,7 +257,6 @@
                     cep: document.getElementById('cep').value,
                     uf: document.getElementById('uf').value,
                     cidade: document.getElementById('cidade').value,
-                    estado: document.getElementById('estado').value
                 }
             
             ]
@@ -249,27 +271,31 @@
                 $('#modalMessages').empty();
 
                 if (data.startsWith('Sucesso:')) {
-                    var mensagemSucesso = data.replace('Sucesso:', '');
-                    $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
+                var mensagemSucesso = data.replace('Sucesso: ', '');
+                $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
 
-                    $('#formCadastroCliente')[0].reset();
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function () {
+                        $(this).remove();
 
-                    setTimeout(function () {
-                        $('#myModal').modal('hide');
-                        location.reload();
-                    }, 3500);
+                        window.location.reload(true);
+                    });
+                }, 3500);
 
-                } else if (data.startsWith('Erro:')) {
-                    var mensagemErro = data.replace('Erro:', '');
-                    $('#modalMessages').append('<div class="alert alert-danger" role="alert" data-toggle="popover" data-trigger="manual" data-placement="top">' + mensagemErro + '</div>').find('.alert').popover('show');
                 }
             },
             error: function (xhr) {
                 $('#modalMessages').empty();
 
                 var mensagemErro = xhr.responseText;
+                
                 $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
-            }
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                }, 3500);
+              }
         });
     });
 });
@@ -284,9 +310,9 @@ const addEventListeners = () => {
   document
     .getElementById("cep")
     .addEventListener("blur", handleCEPBlur());
-  document
-    .getElementById("inputCep")
-    .addEventListener("blur", handleCEPBlur());
+  // document
+  //   .getElementById("inputCep")
+  //   .addEventListener("blur", handleCEPBlur());
 };
 
 const handleCEPBlur = () => (e) => {
@@ -344,6 +370,11 @@ const fetchAddress2 = () => {
       alert("Erro ao buscar o CEP!");
     });
 };
+
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
+  });
 
 
   </script>

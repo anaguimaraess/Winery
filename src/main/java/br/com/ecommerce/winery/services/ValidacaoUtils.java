@@ -58,7 +58,6 @@ public class ValidacaoUtils {
                 endereco.getLogradouro() != null && !endereco.getLogradouro().isEmpty() &&
                 endereco.getNumero() > 0 &&
                 endereco.getCidade() != null && !endereco.getCidade().isEmpty() &&
-                endereco.getEstado() != null && !endereco.getEstado().isEmpty() &&
                 endereco.getCep() != null && !endereco.getCep().isEmpty() &&
                 endereco.getUf() != null && !endereco.getUf().isEmpty();
     }

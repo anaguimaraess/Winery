@@ -38,9 +38,9 @@ public class ClienteController {
     public  ResponseEntity<String> cadastrarCliente(@RequestBody Cliente cliente) throws BusinessException {
         try {
             clienteService.cadastrarCliente(cliente);
-            return ResponseEntity.ok("Sucesso:Cliente cadastrado com sucesso!");
+            return ResponseEntity.ok("Sucesso: Cliente cadastrado com sucesso!");
         } catch (BusinessException e) {
-            return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
+            return ResponseEntity.badRequest().body( e.getMessage());
         }
 
     
