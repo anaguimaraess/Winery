@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/estoque/**").hasAnyAuthority("ESTOQUISTA", "ADMIN")
                 .antMatchers("/cliente/cadastrarCliente").permitAll()
                 .antMatchers("/cliente/alterarCliente").permitAll()
+                .antMatchers("/cliente/adicionarEndereco").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/authentication/login")
