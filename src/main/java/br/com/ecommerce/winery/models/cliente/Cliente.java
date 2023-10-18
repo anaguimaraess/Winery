@@ -24,7 +24,7 @@ public class Cliente {
     @Pattern(regexp = "[0-9]{11}", message = "CPF deve conter apenas dígitos")
     private String cpf;
     @NotEmpty
-    @Size(min = 5, max= 50)
+    @Size(min = 5, max = 50)
     @Column(name = "nome")
     private String nome;
     @Past
@@ -44,9 +44,6 @@ public class Cliente {
     @NotNull(message = "Inserir todos os dados do endereço!")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCliente")
-    private List<Endereco> endereco;
-
-
-
+    private List<Endereco> enderecos;
 
 }

@@ -249,7 +249,7 @@ var cliente = {
     email: '',
     senha: '',
     confirmaSenha: '',
-    endereco: []
+    enderecos: []
 };
 
 $('#adicionarEnderecoButton').on('click', function () {
@@ -263,24 +263,38 @@ $('#adicionarEnderecoButton').on('click', function () {
         cidade: $('#inputCidade').val()
     };
 
-    cliente.endereco.push(endereco2);
+    cliente.enderecos.push(endereco2);
 
-    console.log(cliente);
+    // Limpar campos do modal
+    $('#inputLogradouro').val('');
+    $('#inputNumero').val('');
+    $('#inputComplemento').val('');
+    $('#inputBairro').val('');
+    $('#inputCep').val('');
+    $('#inputUf').val('');
+    $('#inputCidade').val('');
+
+    // Exibir alerta de sucesso
+    alert('Endereço adicionado com sucesso!');
+
+    // Fechar o modal
+    $('#enderecoModal').modal('hide');
 });
+
 
 $('#formCadastroCliente').on('submit', function (event) {
     event.preventDefault();
 
     var clienteData = {
-        nome: document.getElementById('nome').value,
-        genero: document.getElementById('inputGenero').value,
-        dataNascimento: document.getElementById('dataNascimento').value,
-        cpf: document.getElementById('cpf').value,
-        email: document.getElementById('email').value,
-        senha: document.getElementById('senha').value,
-        confirmaSenha: document.getElementById('confirmaSenha').value,
-        endereco: []  // Certifique-se de reiniciar o array de endereços para evitar duplicatas
-    };
+            nome: document.getElementById('nome').value,
+            genero: document.getElementById('inputGenero').value,
+            dataNascimento: document.getElementById('dataNascimento').value,
+            cpf: document.getElementById('cpf').value,
+            email: document.getElementById('email').value,
+            senha: document.getElementById('senha').value,
+            confirmaSenha: document.getElementById('confirmaSenha').value,
+            enderecos: cliente.enderecos.slice() // Cria uma cópia do array de endereços
+        };
 
     var endereco1 = {
         logradouro: $('#logradouro').val(),
@@ -291,18 +305,15 @@ $('#formCadastroCliente').on('submit', function (event) {
         uf: $('#uf').val(),
         cidade: $('#cidade').val()
     };
+    clienteData.enderecos.push(endereco1);
 
-    // Adiciona endereco1 à lista de endereços em clienteData
-    clienteData.endereco.push(endereco1);
+  
 
-    // Adiciona todos os endereços do objeto cliente global ao objeto clienteData
-    clienteData.endereco = clienteData.endereco.concat(cliente.endereco);
-
-        console.log(JSON.stringify(cliente));
+        console.log(JSON.stringify(clienteData));
         $.ajax({
             type: 'POST',
             url: '/Winery/cadastrarCliente',
-            data: JSON.stringify(cliente),
+            data: JSON.stringify(clienteData),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 $('#modalMessages').empty();

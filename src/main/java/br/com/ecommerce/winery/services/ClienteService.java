@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 @Slf4j
 public class ClienteService {
@@ -49,9 +52,28 @@ public class ClienteService {
     }
 
 
-    public void incluirEndereco(Cliente cliente, Endereco endereco) {
-        cliente.getEndereco().add(endereco);
-        clienteRepository.save(cliente);
+    public void incluirEndereco(Cliente cliente, Endereco endereco) throws BusinessException {
+        try {
+            if(cliente == null){
+                log.error("Cliente nulo");
+                throw new BusinessException("Cliente com valores nulos!");
+            }
+
+            if (endereco == null) {
+                log.error("Endereço contém valores nulos!");
+                throw new BusinessException("Endereço nulo!");
+            } else {
+                List<Endereco> enderecos = cliente.getEnderecos();
+                enderecos.add(endereco);
+                validacaoUtils.validarCEP(endereco.getCep());
+                cliente.setEnderecos(enderecos);
+                clienteRepository.save(cliente);
+                log.info("Endereço adicionado com sucesso!");
+            }
+        } catch (BusinessException e) {
+            log.error("Erro ao adicionar endereço!");
+            throw new BusinessException("Erro ao adicionar endereço!");
+        }
     }
 
     public Cliente cadastrarCliente(Cliente cliente) throws BusinessException {
@@ -61,7 +83,7 @@ public class ClienteService {
         cliente.setConfirmaSenha(senha);
         validacaoUtils.validarEmailUnicoCliente(cliente.getEmail());
         validacaoUtils.validarCpf(cliente.getCpf());
-        validacaoUtils.validarEnderecoCompleto(cliente.getEndereco());
+        validacaoUtils.validarEnderecoCompleto(cliente.getEnderecos());
         validacaoUtils.validarNomeCliente(cliente.getNome());
         validacaoUtils.validarCEPCliente(cliente);
 
@@ -71,4 +93,10 @@ public class ClienteService {
         log.info("Cliente cadastrado com sucesso.");
         return clienteRepository.save(cliente);
     }
+
+    public Cliente obterClientePorId(int clienteId) {
+        return clienteRepository.findById(clienteId).orElse(null);
+    }
+
+
 }

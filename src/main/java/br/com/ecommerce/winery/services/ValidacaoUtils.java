@@ -114,12 +114,10 @@ public class ValidacaoUtils {
 
         cep = cep.replaceAll("[^0-9]", "");
 
-
         if (cep.length() != 8) {
             log.error("CEP inválido.");
-            throw new BusinessException("CEP inválido.");
+            throw new BusinessException("CEP inválido. olha: " + cep);
         }
-
         String url = "https://viacep.com.br/ws/" + cep + "/json/";
         RestTemplate restTemplate = new RestTemplate();
         ViaCEP response = restTemplate.getForObject(url, ViaCEP.class);
@@ -134,7 +132,7 @@ public class ValidacaoUtils {
     }
 
     public void validarCEPCliente(Cliente cliente) throws BusinessException {
-        List<Endereco> enderecos = cliente.getEndereco();
+        List<Endereco> enderecos = cliente.getEnderecos();
 
         for (Endereco endereco : enderecos) {
             validarCEP(endereco.getCep());
