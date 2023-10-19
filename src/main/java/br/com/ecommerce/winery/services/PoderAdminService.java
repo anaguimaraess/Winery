@@ -1,6 +1,6 @@
 package br.com.ecommerce.winery.services;
 
-import br.com.ecommerce.winery.models.CustomUserDetails;
+import br.com.ecommerce.winery.models.backoffice.CustomUserDetails;
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.backoffice.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;

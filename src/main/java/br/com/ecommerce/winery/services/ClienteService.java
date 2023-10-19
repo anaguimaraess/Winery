@@ -1,5 +1,6 @@
 package br.com.ecommerce.winery.services;
 
+import br.com.ecommerce.winery.models.backoffice.Grupo;
 import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
@@ -86,7 +87,7 @@ public class ClienteService {
         validacaoUtils.validarEnderecoCompleto(cliente.getEnderecos());
         validacaoUtils.validarNomeCliente(cliente.getNome());
         validacaoUtils.validarCEPCliente(cliente);
-
+        cliente.setGrupo(Grupo.CLIENTE);
         if (validacaoUtils.clienteValido(cliente)) {
             cliente.setDataNascimento(cliente.getDataNascimento());
         }

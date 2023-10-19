@@ -42,8 +42,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             return "/admin/home";
         } else if (roles.contains("ESTOQUISTA")) {
             return "/estoque/homeEstoque";
+        }else if (roles.contains("CLIENTE")) {
+            return "/Winery";
         } else {
-            return "/winery";  // para outros usuários ou default
+            return "/Winery";  // para outros usuários ou default
         }
     }
 }

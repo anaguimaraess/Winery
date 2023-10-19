@@ -14,28 +14,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(path = "/Winery")
+@RequestMapping(path = "")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping("/cliente")
+    @GetMapping("/Winery/cliente")
     public String cadastroCliente() {
         return "cadastroCliente";
     }
 
-    @PostMapping("/alterarCliente")
+    @PostMapping("/cliente/alterarCliente")
     public ResponseEntity<String> alterarDadosCliente(@RequestBody Cliente cliente) {
         try {
             Cliente clienteAtualizado = clienteService.atualizarCliente(cliente);
             return ResponseEntity.ok("Sucesso: cliente alterado com sucesso! ");
         } catch (BusinessException e) {
-            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PostMapping("/cadastrarCliente")
+    @PostMapping("/Winery/cadastrarCliente")
     public  ResponseEntity<String> cadastrarCliente(@RequestBody Cliente cliente) throws BusinessException {
         try {
             System.out.println("Recebida requisição para cadastrar cliente: {}"+ cliente);

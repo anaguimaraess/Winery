@@ -1,7 +1,5 @@
-package br.com.ecommerce.winery.models;
+package br.com.ecommerce.winery.models.backoffice;
 
-import br.com.ecommerce.winery.models.backoffice.Grupo;
-import br.com.ecommerce.winery.models.backoffice.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -13,6 +11,7 @@ public class CustomUserDetails extends User {
 
     private final String nome;
     private final Grupo grupo;
+
     public CustomUserDetails(Usuario usuario) {
         super(usuario.getEmail(), usuario.getSenha(), getAuthority(usuario));
         this.nome = usuario.getNome();

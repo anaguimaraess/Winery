@@ -107,7 +107,7 @@
         </div>
         </div>
     </div> -->
-    <div class="container corFundo">
+    <div class="container corFundo mt-3" >
         <h2 class="text-white">Formulário de Cadastro</h2>
         <form class="row g-3" th:action="@{/Winery/cadastrarCliente}" method="post" th:object="${cliente}" id="formCadastroCliente"  enctype="multipart/form-data">
           <div id="modalMessages" class="position-absolute"></div>
@@ -175,8 +175,8 @@
               <button type="submit" class="btn btn-success">Cadastrar</button>
               
               <div class="d-flex" justify-content-between align-items-center>
-                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar endereço à parte para o faturamento</button>
-                <button type="button" class="btn btn-outline-info ms-2" data-bs-toggle="popover" data-bs-placement="top"  data-bs-content="O endereço que você preencher no formulário será usado para entrega do produto e faturamento. Caso queira um diferente somente para o faturamento da compra, cadastre um endereço à parte.">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar endereço à parte para entrega</button>
+                <button type="button" class="btn btn-outline-info ms-2" data-bs-toggle="popover" data-bs-placement="top"  data-bs-content="O endereço que você preencher no formulário será usado para entrega do produto e faturamento. Caso queira um diferente somente para a entrega, cadastre um endereço à parte.">
                   <span style="font-size: 1.0em;">?</span>
                 </button>
               </div>

@@ -1,5 +1,6 @@
 package br.com.ecommerce.winery.models.cliente;
 
+import br.com.ecommerce.winery.models.backoffice.Grupo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,5 +46,6 @@ public class Cliente {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCliente")
     private List<Endereco> enderecos;
-
+    @Enumerated(EnumType.STRING)
+    private Grupo grupo;
 }

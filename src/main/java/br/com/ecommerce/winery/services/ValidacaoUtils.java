@@ -31,6 +31,10 @@ public class ValidacaoUtils {
 
     public boolean validarCpf(String cpf) throws BusinessException {
         try {
+            if (clienteRepository.existsByCpf(cpf)){
+                System.out.println("CPF já existe na base de dados");
+                throw new BusinessException("CPF já cadastrado");
+            }
             cpfValidator.assertValid(cpf);
             System.out.println("CPF válido.");
             return true;
