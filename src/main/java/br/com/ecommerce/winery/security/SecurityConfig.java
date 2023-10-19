@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -50,11 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                //.antMatchers("/admin/**").hasAnyAuthority("ADMIN") // Adicionado o prefixo 'ROLE_'
-                //.antMatchers("/usuario/**").hasAnyAuthority("ADMIN") // Configuração para o endpoint /usuario/**
-                //.antMatchers("/estoque/**").hasAnyAuthority("ESTOQUISTA", "ADMIN")
+                .antMatchers("/admin/**").hasAnyAuthority("ADMIN") // Adicionado o prefixo 'ROLE_'
+                .antMatchers("/cliente/**").hasAnyAuthority("CLIENTE") // Configuração para o endpoint /usuario/**
+                .antMatchers("/estoque/**").hasAnyAuthority("ESTOQUISTA", "ADMIN")
                 .antMatchers("/Winery/**").permitAll()
-                .antMatchers("/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/authentication/login")
@@ -68,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .permitAll();
-
     }
 
     @Override

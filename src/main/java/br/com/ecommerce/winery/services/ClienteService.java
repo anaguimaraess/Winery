@@ -29,8 +29,13 @@ public class ClienteService {
             throw new BusinessException("Cliente não encontrado!");
         }
         if (validacaoUtils.clienteValido(cliente)) {
+            try {
+                validacaoUtils.validarNomeCliente(cliente.getNome());
+                clienteCadastrado.setNome(cliente.getNome());
+            }catch (Exception e){
+                throw new BusinessException("Nome inválido");
+            }
 
-            clienteCadastrado.setNome(cliente.getNome());
             clienteCadastrado.setDataNascimento(cliente.getDataNascimento());
             clienteCadastrado.setGenero(cliente.getGenero());
 

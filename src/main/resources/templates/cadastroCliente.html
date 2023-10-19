@@ -70,7 +70,7 @@
                     </li>
                    
                     <li class="nav-item ml-auto">
-                        <a class="nav-link text-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <a class="nav-link text-white" href="/authentication/login" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                               </svg>
@@ -82,31 +82,6 @@
         </div>
     </nav>
     
-    <!-- Modal
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-conten fundoDoFormulario">
-            <div class="modal-header">
-            <h5 class="modal-title text-white" id="loginModalLabel">Entrar</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            <form>
-                <div class="mb-3">
-                <label for="email" class="form-label text-white">Email</label>
-                <input type="email" class="form-control" id="email">
-                </div>
-                <div class="mb-3">
-                <label for="password" class="form-label text-white">Senha</label>
-                <input type="password" class="form-control" id="password">
-                </div>
-                <button type="submit" class="btn btn-primary">Entrar</button>
-                <button type="submit" class="btn btn-secondary">Cadastrar</button>
-            </form>
-            </div>
-        </div>
-        </div>
-    </div> -->
     <div class="container corFundo mt-3" >
         <h2 class="text-white">Formulário de Cadastro</h2>
         <form class="row g-3" th:action="@{/Winery/cadastrarCliente}" method="post" th:object="${cliente}" id="formCadastroCliente"  enctype="multipart/form-data">

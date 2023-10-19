@@ -11,12 +11,17 @@
     <h2 class="login-h2">Winery</h2>
 
     <p class="error-message" th:if="${param.error}">Login inválido, tente novamente.</p>
-
-    <form th:action="@{/authentication/login}" method="post">
-        <input type="email" class="login-input" placeholder="Usuário ou email" name="username">
-        <input type="password" class="login-input" placeholder="Senha" name="password">
-        <button type="submit" class="login-button">Entrar</button>
-    </form>
+    <div class="col text-center">
+        <form th:action="@{/authentication/login}" method="post" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <input type="email" class="login-input" placeholder="Usuário ou email" name="username">
+            <input type="password" class="login-input" placeholder="Senha" name="password">
+            <button type="submit" class="login-button">Entrar</button>
+            <a href="/Winery/cliente" class="card-link cadastrar mt-3">Cliente novo? Crie sua conta</a>
+        </form>
+    </div>
+    
+    
+    
 </div>
 
 </body>

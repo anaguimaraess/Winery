@@ -29,4 +29,6 @@ public class Endereco {
     private String cep;
     @NotNull
     private String uf;
+    @Enumerated(EnumType.STRING)
+    private FlagEndereco flagEndereco;
 }
