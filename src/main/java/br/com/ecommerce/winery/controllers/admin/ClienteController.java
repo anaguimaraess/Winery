@@ -5,13 +5,8 @@ import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.cliente.CustomClientDetails;
 import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
-import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -102,18 +97,12 @@ public class ClienteController {
         }
     }
 
-    @PostMapping("/adicionarEndereco")
-    public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody EnderecoDTO enderecoDTO) {
+    @PostMapping("/cliente/adicionarEndereco")
+    public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody Endereco endereco) {
         try {
-            Cliente clienteCadastrado = clienteService.obterClientePorId(enderecoDTO.clienteId);
-            System.out.println(clienteCadastrado);
-            System.out.println(enderecoDTO.endereco);
-            if (clienteCadastrado != null) {
-                clienteService.incluirEndereco(clienteCadastrado, enderecoDTO.endereco);
-                return ResponseEntity.ok("Endereço adicionado com sucesso!");
-            } else {
-                return ResponseEntity.badRequest().body("Cliente não encontrado.");
-            }
+            System.out.println(endereco);
+            clienteService.incluirEndereco(endereco);
+            return ResponseEntity.ok("Sucesso: Endereço adicionado com sucesso!");
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
@@ -123,4 +112,5 @@ public class ClienteController {
     @ModelAttribute("enderecos")
     public List<Endereco> listarEnderecos(@ModelAttribute Cliente cliente, HttpServletResponse response) throws BusinessException {
         return clienteService.obterEnderecos(cliente.getIdCliente());
-    }}
+    }
+}

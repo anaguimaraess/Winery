@@ -1,30 +1,33 @@
 <!doctype html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:color="http://www.w3.org/1999/xhtml">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Winery:: Alterar Cliente</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  </head>
-  <style>
+</head>
+<style>
     .bodyWinery {
-      background-image: url('../imagens/3.png') !important;
-            background-size: cover !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-        }
-        .corFundo {
-            background: linear-gradient(to bottom, #000000, #000000f0);
-            border-radius: 14px;
-            padding: 15px;
-        }
+        background-image: url('../imagens/3.png') !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }
+
+    .corFundo {
+        background: linear-gradient(to bottom, #000000, #000000f0);
+        border-radius: 14px;
+        padding: 15px;
+    }
+
     .fundoDoFormulario {
         background: linear-gradient(to bottom, #000000, #000000f0);
     }
 
-    .endereco{
-      background-color: transparent;
-      
+    .endereco {
+        background-color: transparent;
+
     }
 
     .login-button {
@@ -35,190 +38,293 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        }
-  </style>
-  <body class="bodyWinery">
-  <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
-      <div class="container-fluid">
-          <a class="navbar-brand" href="/Winery">
-              <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
-          </a>
+    }
+</style>
 
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<body class="bodyWinery">
+<nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/Winery">
+            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+        </a>
 
-
-              </ul>
-
-              <ul class="navbar-nav ml-auto">
-
-                  <li class="nav-item ml-auto">
-                      <a class="nav-link text-white" href="#">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                              <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                          </svg>
-                      </a>
-                  </li>
-                  <div  id="perfil-button">
-                      <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                          Meu perfil
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="perfil-button">
-                          <a class="dropdown-item" href="/cliente/dados">Meus Dados</a>
-                          <a class="dropdown-item" href="/authentication/logout" onclick="showLogoutMessage()">Sair</a>
-                      </div>
-                  </div>
-              </ul>
-          </div>
-  </nav>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
 
-  <div class="container corFundo mt-5">
-        <div class="row">
-            <div class="col-sm-6">
-              <h2 class="text-white text-center mb-3">Alterar Dados</h2>
+            </ul>
 
-                <form th:action="@{/cliente/alterar}" method="post" th:object="${cliente}" id="formDados" enctype="multipart/form-data">
-<!--                    <input type="hidden" id="id" name="idCliente" th:value="${cliente.idCliente}">-->
-                    <input type="hidden" id="id" name="idCliente" th:field="*{idCliente}">
-                    <label for="nome" class="form-label text-white">Nome completo</label>
-                    <input type="text" class="form-control mb-3" id="nome" name="nome" th:field="*{nome}">
+            <ul class="navbar-nav ml-auto">
 
-                    <label for="inputGenero" class="form-label text-white">Gênero</label>
-                    <select id="inputGenero" class="form-select mb-3" name="genero" th:field="*{genero}">
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                        <option value="Nenhum">Nenhum</option>
+                <li class="nav-item ml-auto">
+                    <a class="nav-link text-white" href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                        </svg>
+                    </a>
+                </li>
+                <div id="perfil-button">
+                    <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        Meu perfil
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="perfil-button">
+                        <a class="dropdown-item" href="/cliente/dados">Meus Dados</a>
+                        <a class="dropdown-item" href="/authentication/logout" onclick="showLogoutMessage()">Sair</a>
+                    </div>
+                </div>
+            </ul>
+        </div>
+</nav>
 
-                    </select>
 
-                    <label for="dataNascimento" class="form-label text-white">Data de Nascimento</label>
-                    <input type="date" class="form-control mb-3" id="dataNascimento" name="dataNascimento" th:field="*{dataNascimento}" required>
+<div class="container corFundo mt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 class="text-white text-center mb-3">Alterar Dados</h2>
+
+            <form th:action="@{/cliente/alterar}" method="post" th:object="${cliente}" id="formDados" enctype="multipart/form-data">
+                <!--                    <input type="hidden" id="id" name="idCliente" th:value="${cliente.idCliente}">-->
+                <input type="hidden" id="id" name="idCliente" th:field="*{idCliente}">
+                <label for="nome" class="form-label text-white">Nome completo</label>
+                <input type="text" class="form-control mb-3" id="nome" name="nome" th:field="*{nome}">
+
+                <label for="inputGenero" class="form-label text-white">Gênero</label>
+                <select id="inputGenero" class="form-select mb-3" name="genero" th:field="*{genero}">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                    <option value="Nenhum">Nenhum</option>
+
+                </select>
+
+                <label for="dataNascimento" class="form-label text-white">Data de Nascimento</label>
+                <input type="date" class="form-control mb-3" id="dataNascimento" name="dataNascimento" th:field="*{dataNascimento}" required>
 
                 <div class="text-center mt-5">
-                <button type="Submit" class="btn login-button">Alterar</button>
-              </div>
-              </form>
+                    <button type="Submit" class="btn login-button">Alterar</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6 border-start">
+            <h2 class="text-white text-center mb-3">Alterar Senha</h2>
+            <form th:action="@{/cliente/senha}" method="post" id="formSenha">
+                <input type="hidden" id="idCliente" name="idCliente" th:value="${cliente.idCliente}">
+                <div class="mb-3">
+                    <label for="senhaAntiga" class="form-label text-white">Senha Antiga</label>
+                    <input type="password" class="form-control" id="senhaAntiga" name="senhaAntiga" required>
+                </div>
+                <div class="mb-3">
+                    <label for="senhaNova" class="form-label text-white">Senha Nova</label>
+                    <input type="password" class="form-control" id="senhaNova" name="senhaNova" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmaSenhaNova" class="form-label text-white">Confirmação de Senha Nova</label>
+                    <input type="password" class="form-control" id="confirmaSenhaNova" name="confirmaSenhaNova" required>
+                </div>
+                <div class="text-center mt-5">
+                    <button type="submit" class="btn login-button">Alterar Senha</button>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+</div>
+
+<div class="container corFundo mt-5">
+    <div class="row">
+        <h2 class="text-white text-center mb-3">Endereços Cadastrados</h2>
+        <div class="container">
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Novo Endereço</button>
+        </div>
+        <div class="container mt-3 border-opacity-75">
+            <div class="row">
+
+                <th:block th:each="endereco : ${cliente.enderecos}">
+                    <div class="col mt-3">
+                        <div class="card endereco rounded border" style="width: 20rem;">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="card-title text-white" th:text="'Endereço padrão: ' + ${endereco.flagEndereco == 'ENTREGA' ? '(Entrega)' : ''}"></h6>
+                                    <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
+                                </div>
+                                <hr class="text-white">
+                                <h6 class="text-white" th:text="${endereco.logradouro +' '+endereco.numero}"></h6>
+                                <h6 class="text-white" th:text="'Complemento ' + ${endereco.complemento}"></h6>
+                                <h6 class="text-white" th:text="${endereco.bairro}"></h6>
+                                <h6 class="text-white" th:text="${endereco.cep}"></h6>
+                                <h6 class="text-white" th:text="${endereco.cidade} + ' - ' + ${endereco.uf}"></h6>
+                                <div class="d-flex justify-content-between">
+                                    <a href="#" class="card-link">Remover</a>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${!endereco.principal}">
+
+                                        <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
+                                            Definir como padrão
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
             </div>
-            <div class="col-sm-6 border-start">
-                <h2 class="text-white text-center mb-3">Alterar Senha</h2>
-                <form th:action="@{/cliente/senha}" method="post" id="formSenha">
-                    <input type="hidden" id="idCliente" name="idCliente" th:value="${cliente.idCliente}">
-                    <div class="mb-3">
-                        <label for="senhaAntiga" class="form-label text-white">Senha Antiga</label>
-                        <input type="password" class="form-control" id="senhaAntiga" name="senhaAntiga" required>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content fundoDoFormulario">
+            <div class="modal-header">
+                <h5 class="modal-title text-white" id="enderecoModalLabel">Endereço 2</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
+            </div>
+            <div id="modalMessages" class="position-absolute"></div>
+
+            <div class="modal-body">
+                <form class="row g-3">
+                  <input type="hidden" id="idClienteEndereco" name="idClienteEndereco" th:value="${cliente.idCliente}">
+
+                    <div class="col-6">
+                        <label for="inputAddress" class="form-label text-white">Endereço</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
                     </div>
-                    <div class="mb-3">
-                        <label for="senhaNova" class="form-label text-white">Senha Nova</label>
-                        <input type="password" class="form-control" id="senhaNova" name="senhaNova" required>
+                    <div class="col-3">
+                        <label for="inputNumero" class="form-label text-white">Numero</label>
+                        <input type="text" class="form-control" id="inputNumero" placeholder="1234 Main St">
                     </div>
-                    <div class="mb-3">
-                        <label for="confirmaSenhaNova" class="form-label text-white">Confirmação de Senha Nova</label>
-                        <input type="password" class="form-control" id="confirmaSenhaNova" name="confirmaSenhaNova" required>
+                    <div class="col-3">
+                        <label for="inputComplemento" class="form-label text-white">Complemento</label>
+                        <input type="text" class="form-control" id="inputComplemento" placeholder="1234 Main St">
                     </div>
-                    <div class="text-center mt-5">
-                        <button type="submit" class="btn login-button">Alterar Senha</button>
+                    <div class="col-md-3">
+                        <label for="inputBairro" class="form-label text-white">Bairro</label>
+                        <input type="text" class="form-control" id="inputBairro">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputCEP" class="form-label text-white">CEP</label>
+                        <input type="text" class="form-control" id="inputCEP">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputCity" class="form-label text-white">Cidade</label>
+                        <input type="text" class="form-control" id="inputCity">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="inputEstado" class="form-label text-white">Estado</label>
+                        <input type="text" class="form-control" id="inputEstado">
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn login-button">Cadastrar</button>
                     </div>
                 </form>
             </div>
-
-
-        </div>
-      </div>
-    </div>
-    
-    <div class="container corFundo mt-5">
-    <div class="row">
-      <h2 class="text-white text-center mb-3">Endereços Cadastrados</h2>
-      <div class="container">
-        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Novo Endereço</button>
-      </div>
-        <div class="container mt-3 border-opacity-75">
-          <div class="row">
-
-              <div th:each="endereco : ${enderecos}">
-                  <div class="col mt-3">
-                      <div class="card endereco rounded border" style="width: 20rem;">
-                          <div class="card-body">
-                              <div class="d-flex justify-content-between">
-                                  <h6 class="card-title text-white" th:text="'Endereço padrão: ' + ${endereco.flagEndereco == 'ENTREGA' ? '(Entrega)' : ''}"></h6>
-                                  <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
-                              </div>
-                              <hr class="text-white">
-                              <h6 class="text-white" th:text="${endereco.logradouro} ', ' + ${endereco.numero}" ></h6>
-                              <h6 class="text-white" th:text="'Complemento ' + ${endereco.complemento}"></h6>
-                              <h6 class="text-white" th:text="${endereco.bairro}"></h6>
-                              <h6 class="text-white" th:text="${endereco.cep}"></h6>
-                              <h6 class="text-white" th:text="${endereco.cidade} + ' - ' + ${endereco.uf}"></h6>
-                              <div class="d-flex justify-content-between">
-                                  <a href="#" class="card-link">Remover</a>
-                                  <div class="form-check">
-                                      <input class="form-check-input" type="radio" th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.id}">
-                                      <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
-                                          Definir como padrão
-                                      </label>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          </div>
         </div>
     </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document
+                .getElementById("inputCEP")
+                .addEventListener("blur", handleCEPBlur());
+        });
+
+
+        const handleCEPBlur = () => (e) => {
+            if (e.target.value.length >= 8) {
+
+                fetchAddress2(e);
+
+            }
+        };
+
+
+        const fetchAddress2 = () => {
+            let cep = document.getElementById('inputCEP');
+
+            fetch(`https://viacep.com.br/ws/${cep.value}/json/`)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.erro) {
+                        alert("CEP não encontrado!");
+                    } else {
+                        document.getElementById('inputAddress').value = data.logradouro;
+                        document.getElementById('inputBairro').value = data.bairro;
+                        document.getElementById('inputCity').value = data.localidade;
+                        document.getElementById('inputEstado').value = data.uf;
+                    }
+                })
+                .catch(() => {
+                    alert("Erro ao buscar o CEP!");
+                });
+        };
+
+  $('#enderecoModal').on('submit', function (event) {
+    event.preventDefault();
+
+    var endereco = {
+        logradouro: document.getElementById('inputAddress').value,
+        numero: document.getElementById('inputNumero').value,
+        complemento: document.getElementById('inputComplemento').value,
+        bairro: document.getElementById('inputBairro').value,
+        cep: document.getElementById('inputCEP').value,
+        uf: document.getElementById('inputEstado').value,
+        cidade: document.getElementById('inputCity').value,
+        idCliente: document.getElementById('idClienteEndereco').value
+    };
+
   
 
-    <div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-        <div class="modal-content fundoDoFormulario">
-            <div class="modal-header">
-            <h5 class="modal-title text-white" id="enderecoModalLabel">Endereço 2</h5>
-            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
-            </div>
-            <div class="modal-body">
-            <form class="row g-3">
-                <div class="col-6">
-                    <label for="inputAddress" class="form-label text-white">Endereço</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                  </div>
-                  <div class="col-3">
-                      <label for="inputComplemento" class="form-label text-white">Numero</label>
-                      <input type="text" class="form-control" id="inputComplemento" placeholder="1234 Main St">
-                    </div>
-                  <div class="col-3">
-                      <label for="inputComplemento" class="form-label text-white">Complemento</label>
-                      <input type="text" class="form-control" id="inputComplemento" placeholder="1234 Main St">
-                    </div>
-                  <div class="col-md-3">
-                      <label for="inputBairro" class="form-label text-white">Bairro</label>
-                      <input type="text" class="form-control" id="inputBairro">
-                    </div>
-                  <div class="col-md-3">
-                      <label for="inputCEP" class="form-label text-white">CEP</label>
-                      <input type="text" class="form-control" id="inputCEP">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="inputCity" class="form-label text-white">Cidade</label>
-                    <input type="text" class="form-control" id="inputCity">
-                  </div>
-                  <div class="col-md-3">
-                      <label for="inputEstado" class="form-label text-white">Estado</label>
-                      <input type="text" class="form-control" id="inputEstado">
-                    </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn login-button">Cadastrar</button>
-                    </div>
-            </form>
-            </div>
-        </div>
-        </div>
-    </div>
-    
-  
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  </body>
+        $.ajax({
+            type: 'POST',
+            url: '/cliente/adicionarEndereco',
+            data: JSON.stringify(endereco),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#modalMessages').empty();
+
+                if (data.startsWith('Sucesso:')) {
+                var mensagemSucesso = data.replace('Sucesso: ', '');
+                $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
+
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function () {
+                        $(this).remove();
+
+                        window.location.reload(true);
+                    });
+                }, 3500);
+
+                }
+            },
+            error: function (xhr) {
+                $('#modalMessages').empty();
+
+                var mensagemErro = xhr.responseText;
+                
+                $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                }, 3500);
+              }
+        });
+    });
+
+
+    </script>
+
+</body>
+
 </html>

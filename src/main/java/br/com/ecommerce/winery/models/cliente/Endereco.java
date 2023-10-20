@@ -36,4 +36,7 @@ public class Endereco {
     private boolean principal;
     @NotNull
     private Status status;
+
+    @NotNull
+    private int idCliente;
 }

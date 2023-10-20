@@ -7,20 +7,27 @@ import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.cliente.FlagEndereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ClienteRepository;
+import br.com.ecommerce.winery.repositories.EnderecoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static br.com.ecommerce.winery.services.ValidacaoUtils.validarEnderecoCompleto;
 
 @Service
 @Slf4j
 public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
 
     @Autowired
@@ -66,23 +73,18 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
-    public void incluirEndereco(Cliente cliente, Endereco endereco) throws BusinessException {
+    public void incluirEndereco(Endereco endereco) throws BusinessException {
         try {
-            if(cliente == null){
-                log.error("Cliente nulo");
-                throw new BusinessException("Cliente com valores nulos!");
-            }
-
             if (endereco == null) {
                 log.error("Endereço contém valores nulos!");
                 throw new BusinessException("Endereço nulo!");
             } else {
-                List<Endereco> enderecos = cliente.getEnderecos();
-                enderecos.add(endereco);
-                validacaoUtils.validarCEP(endereco.getCep());
-                cliente.setEnderecos(enderecos);
-                clienteRepository.save(cliente);
-                log.info("Endereço adicionado com sucesso!");
+                endereco.setStatus(Status.ATIVO);
+                endereco.setFlagEndereco(FlagEndereco.ENTREGA);
+                endereco.setPrincipal(false);
+               enderecoRepository.save(endereco);
+               log.info("Endereço adicionado com sucesso!");
+
             }
         } catch (BusinessException e) {
             log.error("Erro ao adicionar endereço!");
@@ -97,7 +99,7 @@ public class ClienteService {
         cliente.setConfirmaSenha(senha);
         validacaoUtils.validarEmailUnicoCliente(cliente.getEmail());
         validacaoUtils.validarCpf(cliente.getCpf());
-        validacaoUtils.validarEnderecoCompleto(cliente.getEnderecos());
+        validarEnderecoCompleto(cliente.getEnderecos());
         validacaoUtils.validarNomeCliente(cliente.getNome());
         validacaoUtils.validarCEPCliente(cliente);
 
@@ -105,12 +107,16 @@ public class ClienteService {
         if (cliente.getEnderecos().size()==1){
             cliente.getEnderecos().get(0).setFlagEndereco(FlagEndereco.ENTREGA);
             cliente.getEnderecos().get(0).setStatus(Status.ATIVO);
+            cliente.getEnderecos().get(0).setPrincipal(true);
 
         }else {
             cliente.getEnderecos().get(0).setFlagEndereco(FlagEndereco.FATURAMENTO);
             cliente.getEnderecos().get(1).setFlagEndereco(FlagEndereco.ENTREGA);
             cliente.getEnderecos().get(0).setStatus(Status.ATIVO);
             cliente.getEnderecos().get(1).setStatus(Status.ATIVO);
+            cliente.getEnderecos().get(0).setPrincipal(false);
+            cliente.getEnderecos().get(1).setPrincipal(true);
+
         }
         if (validacaoUtils.clienteValido(cliente)) {
             cliente.setDataNascimento(cliente.getDataNascimento());
