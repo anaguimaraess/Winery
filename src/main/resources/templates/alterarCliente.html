@@ -21,6 +21,21 @@
     .fundoDoFormulario {
         background: linear-gradient(to bottom, #000000, #000000f0);
     }
+
+    .endereco{
+      background-color: transparent;
+      
+    }
+
+    .login-button {
+        width: 250px;
+        padding: 10px;
+        background: linear-gradient(to bottom, #4F0599, #7A0707);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        }
   </style>
   <body class="bodyWinery">
     <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
@@ -61,44 +76,106 @@
             </div>
         </div>
     </nav>
+
+    <div class="container corFundo mt-5">
+        <div class="row">
+            <div class="col-sm-5">
+              <h2 class="text-white text-center mb-3">Alterar Dados</h2>
+              
+              <form action="">
+                <label for="" class="form-label text-white">Nome completo</label>
+                <input type="text" class="form-control mb-3" id="">
+
+                <label for="inputGenero" class="form-label text-white">Gênero</label>
+                <select id="inputGenero" class="form-select mb-3">
+                  <option selected>Masculino</option>
+                  <option>Feminino</option>
+                </select>
+
+                <label for="" class="form-label text-white">Data de Nascimento</label>
+                <input type="date" class="form-control mb-3" id="dataNascimento" name="dataNascimento" required>
+
+                <div class="text-center mt-5">
+                <button type="button" class="btn login-button">Alterar</button>
+              </div>
+              </form>
+            </div>
+            <div class="col-sm-7 border-start">
+
+              <h2 class="text-white text-center mb-3">Endereços</h2>
+            <div class="container">
+              <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Novo Endereço</button>
+            </div>
+              <div class="container mt-3 border-opacity-75">
+                <div class="row">
+                  
+                  <div class="col mt-3">
+                    <div class="card endereco rounded border" style="width: 20rem;">
+                      <div class="card-body"> 
+                        <div class="d-flex justify-content-between">
+                        <h6 class="card-title text-white">Endereço padrão:</h6>
+                        <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
+                        </div>
+                        <hr class="text-white">
+                        <h6 class="text-white">Rua: Xurusbengo do Xurusbago</h6>
+                        <h6 class="text-white">Apartamento 22 BL 6</h6>
+                        <h6 class="text-white">Jardim Vaz de Lima</h6>
+                        <h6 class="text-white">07</h6>
+                        <h6 class="text-white">05833-120</h6>
+                        <h6 class="text-white">São Paulo - SP</h6>
+                        <div class="d-flex justify-content-between">
+                          <a href="#" class="card-link">Remover</a>
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                              <label class="form-check-label text-white" for="flexRadioDefault1">
+                                  Definir como padrão
+                              </label>
+                          </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col mt-3">
+                    <div class="card endereco rounded border" style="width: 20rem;">
+                      <div class="card-body"> 
+                        <div class="d-flex justify-content-between">
+                        <h6 class="card-title text-white">Endereço padrão:</h6>
+                        <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
+                        </div>
+                        <hr class="text-white">
+                        <h6 class="text-white">Rua: Xurusbengo do Xurusbago</h6>
+                        <h6 class="text-white">Apartamento 22 BL 6</h6>
+                        <h6 class="text-white">Jardim Vaz de Lima</h6>
+                        <h6 class="text-white">07</h6>
+                        <h6 class="text-white">05833-120</h6>
+                        <h6 class="text-white">São Paulo - SP</h6>
+                        <div class="d-flex justify-content-between">
+                          <a href="#" class="card-link">Remover</a>
+                          <div class="form-check">
+                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                              <label class="form-check-label text-white" for="flexRadioDefault1">
+                                  Definir como padrão
+                              </label>
+                          </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+               
+              </div>
+              
+            </div>
+        </div>
+  
+    </div>
     
      
-     <!-- Modal Endereco -->
-     <div class="modal fade" id="alterarClienteModal" tabindex="-1" aria-labelledby="alterarClienteLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-        <div class="modal-content fundoDoFormulario">
-            <div class="modal-header">
-            <h5 class="modal-title text-white" id="alterarClienteLabel">Alterar dados</h5>
-            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
-            </div>
-            <div class="modal-body">
-            <form class="row g-3">
-                <div class="col-md-6">
-                    <label for="" class="form-label text-white">Nome completo</label>
-                    <input type="text" class="form-control" id="">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="inputGenero" class="form-label text-white">Gênero</label>
-                    <select id="inputGenero" class="form-select">
-                      <option selected>Masculino</option>
-                      <option>Feminino</option>
-                    </select>
-                  </div>
-                  <div class="col-md-3">
-                    <label for="" class="form-label text-white">Data de Nascimento</label>
-                    <input type="text" class="form-control" id="">
-                  </div>
-                    <div class="col-12">
-                        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Novo Endereço</button>
-                    </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Sign in</button>
-                    </div>
-            </form>
-            </div>
-        </div>
-        </div>
-    </div>
+    
+  
 
     <div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -138,7 +215,7 @@
                       <input type="text" class="form-control" id="inputEstado">
                     </div>
                     <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Sign in</button>
+                      <button type="submit" class="btn login-button">Cadastrar</button>
                     </div>
             </form>
             </div>
