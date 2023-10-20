@@ -1,5 +1,6 @@
 package br.com.ecommerce.winery.models.cliente;
 
+import br.com.ecommerce.winery.models.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,4 +32,8 @@ public class Endereco {
     private String uf;
     @Enumerated(EnumType.STRING)
     private FlagEndereco flagEndereco;
+    @NotNull
+    private boolean principal;
+    @NotNull
+    private Status status;
 }

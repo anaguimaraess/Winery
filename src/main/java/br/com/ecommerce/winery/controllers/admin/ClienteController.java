@@ -1,12 +1,17 @@
 package br.com.ecommerce.winery.controllers.admin;
 
 import br.com.ecommerce.winery.dto.EnderecoDTO;
-import br.com.ecommerce.winery.models.backoffice.Usuario;
 import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.cliente.CustomClientDetails;
+import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,11 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "")
@@ -39,8 +42,11 @@ public class ClienteController {
             if (principal != null) {
                 String clienteUsername = principal.getName();
                 Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
+                List<Endereco> enderecos = cliente.getEnderecos();
                 if (cliente != null) {
                     model.addAttribute("cliente", cliente);
+                    model.addAttribute("enderecos", enderecos);
+
                 }
             }
             return "alterarCliente";
@@ -58,8 +64,9 @@ public class ClienteController {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
     }
+
     @PostMapping("/cliente/senha")
-    public String alterarSenha(Authentication authentication, String senhaAntiga,  String confirmaSenhaNova,String senhaNova, Model model) throws BusinessException {
+    public String alterarSenha(Authentication authentication, String senhaAntiga, String confirmaSenhaNova, String senhaNova, Model model) throws BusinessException {
         if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
             CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
             String username = userDetails.getUsername();
@@ -83,32 +90,37 @@ public class ClienteController {
     }
 
 
-
     @PostMapping("/Winery/cadastrarCliente")
-    public  ResponseEntity<String> cadastrarCliente(@RequestBody Cliente cliente) throws BusinessException {
+    public ResponseEntity<String> cadastrarCliente(@RequestBody Cliente cliente) throws BusinessException {
         try {
-            System.out.println("Recebida requisição para cadastrar cliente: {}"+ cliente);
+            System.out.println("Recebida requisição para cadastrar cliente: {}" + cliente);
 
             clienteService.cadastrarCliente(cliente);
             return ResponseEntity.ok("Sucesso: Cliente cadastrado com sucesso!");
         } catch (BusinessException e) {
-            return ResponseEntity.badRequest().body( e.getMessage());
-        }}
-
-        @PostMapping("/adicionarEndereco")
-        public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody EnderecoDTO enderecoDTO) {
-            try {
-                Cliente clienteCadastrado = clienteService.obterClientePorId(enderecoDTO.clienteId);
-                System.out.println(clienteCadastrado);
-                System.out.println(enderecoDTO.endereco);
-                if (clienteCadastrado != null) {
-                    clienteService.incluirEndereco(clienteCadastrado, enderecoDTO.endereco);
-                    return ResponseEntity.ok("Endereço adicionado com sucesso!");
-                } else {
-                    return ResponseEntity.badRequest().body("Cliente não encontrado.");
-                }
-            } catch (BusinessException e) {
-                return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
-            }
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-}
+    }
+
+    @PostMapping("/adicionarEndereco")
+    public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody EnderecoDTO enderecoDTO) {
+        try {
+            Cliente clienteCadastrado = clienteService.obterClientePorId(enderecoDTO.clienteId);
+            System.out.println(clienteCadastrado);
+            System.out.println(enderecoDTO.endereco);
+            if (clienteCadastrado != null) {
+                clienteService.incluirEndereco(clienteCadastrado, enderecoDTO.endereco);
+                return ResponseEntity.ok("Endereço adicionado com sucesso!");
+            } else {
+                return ResponseEntity.badRequest().body("Cliente não encontrado.");
+            }
+        } catch (BusinessException e) {
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/cliente/enderecos")
+    @ModelAttribute("enderecos")
+    public List<Endereco> listarEnderecos(@ModelAttribute Cliente cliente, HttpServletResponse response) throws BusinessException {
+        return clienteService.obterEnderecos(cliente.getIdCliente());
+    }}

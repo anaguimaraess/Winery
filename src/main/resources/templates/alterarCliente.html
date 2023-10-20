@@ -138,33 +138,35 @@
       </div>
         <div class="container mt-3 border-opacity-75">
           <div class="row">
-            
-            <div class="col mt-3">
-              <div class="card endereco rounded border" style="width: 20rem;">
-                <div class="card-body"> 
-                  <div class="d-flex justify-content-between">
-                  <h6 class="card-title text-white">Endereço padrão:</h6>
-                  <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
+
+              <div th:each="endereco : ${enderecos}">
+                  <div class="col mt-3">
+                      <div class="card endereco rounded border" style="width: 20rem;">
+                          <div class="card-body">
+                              <div class="d-flex justify-content-between">
+                                  <h6 class="card-title text-white" th:text="'Endereço padrão: ' + ${endereco.flagEndereco == 'ENTREGA' ? '(Entrega)' : ''}"></h6>
+                                  <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
+                              </div>
+                              <hr class="text-white">
+                              <h6 class="text-white" th:text="${endereco.logradouro} ', ' + ${endereco.numero}" ></h6>
+                              <h6 class="text-white" th:text="'Complemento ' + ${endereco.complemento}"></h6>
+                              <h6 class="text-white" th:text="${endereco.bairro}"></h6>
+                              <h6 class="text-white" th:text="${endereco.cep}"></h6>
+                              <h6 class="text-white" th:text="${endereco.cidade} + ' - ' + ${endereco.uf}"></h6>
+                              <div class="d-flex justify-content-between">
+                                  <a href="#" class="card-link">Remover</a>
+                                  <div class="form-check">
+                                      <input class="form-check-input" type="radio" th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.id}">
+                                      <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
+                                          Definir como padrão
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
                   </div>
-                  <hr class="text-white">
-                  <h6 class="text-white">Rua: Xurusbengo do Xurusbago</h6>
-                  <h6 class="text-white">Apartamento 22 BL 6</h6>
-                  <h6 class="text-white">Jardim Vaz de Lima</h6>
-                  <h6 class="text-white">07</h6>
-                  <h6 class="text-white">05833-120</h6>
-                  <h6 class="text-white">São Paulo - SP</h6>
-                  <div class="d-flex justify-content-between">
-                    <a href="#" class="card-link">Remover</a>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                        <label class="form-check-label text-white" for="flexRadioDefault1">
-                            Definir como padrão
-                        </label>
-                    </div>
-                </div>
-                </div>
               </div>
-            </div>
+          </div>
           </div>
         </div>
     </div>

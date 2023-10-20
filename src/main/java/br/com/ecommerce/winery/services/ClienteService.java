@@ -1,8 +1,10 @@
 package br.com.ecommerce.winery.services;
 
+import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.backoffice.Grupo;
 import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.cliente.Endereco;
+import br.com.ecommerce.winery.models.cliente.FlagEndereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ClienteRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,8 @@ import java.util.List;
 public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
+
+
     @Autowired
     private ValidacaoUtils validacaoUtils;
     @Autowired
@@ -96,7 +100,18 @@ public class ClienteService {
         validacaoUtils.validarEnderecoCompleto(cliente.getEnderecos());
         validacaoUtils.validarNomeCliente(cliente.getNome());
         validacaoUtils.validarCEPCliente(cliente);
+
         cliente.setGrupo(Grupo.CLIENTE);
+        if (cliente.getEnderecos().size()==1){
+            cliente.getEnderecos().get(0).setFlagEndereco(FlagEndereco.ENTREGA);
+            cliente.getEnderecos().get(0).setStatus(Status.ATIVO);
+
+        }else {
+            cliente.getEnderecos().get(0).setFlagEndereco(FlagEndereco.FATURAMENTO);
+            cliente.getEnderecos().get(1).setFlagEndereco(FlagEndereco.ENTREGA);
+            cliente.getEnderecos().get(0).setStatus(Status.ATIVO);
+            cliente.getEnderecos().get(1).setStatus(Status.ATIVO);
+        }
         if (validacaoUtils.clienteValido(cliente)) {
             cliente.setDataNascimento(cliente.getDataNascimento());
         }
@@ -111,5 +126,12 @@ public class ClienteService {
         return clienteRepository.findByEmail(email);
     }
 
+    public List<Endereco> obterEnderecos(int clienteId){
+        System.out.println(clienteRepository.findEnderecoByIdCliente(clienteId));
+        return clienteRepository.findEnderecoByIdCliente(clienteId);
+    }
 
+    public void excluirEnderecoFake(){
+
+    }
 }
