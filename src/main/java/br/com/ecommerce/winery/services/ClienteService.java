@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,18 +38,14 @@ public class ClienteService {
                 throw new BusinessException("Nome inválido");
             }
 
-            clienteCadastrado.setDataNascimento(cliente.getDataNascimento());
+            Date dataNascimento = cliente.getDataNascimento();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dataNascimento);
+            calendar.add(Calendar.DATE, 1);
+            Date novaDataNascimento = calendar.getTime();
+            clienteCadastrado.setDataNascimento(novaDataNascimento);
             clienteCadastrado.setGenero(cliente.getGenero());
 
-            validacaoUtils.validarSenhasIguais(cliente.getSenha(), cliente.getConfirmaSenha());
-            if (cliente.getSenha().isBlank() || cliente.getSenha().isEmpty()) {
-                cliente.setSenha(clienteCadastrado.getSenha());
-                cliente.setConfirmaSenha(clienteCadastrado.getConfirmaSenha());
-            } else {
-                String senha = passwordEncoder.encode(cliente.getSenha());
-                clienteCadastrado.setSenha(senha);
-                clienteCadastrado.setConfirmaSenha(senha);
-            }
             log.info("Cliente atualizado com sucesso!");
             clienteRepository.save(clienteCadastrado);
         } else {
@@ -56,7 +54,13 @@ public class ClienteService {
         }
         return clienteCadastrado;
     }
-
+    public void atualizaSenha(Cliente cliente, String novaSenha, String novaConfirmasenha) throws BusinessException {
+        validacaoUtils.validarSenhasIguais(novaSenha, novaConfirmasenha);
+        String senhaEncriptada = passwordEncoder.encode(novaSenha);
+        cliente.setSenha(senhaEncriptada);
+        cliente.setConfirmaSenha(senhaEncriptada);
+        clienteRepository.save(cliente);
+    }
 
     public void incluirEndereco(Cliente cliente, Endereco endereco) throws BusinessException {
         try {
@@ -102,6 +106,9 @@ public class ClienteService {
 
     public Cliente obterClientePorId(int clienteId) {
         return clienteRepository.findById(clienteId).orElse(null);
+    }
+    public Cliente obterClientePorEmail(String email) {
+        return clienteRepository.findByEmail(email);
     }
 
 

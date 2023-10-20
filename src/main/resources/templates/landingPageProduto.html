@@ -115,7 +115,7 @@ nav ul li a:hover {
                     Meu perfil
                   </a>
                   <div class="dropdown-menu dropdown-menu-end" aria-labelledby="perfil-button">
-                    <a class="dropdown-item" href="#" id="meusDados">Meus Dados</a>
+                    <a class="dropdown-item" href="/cliente/winery">Meus Dados</a>
                     <a class="dropdown-item" href="/authentication/logout" onclick="showLogoutMessage()">Sair</a>
                 </div>
                 </div>
@@ -124,8 +124,9 @@ nav ul li a:hover {
                       Faça login/crie seu login
                     </a>
                   </div>
-    </div>
-</nav>
+                </ul>
+        </div>
+    </nav>
 <div class="modal fade" id="alterarClienteModal" tabindex="-1" aria-labelledby="alterarClienteLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content fundoDoFormulario">
@@ -366,15 +367,7 @@ nav ul li a:hover {
   toggleSessionElements();
 
 
-  document.addEventListener("DOMContentLoaded", function () {
-        var meusDadosLink = document.getElementById("meusDados");
 
-        meusDadosLink.addEventListener("click", function (e) {
-            e.preventDefault();
-            var modal = new bootstrap.Modal(document.getElementById("alterarClienteModal"));
-            modal.show();
-        });
-    });
 
     function showLogoutMessage() {
     window.alert("Sessão encerrada com sucesso.");

@@ -8,7 +8,7 @@
   </head>
   <style>
     .bodyWinery {
-            background-image: url('../static/imagens/3.png') !important;
+      background-image: url('../imagens/3.png') !important;
             background-size: cover !important;
             background-repeat: no-repeat !important;
             background-attachment: fixed !important;
@@ -38,143 +38,136 @@
         }
   </style>
   <body class="bodyWinery">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/Winery">
-                <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
-            </a>
-    
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    
-    
-                </ul>
-    
-                <ul class="navbar-nav ml-auto">
-    
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link text-white" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg>
-                            Carrinho
-                        </a>
-                    </li>
-                   
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link text-white" href="#" data-bs-toggle="modal" data-bs-target="#alterarClienteModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                              </svg>
-                            bellicoth
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="/Winery">
+              <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+          </a>
 
-    <div class="container corFundo mt-5">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+              </ul>
+
+              <ul class="navbar-nav ml-auto">
+
+                  <li class="nav-item ml-auto">
+                      <a class="nav-link text-white" href="#">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                              <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                          </svg>
+                      </a>
+                  </li>
+                  <div  id="perfil-button">
+                      <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                          Meu perfil
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end" aria-labelledby="perfil-button">
+                          <a class="dropdown-item" href="/cliente/dados">Meus Dados</a>
+                          <a class="dropdown-item" href="/authentication/logout" onclick="showLogoutMessage()">Sair</a>
+                      </div>
+                  </div>
+              </ul>
+          </div>
+  </nav>
+
+
+  <div class="container corFundo mt-5">
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-6">
               <h2 class="text-white text-center mb-3">Alterar Dados</h2>
-              
-              <form action="">
-                <label for="" class="form-label text-white">Nome completo</label>
-                <input type="text" class="form-control mb-3" id="">
 
-                <label for="inputGenero" class="form-label text-white">Gênero</label>
-                <select id="inputGenero" class="form-select mb-3">
-                  <option selected>Masculino</option>
-                  <option>Feminino</option>
-                </select>
+                <form th:action="@{/cliente/alterar}" method="post" th:object="${cliente}" id="formDados" enctype="multipart/form-data">
+<!--                    <input type="hidden" id="id" name="idCliente" th:value="${cliente.idCliente}">-->
+                    <input type="hidden" id="id" name="idCliente" th:field="*{idCliente}">
+                    <label for="nome" class="form-label text-white">Nome completo</label>
+                    <input type="text" class="form-control mb-3" id="nome" name="nome" th:field="*{nome}">
 
-                <label for="" class="form-label text-white">Data de Nascimento</label>
-                <input type="date" class="form-control mb-3" id="dataNascimento" name="dataNascimento" required>
+                    <label for="inputGenero" class="form-label text-white">Gênero</label>
+                    <select id="inputGenero" class="form-select mb-3" name="genero" th:field="*{genero}">
+                        <option value="Masculino">Masculino</option>
+                        <option value="Feminino">Feminino</option>
+                        <option value="Nenhum">Nenhum</option>
+
+                    </select>
+
+                    <label for="dataNascimento" class="form-label text-white">Data de Nascimento</label>
+                    <input type="date" class="form-control mb-3" id="dataNascimento" name="dataNascimento" th:field="*{dataNascimento}" required>
 
                 <div class="text-center mt-5">
-                <button type="button" class="btn login-button">Alterar</button>
+                <button type="Submit" class="btn login-button">Alterar</button>
               </div>
               </form>
             </div>
-            <div class="col-sm-7 border-start">
-
-              <h2 class="text-white text-center mb-3">Endereços</h2>
-            <div class="container">
-              <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Novo Endereço</button>
-            </div>
-              <div class="container mt-3 border-opacity-75">
-                <div class="row">
-                  
-                  <div class="col mt-3">
-                    <div class="card endereco rounded border" style="width: 20rem;">
-                      <div class="card-body"> 
-                        <div class="d-flex justify-content-between">
-                        <h6 class="card-title text-white">Endereço padrão:</h6>
-                        <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
-                        </div>
-                        <hr class="text-white">
-                        <h6 class="text-white">Rua: Xurusbengo do Xurusbago</h6>
-                        <h6 class="text-white">Apartamento 22 BL 6</h6>
-                        <h6 class="text-white">Jardim Vaz de Lima</h6>
-                        <h6 class="text-white">07</h6>
-                        <h6 class="text-white">05833-120</h6>
-                        <h6 class="text-white">São Paulo - SP</h6>
-                        <div class="d-flex justify-content-between">
-                          <a href="#" class="card-link">Remover</a>
-                          <div class="form-check">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                              <label class="form-check-label text-white" for="flexRadioDefault1">
-                                  Definir como padrão
-                              </label>
-                          </div>
-                      </div>
-                      </div>
+            <div class="col-sm-6 border-start">
+                <h2 class="text-white text-center mb-3">Alterar Senha</h2>
+                <form th:action="@{/cliente/senha}" method="post" id="formSenha">
+                    <input type="hidden" id="idCliente" name="idCliente" th:value="${cliente.idCliente}">
+                    <div class="mb-3">
+                        <label for="senhaAntiga" class="form-label text-white">Senha Antiga</label>
+                        <input type="password" class="form-control" id="senhaAntiga" name="senhaAntiga" required>
                     </div>
-                  </div>
-
-                  <div class="col mt-3">
-                    <div class="card endereco rounded border" style="width: 20rem;">
-                      <div class="card-body"> 
-                        <div class="d-flex justify-content-between">
-                        <h6 class="card-title text-white">Endereço padrão:</h6>
-                        <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
-                        </div>
-                        <hr class="text-white">
-                        <h6 class="text-white">Rua: Xurusbengo do Xurusbago</h6>
-                        <h6 class="text-white">Apartamento 22 BL 6</h6>
-                        <h6 class="text-white">Jardim Vaz de Lima</h6>
-                        <h6 class="text-white">07</h6>
-                        <h6 class="text-white">05833-120</h6>
-                        <h6 class="text-white">São Paulo - SP</h6>
-                        <div class="d-flex justify-content-between">
-                          <a href="#" class="card-link">Remover</a>
-                          <div class="form-check">
-                              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                              <label class="form-check-label text-white" for="flexRadioDefault1">
-                                  Definir como padrão
-                              </label>
-                          </div>
-                      </div>
-                      </div>
+                    <div class="mb-3">
+                        <label for="senhaNova" class="form-label text-white">Senha Nova</label>
+                        <input type="password" class="form-control" id="senhaNova" name="senhaNova" required>
                     </div>
-                  </div>
-                  
-                  
-                </div>
-               
-              </div>
-              
+                    <div class="mb-3">
+                        <label for="confirmaSenhaNova" class="form-label text-white">Confirmação de Senha Nova</label>
+                        <input type="password" class="form-control" id="confirmaSenhaNova" name="confirmaSenhaNova" required>
+                    </div>
+                    <div class="text-center mt-5">
+                        <button type="submit" class="btn login-button">Alterar Senha</button>
+                    </div>
+                </form>
             </div>
+
+
         </div>
-  
+      </div>
     </div>
     
-     
-    
+    <div class="container corFundo mt-5">
+    <div class="row">
+      <h2 class="text-white text-center mb-3">Endereços Cadastrados</h2>
+      <div class="container">
+        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#enderecoModal">Adicionar Novo Endereço</button>
+      </div>
+        <div class="container mt-3 border-opacity-75">
+          <div class="row">
+            
+            <div class="col mt-3">
+              <div class="card endereco rounded border" style="width: 20rem;">
+                <div class="card-body"> 
+                  <div class="d-flex justify-content-between">
+                  <h6 class="card-title text-white">Endereço padrão:</h6>
+                  <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
+                  </div>
+                  <hr class="text-white">
+                  <h6 class="text-white">Rua: Xurusbengo do Xurusbago</h6>
+                  <h6 class="text-white">Apartamento 22 BL 6</h6>
+                  <h6 class="text-white">Jardim Vaz de Lima</h6>
+                  <h6 class="text-white">07</h6>
+                  <h6 class="text-white">05833-120</h6>
+                  <h6 class="text-white">São Paulo - SP</h6>
+                  <div class="d-flex justify-content-between">
+                    <a href="#" class="card-link">Remover</a>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                        <label class="form-check-label text-white" for="flexRadioDefault1">
+                            Definir como padrão
+                        </label>
+                    </div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
   
 
     <div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
