@@ -13,12 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static br.com.ecommerce.winery.services.ValidacaoUtils.validarEnderecoCompleto;
 
 @Service
 @Slf4j
@@ -45,7 +43,7 @@ public class ClienteService {
             try {
                 validacaoUtils.validarNomeCliente(cliente.getNome());
                 clienteCadastrado.setNome(cliente.getNome());
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new BusinessException("Nome inválido");
             }
 
@@ -65,6 +63,7 @@ public class ClienteService {
         }
         return clienteCadastrado;
     }
+
     public void atualizaSenha(Cliente cliente, String novaSenha, String novaConfirmasenha) throws BusinessException {
         validacaoUtils.validarSenhasIguais(novaSenha, novaConfirmasenha);
         String senhaEncriptada = passwordEncoder.encode(novaSenha);
@@ -82,8 +81,8 @@ public class ClienteService {
                 endereco.setStatus(Status.ATIVO);
                 endereco.setFlagEndereco(FlagEndereco.ENTREGA);
                 endereco.setPrincipal(false);
-               enderecoRepository.save(endereco);
-               log.info("Endereço adicionado com sucesso!");
+                enderecoRepository.save(endereco);
+                log.info("Endereço adicionado com sucesso!");
 
             }
         } catch (BusinessException e) {
@@ -93,23 +92,24 @@ public class ClienteService {
     }
 
     public Cliente cadastrarCliente(Cliente cliente) throws BusinessException {
+
+        System.out.println(cliente);
         validacaoUtils.validarSenhasIguais(cliente.getSenha(), cliente.getConfirmaSenha());
         String senha = passwordEncoder.encode(cliente.getSenha());
         cliente.setSenha(senha);
         cliente.setConfirmaSenha(senha);
         validacaoUtils.validarEmailUnicoCliente(cliente.getEmail());
         validacaoUtils.validarCpf(cliente.getCpf());
-        validarEnderecoCompleto(cliente.getEnderecos());
         validacaoUtils.validarNomeCliente(cliente.getNome());
         validacaoUtils.validarCEPCliente(cliente);
 
         cliente.setGrupo(Grupo.CLIENTE);
-        if (cliente.getEnderecos().size()==1){
+        if (cliente.getEnderecos().size() == 1) {
             cliente.getEnderecos().get(0).setFlagEndereco(FlagEndereco.ENTREGA);
             cliente.getEnderecos().get(0).setStatus(Status.ATIVO);
             cliente.getEnderecos().get(0).setPrincipal(true);
 
-        }else {
+        } else {
             cliente.getEnderecos().get(0).setFlagEndereco(FlagEndereco.FATURAMENTO);
             cliente.getEnderecos().get(1).setFlagEndereco(FlagEndereco.ENTREGA);
             cliente.getEnderecos().get(0).setStatus(Status.ATIVO);
@@ -122,22 +122,38 @@ public class ClienteService {
             cliente.setDataNascimento(cliente.getDataNascimento());
         }
         log.info("Cliente cadastrado com sucesso.");
-        return clienteRepository.save(cliente);
+        List <Endereco> enderecos = cliente.getEnderecos();
+
+        cliente.setEnderecos(null);
+        Cliente cl = clienteRepository.save(cliente);
+
+        for (Endereco ed : enderecos){
+            ed.setCliente(cl);
+            enderecoRepository.save(ed);
+        }
+
+        return cl;
     }
 
     public Cliente obterClientePorId(int clienteId) {
         return clienteRepository.findById(clienteId).orElse(null);
     }
+
     public Cliente obterClientePorEmail(String email) {
         return clienteRepository.findByEmail(email);
     }
 
-    public List<Endereco> obterEnderecos(int clienteId){
+    public List<Endereco> obterEnderecos(int clienteId) {
         System.out.println(clienteRepository.findEnderecoByIdCliente(clienteId));
         return clienteRepository.findEnderecoByIdCliente(clienteId);
     }
 
-    public void excluirEnderecoFake(){
+    public void desativarEndereco(int idEndereco) {
+        enderecoRepository.updateStatusToInactiveById(idEndereco);
 
+    }
+
+    public void definirPadrao(int idEndereco, Cliente cliente){
+        enderecoRepository.updatePrincipalById(idEndereco, true);
     }
 }

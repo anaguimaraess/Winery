@@ -236,7 +236,8 @@ $('#adicionarEnderecoButton').on('click', function () {
         bairro: $('#inputBairro').val(),
         cep: $('#inputCep').val(),
         uf: $('#inputUf').val(),
-        cidade: $('#inputCidade').val()
+        cidade: $('#inputCidade').val(),
+        idCliente : null,
     };
 
     cliente.enderecos.push(endereco2);
@@ -279,7 +280,8 @@ $('#formCadastroCliente').on('submit', function (event) {
         bairro: $('#bairro').val(),
         cep: $('#cep').val(),
         uf: $('#uf').val(),
-        cidade: $('#cidade').val()
+        cidade: $('#cidade').val(),
+        idCliente : null,
     };
     clienteData.enderecos.push(endereco1);
 

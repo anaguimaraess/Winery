@@ -42,9 +42,7 @@ public class Cliente {
     @Column(nullable = false)
     private String confirmaSenha;
 
-    @NotNull(message = "Inserir todos os dados do endereço!")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idCliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos;
     @Enumerated(EnumType.STRING)
     private Grupo grupo;

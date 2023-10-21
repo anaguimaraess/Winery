@@ -148,8 +148,7 @@
                         <div class="card endereco rounded border" style="width: 20rem;">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
-                                    <h6 class="card-title text-white" th:text="'Endereço padrão: ' + ${endereco.flagEndereco == 'ENTREGA' ? '(Entrega)' : ''}"></h6>
-                                    <img src="../static/imagens/logoWinery250x250new.png" width="120px" alt="Logo da Winery">
+                                    
                                 </div>
                                 <hr class="text-white">
                                 <h6 class="text-white" th:text="${endereco.logradouro +' '+endereco.numero}"></h6>
@@ -158,9 +157,9 @@
                                 <h6 class="text-white" th:text="${endereco.cep}"></h6>
                                 <h6 class="text-white" th:text="${endereco.cidade} + ' - ' + ${endereco.uf}"></h6>
                                 <div class="d-flex justify-content-between">
-                                    <a href="#" class="card-link">Remover</a>
+                                    <a th:href="@{'/cliente/remover/' + ${endereco.idEndereco}}" class="card-link">Remover</a>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${!endereco.principal}">
+                                        <input class="form-check-input" type="radio" th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
 
                                         <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
                                             Definir como padrão
@@ -322,6 +321,27 @@
         });
     });
 
+
+    $(document).ready(function() {
+    // Adicione o evento de clique aos radio buttons
+    $('input[type="radio"]').click(function() {
+        var enderecoId = $(this).val(); // Obtém o valor do radio button
+        var confirmar = confirm("Deseja definir este endereço como padrão?");
+        if (confirmar) {
+            // Fazer a requisição ao backend aqui
+            $.ajax({
+                url: '/cliente/definirPadrao/'+enderecoId, // Substitua pela URL correta
+                type: 'POST', // Ou outro método HTTP apropriado
+                success: function(response) {
+                    alert('Endereço definido como padrão com sucesso.');
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao definir o endereço como padrão.');
+                }
+            });
+        }
+    });
+});
 
     </script>
 

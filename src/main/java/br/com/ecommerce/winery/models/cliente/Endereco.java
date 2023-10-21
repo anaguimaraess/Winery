@@ -35,8 +35,8 @@ public class Endereco {
     @NotNull
     private boolean principal;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Status status;
-
-    @NotNull
-    private int idCliente;
-}
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;}

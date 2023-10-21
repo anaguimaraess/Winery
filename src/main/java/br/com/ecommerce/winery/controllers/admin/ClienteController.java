@@ -1,10 +1,12 @@
 package br.com.ecommerce.winery.controllers.admin;
 
-import br.com.ecommerce.winery.dto.EnderecoDTO;
+import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.cliente.CustomClientDetails;
 import br.com.ecommerce.winery.models.cliente.Endereco;
+import br.com.ecommerce.winery.models.cliente.FlagEndereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.repositories.EnderecoRepository;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,10 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+
+
     @GetMapping("/Winery/cliente")
     public String cadastroCliente() {
         return "cadastroCliente";
@@ -37,11 +43,10 @@ public class ClienteController {
             if (principal != null) {
                 String clienteUsername = principal.getName();
                 Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
-                List<Endereco> enderecos = cliente.getEnderecos();
+                List<Endereco> listaEnderecos = enderecoRepository.findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
+                cliente.setEnderecos(listaEnderecos);
                 if (cliente != null) {
                     model.addAttribute("cliente", cliente);
-                    model.addAttribute("enderecos", enderecos);
-
                 }
             }
             return "alterarCliente";
@@ -98,10 +103,19 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente/adicionarEndereco")
-    public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody Endereco endereco) {
+    public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody Endereco endereco, Authentication authentication) {
         try {
-            System.out.println(endereco);
-            clienteService.incluirEndereco(endereco);
+            if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
+                CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
+                String username = userDetails.getUsername();
+                Cliente cliente = clienteService.obterClientePorEmail(username);
+
+                if (cliente != null) {
+                    endereco.setCliente(cliente);
+                    clienteService.incluirEndereco(endereco);
+
+                }
+            }
             return ResponseEntity.ok("Sucesso: Endereço adicionado com sucesso!");
         } catch (BusinessException e) {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
@@ -113,4 +127,32 @@ public class ClienteController {
     public List<Endereco> listarEnderecos(@ModelAttribute Cliente cliente, HttpServletResponse response) throws BusinessException {
         return clienteService.obterEnderecos(cliente.getIdCliente());
     }
+
+    @GetMapping("/cliente/remover/{idEndereco}")
+    public ResponseEntity<String> removerEndereco(@PathVariable int idEndereco) {
+        clienteService.desativarEndereco(idEndereco);
+        return ResponseEntity.ok("Sucesso: Endereço removido com sucesso!");
+    }
+
+    @PostMapping("/cliente/definirPadrao/{idEndereco}")
+    public ResponseEntity<String> definirPadrao(@PathVariable int idEndereco,  Authentication authentication) {
+
+
+        try {
+            if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
+                CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
+                String username = userDetails.getUsername();
+                Cliente cliente = clienteService.obterClientePorEmail(username);
+
+                if (cliente != null) {
+                    clienteService.definirPadrao(idEndereco, cliente);
+
+                }
+            }
+            return ResponseEntity.ok("Sucesso: Endereço se tornou padrão com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+        }
+    }
+
 }

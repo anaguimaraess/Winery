@@ -57,23 +57,16 @@ public class ValidacaoUtils {
         }
     }
 
-    private static boolean enderecoCompleto(Endereco endereco) {
-        return endereco != null &&
-                endereco.getLogradouro() != null && !endereco.getLogradouro().isEmpty() &&
-                endereco.getNumero() > 0 &&
-                endereco.getCidade() != null && !endereco.getCidade().isEmpty() &&
-                endereco.getCep() != null && !endereco.getCep().isEmpty() &&
-                endereco.getUf() != null && !endereco.getUf().isEmpty();
-    }
 
-    public static void validarEnderecoCompleto(List<Endereco> enderecos) throws BusinessException {
-        for (Endereco endereco : enderecos) {
-            if (endereco == null || !enderecoCompleto(endereco)) {
-                log.error("O endereço completo é obrigatório.");
-                throw new BusinessException("O endereço completo é obrigatório.");
-            }
-        }
-    }
+
+//    public static void validarEnderecoCompleto(List<Endereco> enderecos) throws BusinessException {
+//        for (Endereco endereco : enderecos) {
+//            if ( !enderecoCompleto(endereco)) {
+//                log.error("O endereço completo é obrigatório.");
+//                throw new BusinessException("O endereço completo é obrigatório.");
+//            }
+//        }
+//    }
 
     public void validarEmailUnicoCliente(String email) throws BusinessException {
         if (clienteRepository.existsByEmail(email)) {
