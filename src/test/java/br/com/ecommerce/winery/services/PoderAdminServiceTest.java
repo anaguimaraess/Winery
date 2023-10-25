@@ -22,7 +22,7 @@ class PoderAdminServiceTest {
     private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private PoderAdminService poderAdminService;
+    private AdminService poderAdminService;
 
     @BeforeEach
     void setUp() {

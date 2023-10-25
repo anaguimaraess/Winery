@@ -1,7 +1,7 @@
 package br.com.ecommerce.winery.controllers;
 import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.models.exception.BusinessException;
-import br.com.ecommerce.winery.services.PoderAdminService;
+import br.com.ecommerce.winery.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(path = "")
 public class HomeController {
     @Autowired
-    private PoderAdminService cadastroProdutoService;
+    private AdminService cadastroProdutoService;
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String getHomeForm() {
         return "homeBackOffice";
@@ -28,9 +28,9 @@ public class HomeController {
 
     @GetMapping("/Winery")
     public String listarTodosUsuarios(Model model, @RequestParam(defaultValue = "0") int page, HttpServletResponse response) {
-        Pageable pageable = PageRequest.of(page, 12); // 10 produtos por página
+        Pageable pageable = PageRequest.of(page, 12);
         Page<Produto> produtosPage = cadastroProdutoService.listarTodosProdutosDecrescenteByStatus(pageable);
-        model.addAttribute("produtos", produtosPage); // Adicione a página ao modelo, não apenas a lista
+        model.addAttribute("produtos", produtosPage);
         response.setStatus(HttpStatus.OK.value());
         return "landingPageProduto";
     }
@@ -43,7 +43,7 @@ public class HomeController {
             response.setStatus(HttpStatus.OK.value());
             return "DetalhesProduto";
         } catch (BusinessException e) {
-            return "erro"; // Você pode criar uma página "erro.html" para lidar com erros.
+            return "erro";
         }
     }
 }

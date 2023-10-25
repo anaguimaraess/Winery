@@ -2,7 +2,7 @@ package br.com.ecommerce.winery.controllers.admin;
 import br.com.ecommerce.winery.models.produtos.Produto;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
-import br.com.ecommerce.winery.services.PoderAdminService;
+import br.com.ecommerce.winery.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class EstoquistaController {
 
     @Autowired
-    private PoderAdminService cadastroProdutoService;
+    private AdminService cadastroProdutoService;
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -68,11 +68,9 @@ public class EstoquistaController {
             cadastroProdutoService.editarProduto(produto, imagemInput, imagensParaRemover, imagensParaAtualizar, imgPrincipal, redirect);
             model.addAttribute("produto", produto);
             response.setStatus(HttpStatus.OK.value());
-            // return ResponseEntity.ok("Sucesso: Produto alterado com sucesso!");
            return "redirect:/estoque/listarProdutos";
         } catch (Exception e) {
             return "redirect:/estoque/listarProdutos";
-            // return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
     }
 }

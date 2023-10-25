@@ -5,7 +5,7 @@ import br.com.ecommerce.winery.models.backoffice.Usuario;
 import br.com.ecommerce.winery.models.exception.BusinessException;
 import br.com.ecommerce.winery.repositories.ProdutoRepository;
 import br.com.ecommerce.winery.repositories.UsuarioRepository;
-import br.com.ecommerce.winery.services.PoderAdminService;
+import br.com.ecommerce.winery.services.AdminService;
 import br.com.ecommerce.winery.utils.MensagemRetorno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,9 +31,9 @@ public class AdminController {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private PoderAdminService cadastroUsuarioService;
+    private AdminService cadastroUsuarioService;
     @Autowired
-    private PoderAdminService cadastroProdutoService;
+    private AdminService cadastroProdutoService;
     @Autowired
     private ProdutoRepository produtoRepository;
     @Autowired
@@ -60,19 +60,6 @@ public class AdminController {
         return "listaUsuario";
     }
 
-
-    @GetMapping("/exibirProduto")
-    public String exibirProduto(@RequestParam("id") int id, Model model, HttpServletResponse response) {
-        try {
-            Produto produto = cadastroProdutoService.buscarProdutoPorId(id);
-            model.addAttribute("produto", produto);
-            response.setStatus(HttpStatus.OK.value());
-            return "exibirProduto";
-        } catch (BusinessException e) {
-            return "erro"; // Você pode criar uma página "erro.html" para lidar com erros.
-        }
-    }
-
     @PostMapping("/cadastrar")
     public ResponseEntity<String> cadastrarUsuario(@ModelAttribute Usuario usuario, HttpServletResponse response) {
         try {
@@ -82,7 +69,6 @@ public class AdminController {
             return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
     }
-
     @PostMapping("/alterar")
     public ResponseEntity<String> alterarDadosUsuario(@ModelAttribute("usuario") Usuario usuario) {
         try {
@@ -133,6 +119,18 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/exibirProduto")
+    public String exibirProduto(@RequestParam("id") int id, Model model, HttpServletResponse response) {
+        try {
+            Produto produto = cadastroProdutoService.buscarProdutoPorId(id);
+            model.addAttribute("produto", produto);
+            response.setStatus(HttpStatus.OK.value());
+            return "exibirProduto";
+        } catch (BusinessException e) {
+            return "erro";
+        }
+    }
+
 
     @PostMapping("/cadastrarProdutos")
     @Transactional
@@ -168,7 +166,7 @@ public class AdminController {
             Produto produtoAlterado = cadastroProdutoService.ativarProduto(idProduto);
 
             response.setStatus(HttpStatus.OK.value());
-            return "redirect:/admin/listarProdutos?page=" + page; // Redireciona de volta para a página atual
+            return "redirect:/admin/listarProdutos?page=" + page;
         } catch (BusinessException e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao ativar o produto: " + e.getMessage());
@@ -185,7 +183,7 @@ public class AdminController {
             Produto produtoAlterado = cadastroProdutoService.inativarProduto(idProduto);
 
             response.setStatus(HttpStatus.OK.value());
-            return "redirect:/admin/listarProdutos?page=" + page; // Redireciona de volta para a página atual
+            return "redirect:/admin/listarProdutos?page=" + page;
         } catch (BusinessException e) {
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             mensagemRetorno.adicionarMensagem(model, "erro", "Erro ao inativar o produto: " + e.getMessage());
@@ -209,7 +207,6 @@ public class AdminController {
            return "redirect:/admin/listarProdutos";
         } catch (Exception e) {
             return "redirect:/admin/listarProdutos";
-            // return ResponseEntity.badRequest().body("Erro:" + e.getMessage());
         }
     }
     @GetMapping("/buscarProduto")

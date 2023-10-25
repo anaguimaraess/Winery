@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.security;
+package br.com.ecommerce.winery.security.session;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

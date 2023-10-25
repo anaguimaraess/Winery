@@ -30,7 +30,7 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class PoderAdminService {
+public class AdminService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -194,8 +194,6 @@ public class PoderAdminService {
             throw new BusinessException("Produto não encontrado com o ID: " + id);
         }
     }
-
-
     public Page<Produto> listarTodosProdutosDecrescente(Pageable pageable) {
         return produtoRepository.findAllByOrderByIdProdutoDesc( pageable);
     }

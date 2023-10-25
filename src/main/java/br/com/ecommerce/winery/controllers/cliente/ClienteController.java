@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.controllers.admin;
+package br.com.ecommerce.winery.controllers.cliente;
 
 import br.com.ecommerce.winery.models.Status;
 import br.com.ecommerce.winery.models.cliente.Cliente;
@@ -85,8 +85,7 @@ public class ClienteController {
         } else {
             model.addAttribute("Erro:", "Cliente não autenticado");
         }
-
-        return "redirect:/erro"; // Página de erro
+        return "redirect:/erro";
     }
 
 
@@ -135,7 +134,7 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente/definirPadrao/{idEndereco}")
-    public ResponseEntity<String> definirPadrao(@PathVariable int idEndereco,  Authentication authentication) {
+    public ResponseEntity<String> definirPadrao(@PathVariable int idEndereco, Authentication authentication) {
 
 
         try {
@@ -146,7 +145,6 @@ public class ClienteController {
 
                 if (cliente != null) {
                     clienteService.definirPadrao(idEndereco, cliente);
-
                 }
             }
             return ResponseEntity.ok("Sucesso: Endereço se tornou padrão com sucesso!");
@@ -154,5 +152,4 @@ public class ClienteController {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
     }
-
 }

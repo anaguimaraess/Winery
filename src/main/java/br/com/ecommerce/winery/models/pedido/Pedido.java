@@ -2,6 +2,7 @@ package br.com.ecommerce.winery.models.pedido;
 
 import br.com.ecommerce.winery.models.cliente.Cliente;
 import br.com.ecommerce.winery.models.pedido.formasPagamento.FormaPagamento;
+import br.com.ecommerce.winery.models.produtos.Produto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class Pedido {
     @JoinColumn(name = "idCliente")
     private Cliente idComprador;
     @OneToMany(cascade = CascadeType.ALL)
-    List<ProdutosPedido> carrinho;
+    List<Produto> carrinho;
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
     private int frete;

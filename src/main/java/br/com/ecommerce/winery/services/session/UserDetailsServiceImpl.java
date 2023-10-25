@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.services;
+package br.com.ecommerce.winery.services.session;
 
 import br.com.ecommerce.winery.models.backoffice.Grupo;
 import br.com.ecommerce.winery.models.backoffice.Usuario;

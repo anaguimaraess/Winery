@@ -1,4 +1,4 @@
-package br.com.ecommerce.winery.security;
+package br.com.ecommerce.winery.security.session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
