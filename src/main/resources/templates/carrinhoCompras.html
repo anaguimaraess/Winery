@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Winery:: Carrinho de Compras</title>
+    <link rel="shortcut icon" href="../static/imagens/faviconWinery.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <style>
+    .bodyWinery {
+            background-image: url('../static/imagens/3.png') !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
+        }
+        .corFundo {
+            background: linear-gradient(to bottom, #000000, #000000f0) ;
+            
+        }
+    .fundoDoFormulario {
+        background: linear-gradient(to bottom, #000000, #000000f0);
+    }
+    
+
+  </style>
+
+  <body style="background-color: #141418;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/Winery">
+                <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
+            </a>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    
+    
+                </ul>
+    
+                <ul class="navbar-nav ml-auto">
+    
+                    <li class="nav-item ml-auto">
+                        <a class="nav-link text-white" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                            </svg>
+                            Carrinho
+                        </a>
+                    </li>
+                   
+                    <li class="nav-item ml-auto">
+                        <a class="nav-link text-white" href="/authentication/login" >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                              </svg>
+                            Entrar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-12 col-md-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill text-white" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                  </svg>
+            </div>
+            <div class="col-12 col-md-10">
+                <h4 class="text-white">Selecione o Endereço</h4>
+            </div>
+
+            <form class="row g-3">
+                <div class="col-auto">
+                  <label for="" class="visually-hidden">Inserir CEP</label>
+                  <input type="text" class="form-control" id="" placeholder="Inserir CEP">
+                </div>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary mb-3">OK</button>
+                </div>
+              </form>
+        </div>
+        
+    </div>
+
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col-12 col-md-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket3-fill text-white" viewBox="0 0 16 16">
+                    <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.730-.574z"/>
+                </svg>
+            </div>
+            <div class="col-12 col-md-10">
+                <h4 class="text-white">Produto e Serviço</h4>
+            </div>
+        <hr class="text-white">
+        <ul class="list-group mb-3" style="background-color: transparent;">
+            <li class="list-group-item py-3" style="background-color: transparent;">
+                <div class="row g-3">
+                    <div class="col-4 col-md-3 col-lg-2">
+                        <a href="#">
+                            <img src="../static/imagensProdutos/177cc15b-ed06-4148-8a5a-8cad6122c0e9-4.png" class="img-thumbnail" alt="">
+                        </a>
+                    </div>
+                    <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                        <h4><b><a href="#" class="text-decoration-none text-danger">Teste Vinho</a></b></h4>
+                        <small class="text-white">Teste para descrição do vinho.</small>
+                    </div>
+                    <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
+                        <div class="input-group">
+                            <button type="button" class="btn btn-outline-dark btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short text-white" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                  </svg>
+                            </button>
+                            <input type="text" class="form-control text-center border-dark" value="4">
+                            <button type="button" class="btn btn-outline-dark btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short text-white" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                  </svg>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger border-dark btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                  </svg>
+                            </button>
+                            <div class="text-right mt-2">
+                                <b><small class="text-white">Valor Item: </small></b> <small class="text-white">R$ 100,00</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="list-group-item py-3" style="background-color: transparent;">
+                <div class="row g-3">
+                    <div class="col-4 col-md-3 col-lg-2">
+                        <a href="#">
+                            <img src="../static/imagensProdutos/177cc15b-ed06-4148-8a5a-8cad6122c0e9-4.png" class="img-thumbnail" alt="">
+                        </a>
+                    </div>
+                    <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                        <h4><b><a href="#" class="text-decoration-none text-danger">Teste Vinho</a></b></h4>
+                        <small class="text-white">Teste para descrição do vinho.</small>
+                    </div>
+                    <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
+                        <div class="input-group">
+                            <button type="button" class="btn btn-outline-dark btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short text-white" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                                  </svg>
+                            </button>
+                            <input type="text" class="form-control text-center border-dark" value="4">
+                            <button type="button" class="btn btn-outline-dark btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short text-white" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                                  </svg>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger border-dark btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                                  </svg>
+                            </button>
+                            <div class="text-right mt-2">
+                                <b><small class="text-white">Valor Item: </small></b> <small class="text-white">R$ 100,00</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+
+            <li class="list-group-item py-3" style="background-color: transparent;">
+                <div class="text-end">
+                    <h4 class="text-white mb-3">Valor Total: R$ 100,00</h4> 
+                    <h5 class="text-white mb-3">Valor Frete: R$ 100,00</h5>
+                    <a href="" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
+                    <button class="btn btn-danger btn-lg">Ir para Pagamento</button>
+                </div>
+            </li>
+
+        </ul>
+        </div>
+    </div>
+
+    <!-- Remove the container if you want to extend the Footer to full width. -->
+<div class="my-5 border-top bg-body-tertiary corFundo" >
+    <!-- Footer -->
+    <footer class="text-center text-lg-start text-white bg-body-tertiary corFundo">
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+        <!-- Section: Links -->
+        <section class="">
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
+  
+              <p>
+                Alguma dúvida? A gente ajuda você! <br>
+                Horario de Atendimento: <br>
+                De segunda a sexta-feira de 08h as 18h. Exceto feriados.
+              </p>
+            </div>
+            <!--Grid column-->
+  
+            <!--Grid column-->
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-white">Sobre a Winery</h5>
+  
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="https://github.com/anaguimaraess/Winery" class="text-white" style="text-decoration: none;">GitHub</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Sobre Nós</a>
+                </li>
+                
+              </ul>
+            </div>
+            <!--Grid column-->
+  
+            <!--Grid column-->
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-white">Suporte</h5>
+  
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Política de Frete</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Política de Privacidade</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Termos de Condições</a>
+                </li>
+                
+              </ul>
+            </div>
+            <!--Grid column-->
+  
+            <!--Grid column-->
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-white">Categorias</h5>
+  
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Lançamentos</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Vinho Tinto</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Vinho Branco</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-white" style="text-decoration: none;">Promoções</a>
+                </li>
+              </ul>
+            </div>
+            <!--Grid column-->
+  
+            <!--Grid column-->
+            <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-white">Formas de Pagamento</h5>
+  
+              <ul class="list-unstyled mb-0">
+                <img src="../static/imagens/formaPagamento.webp"  width="200px" alt="">
+              </ul>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </section>
+        <!-- Section: Links -->
+  
+        <hr class="mb-4" />
+  
+        <!-- Section: CTA -->
+        <section class="text-center">
+          <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_empresabuscape_horizontal.png" width="148" height="30" alt="Empresa reconhecida buscapé" loading="lazy" class="sc-kpKSZj bigULn">
+            <a href="https://transparencyreport.google.com/safe-browsing/search?url=kabum.com.br&amp;hl=pt-PT" target="_blank" rel="noreferrer" class="sc-lfYzqA kxaHhl" style="margin-left: 30px;">
+            <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo-google-site-seguro.png" alt="GOOGLE SITE SEGURO" width="130" height="46" loading="lazy" class="sc-kpKSZj bigULn"  style="margin-left: 30px;"></a>
+            <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_ebit_kabum_horizontal.png" width="150" height="36" alt="Ebit diamante excelente" loading="lazy" class="sc-kpKSZj bigULn"  style="margin-left: 30px;"></a>
+            <a id="seloEconfy" href="https://www.compreconfie.com.br/103388" target="_blank" rel="noreferrer" class="sc-lfYzqA kxaHhl"  style="margin-left: 30px;">
+            <img class="sc-kpKSZj bigULn compreConfieImg" src="https://selo.compreconfie.com.br/reputation/103388.png" width="57" height="60" alt="Compre e confie" loading="lazy"  style="margin-left: 30px;"></a>
+            <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo-ra.png" height="60" alt="Empresa campeã prêmio reclame aqui 2022" loading="lazy" class="sc-kpKSZj bigULn"  style="margin-left: 30px;"> 
+        </section>
+        <!-- Section: CTA -->
+  
+        <hr class="mb-4" />
+
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
+  
+      <!-- Copyright -->
+      <div
+           class="text-center p-3"
+           style="background-color: rgba(0, 0, 0, 0.2)"
+           >
+        © 2023 Copyright por Winery
+        
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+  </div>
+  <!-- End of .container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>
