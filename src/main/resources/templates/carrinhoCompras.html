@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +21,11 @@
     .fundoDoFormulario {
         background: linear-gradient(to bottom, #000000, #000000f0);
     }
-    
+    .produto-imagem {
+    width: 170px;
+    height: 135px;
+    object-fit: cover; /* Isso mantém a proporção e cobre a área especificada */
+  }
 
   </style>
 
@@ -100,95 +104,9 @@
                 <h4 class="text-white">Produto e Serviço</h4>
             </div>
         <hr class="text-white">
-        <ul class="list-group mb-3" style="background-color: transparent;">
-            <li class="list-group-item py-3" style="background-color: transparent;">
-                <div class="row g-3">
-                    <div class="col-4 col-md-3 col-lg-2">
-                        <a href="#">
-                            <img src="../static/imagensProdutos/177cc15b-ed06-4148-8a5a-8cad6122c0e9-4.png" class="img-thumbnail" alt="">
-                        </a>
-                    </div>
-                    <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-                        <h4><b><a href="#" class="text-decoration-none text-danger">Teste Vinho</a></b></h4>
-                        <small class="text-white">Teste para descrição do vinho.</small>
-                    </div>
-                    <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
-                        <div class="input-group">
-                            <button type="button" class="btn btn-outline-dark btn-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short text-white" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
-                                  </svg>
-                            </button>
-                            <input type="text" class="form-control text-center border-dark" value="4">
-                            <button type="button" class="btn btn-outline-dark btn-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short text-white" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
-                                  </svg>
-                            </button>
-                            <button type="button" class="btn btn-outline-danger border-dark btn-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                                  </svg>
-                            </button>
-                            <div class="text-right mt-2">
-                                <b><small class="text-white">Valor Item: </small></b> <small class="text-white">R$ 100,00</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li class="list-group-item py-3" style="background-color: transparent;">
-                <div class="row g-3">
-                    <div class="col-4 col-md-3 col-lg-2">
-                        <a href="#">
-                            <img src="../static/imagensProdutos/177cc15b-ed06-4148-8a5a-8cad6122c0e9-4.png" class="img-thumbnail" alt="">
-                        </a>
-                    </div>
-                    <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
-                        <h4><b><a href="#" class="text-decoration-none text-danger">Teste Vinho</a></b></h4>
-                        <small class="text-white">Teste para descrição do vinho.</small>
-                    </div>
-                    <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
-                        <div class="input-group">
-                            <button type="button" class="btn btn-outline-dark btn-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short text-white" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
-                                  </svg>
-                            </button>
-                            <input type="text" class="form-control text-center border-dark" value="4">
-                            <button type="button" class="btn btn-outline-dark btn-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short text-white" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
-                                  </svg>
-                            </button>
-                            <button type="button" class="btn btn-outline-danger border-dark btn-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
-                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
-                                  </svg>
-                            </button>
-                            <div class="text-right mt-2">
-                                <b><small class="text-white">Valor Item: </small></b> <small class="text-white">R$ 100,00</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-
-            <li class="list-group-item py-3" style="background-color: transparent;">
-                <div class="text-end">
-                    <h4 class="text-white mb-3">Valor Total: R$ 100,00</h4> 
-                    <h5 class="text-white mb-3">Valor Frete: R$ 100,00</h5>
-                    <a href="" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
-                    <button class="btn btn-danger btn-lg">Ir para Pagamento</button>
-                </div>
-            </li>
-
+        <ul class="list-group mb-3" style="background-color: transparent;" id="carrinho-lista">
         </ul>
-        </div>
+      </div>
     </div>
 
     <!-- Remove the container if you want to extend the Footer to full width. -->
@@ -316,6 +234,144 @@
     <!-- Footer -->
   </div>
   <!-- End of .container -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+  <script>
+    function calcularValorTotalCarrinho(carrinho) {
+      let total = 0;
+  
+      carrinho.forEach((item) => {
+        total += item.quantidade * parseFloat(item.preco);
+      });
+  
+      return total;
+    }
+  
+    function adicionarQuantidade(index) {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+      carrinho[index].quantidade++;
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      exibirCarrinho();
+    }
+  
+    function diminuirQuantidade(index) {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+      if (carrinho[index].quantidade > 1) {
+        carrinho[index].quantidade--;
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        exibirCarrinho();
+      }
+    }
+  
+    function removerItem(index) {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+      carrinho.splice(index, 1);
+      localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      exibirCarrinho();
+    }
+  
+    function adicionarManipuladoresEventos() {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+  
+      if (carrinho && carrinho.length > 0) {
+        carrinho.forEach((item, index) => {
+          document
+            .getElementById(`aumentar-quantidade-${index}`)
+            .addEventListener('click', () => adicionarQuantidade(index));
+          document
+            .getElementById(`diminuir-quantidade-${index}`)
+            .addEventListener('click', () => diminuirQuantidade(index));
+          document
+            .getElementById(`remover-item-${index}`)
+            .addEventListener('click', () => removerItem(index));
+        });
+      }
+    }
+  
+    function exibirCarrinho() {
+      const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+      const carrinhoLista = document.getElementById('carrinho-lista');
+  
+      carrinhoLista.innerHTML = ''; // Limpa o conteúdo anterior
+  
+      if (carrinho && carrinho.length > 0) {
+        carrinho.forEach((item, index) => {
+          const valorItem = parseFloat(item.preco); // Alterado para mostrar o valor do item
+  
+          const itemHTML = `
+            <li class="list-group-item py-3" style="background-color: transparent;">
+              <div class="row g-3">
+                <div class="col-4 col-md-3 col-lg-2">
+  <a href="#">
+    <img src="${item.imagemPrincipal}" class="produto-imagem" alt="">
+  </a>
+</div>
+
+                <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                  <h4><b><a href="#" class="text-decoration-none text-danger">${item.nome}</a></b></h4>
+                  <small class="text-white">${item.descricao}</small>
+                </div>
+                <div class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
+                  <div class="input-group">
+                    <button type="button" class="btn btn-outline-dark btn-sm" id="aumentar-quantidade-${index}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short text-white" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+                      </svg>
+                    </button>
+                    <input type="text" class="form-control text-center border-dark" value="${item.quantidade}">
+                    <button type="button" class="btn btn-outline-dark btn-sm" id="diminuir-quantidade-${index}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short text-white" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+                      </svg>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger border-dark btn-sm" id="remover-item-${index}">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-white" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="text-right mt-2">
+                    <b><small class="text-white">Valor Item: </small></b> <small class="text-white">R$ ${valorItem.toFixed(2)}</small>
+                  </div>
+                </div>
+              </div>
+            </li>
+          `;
+  
+          carrinhoLista.innerHTML += itemHTML; // Adicione o item à lista do carrinho
+        });
+  
+        // Calcule o valor total do carrinho
+        const valorTotalCarrinho = calcularValorTotalCarrinho(carrinho);
+  
+        // Atualize o valor total e o valor do frete com base nos itens do carrinho
+        const valorFrete = 100.0; // Defina o valor do frete
+  
+        carrinhoLista.innerHTML += `
+          <li class="list-group-item py-3" style="background-color: transparent;">
+            <div class="text-end">
+              <h4 class="text-white mb-3">Valor Total: R$ ${valorTotalCarrinho.toFixed(2)}</h4>
+              <h5 class="text-white mb-3">Valor Frete: R$ ${valorFrete.toFixed(2)}</h5>
+              <a href="" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
+              <button class="btn btn-danger btn-lg">Ir para Pagamento</button>
+            </div>
+          </li>
+        `;
+  
+        // Adicione novamente os manipuladores de eventos para os botões
+        adicionarManipuladoresEventos();
+      } else {
+        // Se o carrinho estiver vazio, exiba uma mensagem indicando isso
+        carrinhoLista.innerHTML = '<p>Carrinho vazio</p>';
+      }
+    }
+  
+    // Chame a função para exibir o carrinho
+    exibirCarrinho();
+    adicionarManipuladoresEventos();
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
-</html>
+  </html>
+  

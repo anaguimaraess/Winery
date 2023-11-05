@@ -108,6 +108,7 @@ nav ul li a:hover {
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                         </svg>
+                        <span id="carrinhoItens">0</span>
                     </a>
                 </li>
                 <div  id="perfil-button">
@@ -265,6 +266,20 @@ nav ul li a:hover {
                                     <input type="hidden" name="id" th:value="${produto.idProduto}" />
                                     <button class="btn corButtonPadrao" type="submit">Detalhes</button>
                                 </form>
+                                <br>
+                               <!-- <button class="btn corButtonPadrao"
+                                th:data-produto-id="${produto.idProduto}"
+                                onclick="adicionarAoCarrinho(this)">Adicionar ao carrinho</button> -->
+
+
+                                        <button class="btn corButtonPadrao"
+                                            th:data-produto-id="${produto.idProduto}"
+                                            th:data-imagem-principal="${'/'+imagem.url}" 
+                                            onclick="adicionarAoCarrinho(this)">Adicionar ao carrinho</button>
+
+                                
+                                
+
                             </div>
                         </div>
                     </div>
@@ -374,6 +389,69 @@ nav ul li a:hover {
     // Redirecione para a página de logout
     window.location.href = "/authentication/logout";
 }
+
+
+//carrinho
+let quantidadeItensCarrinho = 0;
+let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+quantidadeItensCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
+atualizarQuantidadeItensCarrinho();
+
+function adicionarAoCarrinho(button) {
+    const produtoId = button.getAttribute('data-produto-id');
+    const imagemPrincipal = button.getAttribute('data-imagem-principal'); 
+    const inputHidden = document.getElementById(produtoId);
+    const nomeProduto = inputHidden.getAttribute('data-nome');
+    const avaliacaoProduto = inputHidden.getAttribute('data-avaliacao');
+    const descricaoProduto = inputHidden.getAttribute('data-descricao');
+    const precoProduto = inputHidden.getAttribute('data-preco');
+    const estoqueProduto = inputHidden.getAttribute('data-estoque');
+    const statusProduto = inputHidden.getAttribute('data-status');
+    const produtoExistente = carrinho.find(item => item.id === produtoId);
+
+    if (produtoExistente) {
+        if (produtoExistente.quantidade < estoqueProduto) {
+            produtoExistente.quantidade++;
+        } else {
+            alert('Quantidade máxima atingida para este produto.');
+        }
+    } else {
+        carrinho.push({
+            id: produtoId,
+            quantidade: 1,
+            nome: nomeProduto,
+            avaliacao: avaliacaoProduto,
+            descricao: descricaoProduto,
+            preco: precoProduto,
+            estoque: estoqueProduto,
+            imagemPrincipal: imagemPrincipal, 
+        });
+    }
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+    alert('Produto adicionado ao carrinho');
+
+    quantidadeItensCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
+    atualizarQuantidadeItensCarrinho();
+}
+
+const botoesCarrinho = document.querySelectorAll(".btn-corButtonPadrao");
+
+botoesCarrinho.forEach(button => {
+    button.addEventListener("click", () => {
+        adicionarAoCarrinho(button);
+    });
+});
+
+console.log(carrinho)
+
+function atualizarQuantidadeItensCarrinho() {
+    document.getElementById("carrinhoItens").textContent = quantidadeItensCarrinho;
+}
+
+
 
 </script>
 
