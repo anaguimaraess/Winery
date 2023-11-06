@@ -44,19 +44,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link text-white" href="/estoque/listarProdutos">
+              <a class="nav-link text-white" href="">
                 Vinhos
               </a>
             </li>
   
             <li class="nav-item">
-              <a class="nav-link text-white" href="/estoque/listarProdutos">
+              <a class="nav-link text-white" href="">
                 Vinicolas
               </a>
             </li>
   
             <li class="nav-item">
-              <a class="nav-link text-white" href="/estoque/listarProdutos">
+              <a class="nav-link text-white" href="">
                 Espumante
               </a>
             </li>
@@ -67,17 +67,7 @@
           </a>
     
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item ml-auto">
-              <a class="nav-link text-white" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                </svg>
-                Carrinho
-              </a>
-            </li>
-  
+            
             <li class="nav-item ml-auto">
               <a class="nav-link text-white" href="/authentication/login">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -94,60 +84,41 @@
 
     <div class="container">
         <div class="row mt-3">
-            <div class="col-12 col-md-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill text-white" viewBox="0 0 16 16">
-                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                  </svg>
-            </div>
-            <div class="col-12 col-md-10">
-                <h4 class="text-white">Selecione o Endereço</h4>
-            </div>
+          <div class="col-12 col-md-1 mt-md-0 mt-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill text-white" viewBox="0 0 16 16">
+                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"></path>
+            </svg>
+        </div>
+        <div class="col-12 col-md-10 mt-md-0 mt-2">
+            <h4 class="text-white">Simule o frete para seu endereço:</h4>
+        </div>
 
             <form class="row g-3">
-                <div class="col-auto">
-                  <label for="" class="visually-hidden">Inserir CEP</label>
-                  <input type="text" class="form-control" id="" placeholder="Inserir CEP">
-                </div>
-                <div class="col-auto">
-                  <button type="submit" class="btn btn-primary mb-3 botaoPadrao">OK</button>
-                </div>
-              </form>
+              <div class="col-auto">
+                <label for="inputCep" class="visually-hidden">Inserir CEP</label>
+                <input type="text" class="form-control" id="inputCep" placeholder="Inserir CEP">
+              </div>
+              <div class="col-auto">
+                <button type="button" class="btn btn-primary mb-3 botaoPadrao" id="buscarCepBtn">OK</button>
+              </div>
+            </form>
         </div>
-        
     </div>
 
     <div class="container" id="divEndereco">
       <div class="row mt-2">
-        <div class="col-12 col-md-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            class="bi bi-truck text-white" viewBox="0 0 16 16">
-            <path
-              d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-          </svg>
-        </div>
-        <div class="col-12 col-md-10">
-          <h4 class="text-white">Frete:</h4>
-        </div>
+        
       </div>
-      <hr class="text-white">
       <ul class="list-group mb-3" style="background-color: transparent; border: none !important;">
         <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
           <div class="row g-3">
-            <h5 class="text-white">Para receber no Endereço:</h5>
-            <div class="col-8 col-md-9 col-lg-6"> <!-- Aumente a largura dessa coluna -->
-              <small class="text-white">Rua Ferreiropolis,</small> <br>
-              <small class="text-white">Apartamento 22 Bloco 6,</small> <br>
-              <small class="text-white">Jardim Vaz de Lima,</small> <br>
-              <small class="text-white">CEP 05833-120 - São Paulo, SP. </small> <br>
-              <button type="button" class="btn btn-outline-info mt-4" style="padding: 7px !important;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                </svg>
-                Alterar
-              </button>
+            <div class="col-8 col-md-9 col-lg-6">
+              <small class="text-white" id="rua"></small> <br>
+              <small class="text-white" id="bairro"></small> <br>
+              <small class="text-white" id="cep-cidade"></small> <br>
+             
             </div>
+          
             <div class="col-4 col-md-3 col-lg-5">
               <div class="form-check d-flex align-items-center">
                 <input class="form-check-input me-3" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
@@ -155,16 +126,16 @@
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
                 <div class="text-end text-white ms-auto">
-                  <small>R$ 150,00</small>
+                  <small data-valor="12.00">R$ 12,00</small>
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                <input class="form-check-input me-3" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
                 <div class="text-end text-white ms-auto">
-                  <small>R$ 10,00</small>
+                  <small data-valor="50.00">R$ 50,00</small>
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
@@ -173,12 +144,10 @@
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
                 <div class="text-end text-white ms-auto">
-                  <small>R$ 100,00</small>
+                  <small data-valor="50.00">R$ 55,00</small>
                 </div>
               </div>
             </div>
-  
-  
         </li>
       </ul>
     </div>
@@ -332,16 +301,26 @@
       carrinho.forEach((item) => {
         total += item.quantidade * parseFloat(item.preco);
       });
-  
+      const valorFrete = parseFloat(freteSelecionado.dataset.valor);
+
+      total += valorFrete;
       return total;
     }
   
     function adicionarQuantidade(index) {
-      const carrinho = JSON.parse(localStorage.getItem('carrinho'));
-      carrinho[index].quantidade++;
-      localStorage.setItem('carrinho', JSON.stringify(carrinho));
-      exibirCarrinho();
+    const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+    const item = carrinho[index];
+
+    if (item.quantidade < item.estoque) {
+      item.quantidade++;
+    } else {
+      alert('Quantidade no carrinho não pode ser maior do que o estoque disponível.');
     }
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    exibirCarrinho();
+  }
+
   
     function diminuirQuantidade(index) {
       const carrinho = JSON.parse(localStorage.getItem('carrinho'));
@@ -391,10 +370,10 @@
             <li class="list-group-item py-3 mb-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
               <div class="row g-3">
                 <div class="col-4 col-md-3 col-lg-2">
-  <a href="#">
-    <img src="${item.imagemPrincipal}" class="produto-imagem" alt="">
-  </a>
-</div>
+                <a href="#">
+                  <img src="${item.imagemPrincipal}" class="produto-imagem" alt="">
+                </a>
+              </div>
 
                 <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
                   <h4><b><a href="#" class="text-decoration-none text-danger">${item.nome}</a></b></h4>
@@ -407,7 +386,7 @@
                         <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
                       </svg>
                     </button>
-                    <input type="text" class="form-control text-center border-dark" value="${item.quantidade}">
+                    <input type="text" class="form-control text-center border-dark" value="${item.quantidade}" readonly>
                     <button type="button" class="btn btn-outline-dark btn-sm" id="diminuir-quantidade-${index}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short text-white" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
@@ -434,15 +413,14 @@
         // Calcule o valor total do carrinho
         const valorTotalCarrinho = calcularValorTotalCarrinho(carrinho);
   
-        // Atualize o valor total e o valor do frete com base nos itens do carrinho
-        const valorFrete = 100.0; // Defina o valor do frete
+        const valorFrete = 0.0; 
   
         carrinhoLista.innerHTML += `
           <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
             <div class="text-end">
               <h4 class="text-white mb-3">Valor Total: R$ ${valorTotalCarrinho.toFixed(2)}</h4>
               <h5 class="text-white mb-3">Valor Frete: R$ ${valorFrete.toFixed(2)}</h5>
-              <a href="" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
+              <a href="/Winery" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
               <button class="btn btn-danger btn-lg botaoPadrao">Ir para Pagamento</button>
             </div>
           </li>
@@ -452,13 +430,67 @@
         adicionarManipuladoresEventos();
       } else {
         // Se o carrinho estiver vazio, exiba uma mensagem indicando isso
-        carrinhoLista.innerHTML = '<p>Carrinho vazio</p>';
+        carrinhoLista.innerHTML = '<div class="text-center p-3"><h2 style="color: white;">Não há produtos no carrinho.</h2></div>';
       }
     }
   
     // Chame a função para exibir o carrinho
     exibirCarrinho();
     adicionarManipuladoresEventos();
+
+//frete
+    document.addEventListener("DOMContentLoaded", () => {
+    hideEnderecoBox(); // Chama a função para ocultar o divEndereco inicialmente
+    addEventListeners();
+  });
+
+  const addEventListeners = () => {
+    document.getElementById("buscarCepBtn").addEventListener("click", handleCEPSubmit);
+  };
+
+  const hideEnderecoBox = () => {
+    const enderecoDiv = document.getElementById("divEndereco");
+    enderecoDiv.style.display = "none"; // Oculta o divEndereco
+  };
+
+  const showEnderecoBox = () => {
+    const enderecoDiv = document.getElementById("divEndereco");
+    enderecoDiv.style.display = "block"; // Exibe o divEndereco
+  };
+
+  const handleCEPSubmit = () => {
+    const inputCep = document.getElementById("inputCep").value;
+    const rua = document.getElementById("rua");
+    const bairro = document.getElementById("bairro");
+    const cepCidade = document.getElementById("cep-cidade");
+
+    if (inputCep.length >= 8) {
+      fetchAddress(inputCep, rua, bairro, cepCidade);
+      showEnderecoBox(); // Exibe o divEndereco após o CEP ser pesquisado
+    } else {
+      alert("CEP inválido. Insira um CEP válido.");
+    }
+  };
+
+  const fetchAddress = (cep, rua, bairro, cepCidade) => {
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.erro) {
+          alert("CEP não encontrado!");
+        } else {
+          const endereco = data.logradouro;
+          const bairroText = data.bairro;
+          const cepCidadeText = `CEP ${data.cep} - ${data.localidade}, ${data.uf}`;
+          rua.textContent = endereco;
+          bairro.textContent = bairroText;
+          cepCidade.textContent = cepCidadeText;
+        }
+      })
+      .catch(() => {
+        alert("Erro ao buscar o CEP!");
+      });
+  };
   </script>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

@@ -55,6 +55,9 @@ cursor: pointer;
 hr{
     background-color: white;
 }
+#quantityInput {
+    color: black;
+  }
 
 .teeexto{
     color: white;
@@ -122,10 +125,11 @@ body{
             <ul class="navbar-nav ml-auto">
 
                 <li class="nav-item ml-auto">
-                    <a class="nav-link text-white" href="#">
+                    <a class="nav-link text-white" href="/carrinho">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                         </svg>
+                        <span id="carrinhoItens">0</span>
                     </a>
                 </li>
                 <li class="nav-item ml-auto">
@@ -139,8 +143,9 @@ body{
 </nav>
 
 <div class="container fundo-container mt-3">
-    <h1 class="text-center" th:text="${produto.nomeProduto}"></h1>
+    <h1 class="text-center" id="nome" th:text="${produto.nomeProduto}"></h1>
     <hr>
+
     <div class="row">
         <th:block th:each="imagem, iterStat : ${produto.imagens}">
             <div th:if="${imagem.imagemPrincipal}"  class="col-md-6" >
@@ -164,10 +169,14 @@ body{
 
         <div class="col-md-6">
             <form class="form-horizontal">
+                <p style="display: none;" id="produtoId" th:text="${produto.idProduto}"></p>
+                <p style="display: none;" id="estoque" th:text="${produto.qtdEstoque}"></p>
+
+            
                 <div class="form-group price_elem row mt-2">
                     <label class="col-sm-3 col-md-3 form-control-label nopaddingtop teeexto">Preço:</label>
                     <div class="col-sm-8 col-md-9">
-                        <span th:text="'R$ ' + ${produto.precoProduto}" class="product-form-price teeexto"></span>
+                        <span id="preco" th:text="'R$ ' + ${produto.precoProduto}" class="product-form-price teeexto"></span>
                     </div>
                 </div>
                 <div class="form-group row mt-5">
@@ -175,20 +184,30 @@ body{
                     <div class="col-sm-8 col-md-9">
                         <div style="display: flex; align-items: center;">
                             <div id="star-rating"></div>
-                            <span style="margin-left: 5px; color: #ccc;">(<span th:text="${produto.avaliacaoProduto}"></span>)</span>
+                            <span style="margin-left: 5px; color: #ccc;">(<span id="avaliacao" th:text="${produto.avaliacaoProduto}"></span>)</span>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row mt-5">
                     <label class="col-sm-3 col-md-3 form-control-label teeexto">Descrição detalhada:</label>
-                    <div class="col-sm-8 col-md-9 description teeexto">
-                        <p th:text="${produto.descricaoProduto}"></p>
+                    <div class="col-sm-9 col-md-8 description teeexto">
+                        <p id="descricao" th:text="${produto.descricaoProduto}"></p>
                     </div>
                 </div>
-                <!-- Botão de compra com espaçamento superior -->
-                <div class="form-group text-center mt-5 ">
-                    <button type="button" class="btn btn-primary btn-lg botao-padrao">Comprar</button>
+                <div class="form-group row mt-3">
+                    <label class="col-sm-3 col-md-3 form-control-label teeexto">Quantidade:</label>
+                    <div class="col-sm-8 col-md-5">
+                        <div class="input-group">
+                            <button type="button" class="btn" id="decrementButton" style="background: linear-gradient(to bottom, #4F0599, #7A0707); color: white;">-</button>
+                            <input type="text" class="form-control text-center" id="quantityInput" value="1">
+                            <button type="button" class="btn" id="incrementButton" style="background: linear-gradient(to bottom, #4F0599, #7A0707); color: white;">+</button>
+                        </div>
+                    </div>
                 </div>
+                <div class="form-group text-center mt-5">
+                    <button type="button" class="btn btn-primary btn-lg botao-padrao" id="comprarButton">Comprar</button>
+                </div>
+               
             </form>
         </div>
 
@@ -247,7 +266,6 @@ $(document).ready(function () {
         }
     });
 
-    // Adicione funcionalidade aos botões personalizados
     $("#custom-prev").click(function () {
         owl.trigger("prev.owl.carousel");
     });
@@ -256,7 +274,80 @@ $(document).ready(function () {
         owl.trigger("next.owl.carousel");
     });
 });
+document.getElementById("decrementButton").addEventListener("click", function() {
+    const quantityInput = document.getElementById("quantityInput");
+    let quantidade = parseInt(quantityInput.value);
+    if (quantidade > 1) {
+        quantidade--;
+        quantityInput.value = quantidade;
+    }
+});
 
+document.getElementById("incrementButton").addEventListener("click", function() {
+    const quantityInput = document.getElementById("quantityInput");
+    let quantidade = parseInt(quantityInput.value);
+    quantidade++;
+    quantityInput.value = quantidade;
+});
+
+var comprarButton = document.getElementById("comprarButton");
+
+comprarButton.addEventListener("click", adicionarAoCarrinho);
+let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+quantidadeItensCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
+atualizarQuantidadeItensCarrinho();
+function adicionarAoCarrinho() {
+var produtoId = document.getElementById("produtoId").textContent;
+var nome = document.getElementById("nome").textContent;
+var avaliacao = document.getElementById("avaliacao").textContent;
+var descricao = document.getElementById("descricao").textContent;
+var estoque = document.getElementById("estoque").textContent;
+var quantidade = document.getElementById("quantityInput").value;
+var imagemPrincipal = document.getElementById("imagemPrincipal").getAttribute("src");
+
+produtoId = parseInt(produtoId);
+avaliacao = parseFloat(avaliacao);
+var precoTexto = document.getElementById("preco").textContent;
+var preco = parseFloat(precoTexto.replace("R$ ", ""));estoque = parseInt(estoque);
+quantidade = parseInt(quantidade);
+
+if (quantidade <= 0 || quantidade > estoque) {
+    alert("Quantidade inválida. Estoque insuficiente!");
+} else {
+    var carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+
+    var produtoNoCarrinho = carrinho.find(function (item) {
+        return item.id === produtoId;
+    });
+
+    if (produtoNoCarrinho) {
+        produtoNoCarrinho.quantidade += quantidade;
+    } else {
+        carrinho.push({
+            id: produtoId,
+            nome: nome,
+            avaliacao: avaliacao,
+            descricao: descricao,
+            preco: preco,
+            estoque: estoque,
+            quantidade: quantidade,
+            imagemPrincipal: imagemPrincipal
+        });
+    }
+
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    alert('Produto adicionado ao carrinho');
+
+    quantidadeItensCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
+    atualizarQuantidadeItensCarrinho();
+}
+
+}
+
+function atualizarQuantidadeItensCarrinho() {
+    document.getElementById("carrinhoItens").textContent = quantidadeItensCarrinho;
+}
 </script>
 
 </body>
