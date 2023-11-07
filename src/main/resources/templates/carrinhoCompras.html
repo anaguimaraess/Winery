@@ -82,41 +82,30 @@
       </div>
     </nav>
 
-    <div class="container">
-        <div class="row mt-3">
-            <div class="col-12 col-md-12">
-              <div class="d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt-fill text-white" viewBox="0 0 16 16">
-                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                  </svg>
-                  <h4 class="text-white ml-2 ms-4">Simule o frete para seu endereço:</h4>
-                </div>
-            </div>
-
-
-            <form class="row g-3">
-              <div class="col-auto">
-                <label for="inputCep" class="visually-hidden">Inserir CEP</label>
-                <input type="text" class="form-control" id="inputCep" placeholder="Inserir CEP">
+    <div class="container" id="endereco-logado">
+      <div class="row mt-3">
+          <div class="col-12 col-md-12">
+            <div class="d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt-fill text-white" viewBox="0 0 16 16">
+                  <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                </svg>
+                <h4 class="text-white ml-2 ms-4">Endereço de entrega:</h4>
               </div>
-              <div class="col-auto">
-                <button type="button" class="btn btn-primary mb-3 botaoPadrao" id="buscarCepBtn">OK</button>
-              </div>
-            </form>
-        </div>
+          </div>
+      </div>
     </div>
 
-    <div class="container" id="divEndereco">
+    <div class="container" id="divEnderecoLogado">
       <div class="row mt-2">
 
       </div>
       <ul class="list-group mb-3" style="background-color: transparent; border: none !important;">
         <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
-          <div class="row g-3">
-            <div class="col-8 col-md-9 col-lg-6">
-              <small class="text-white" id="rua"></small> <br>
-              <small class="text-white" id="bairro"></small> <br>
-              <small class="text-white" id="cep-cidade"></small> <br>
+          <div class="row g-3" >
+            <div class="col-8 col-md-9 col-lg-6" >
+              <small class="text-white" id="ruaLogado">teste</small> <br>
+              <small class="text-white" id="bairroLogado">zap</small> <br>
+              <small class="text-white" id="cep-cidadeLogado">oi</small> <br>
               <button type="button" class="btn btn-outline-info mt-4" style="padding: 7px !important;" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
                      viewBox="0 0 16 16">
@@ -126,7 +115,6 @@
                 Alterar endereço
               </button>
             </div>
-
             <div class="col-4 col-md-3 col-lg-5">
               <div class="form-check d-flex align-items-center">
                 <input class="form-check-input me-3" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
@@ -159,7 +147,75 @@
         </li>
       </ul>
     </div>
+    <div class="container" id="endereco-nao-logado">
+        <div class="row mt-3">
+            <div class="col-12 col-md-12">
+              <div class="d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-geo-alt-fill text-white" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                  </svg>
+                  <h4 class="text-white ml-2 ms-4">Simule o frete para seu endereço:</h4>
+                </div>
+            </div>
 
+
+            <form class="row g-3">
+              <div class="col-auto">
+                <label for="inputCep" class="visually-hidden">Inserir CEP</label>
+                <input type="text" class="form-control" id="inputCep" placeholder="Inserir CEP" minlength="8" maxlength="8" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8)">
+              </div>
+              <div class="col-auto">
+                <button type="button" class="btn btn-primary mb-3 botaoPadrao" id="buscarCepBtn">OK</button>
+              </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="divEndereco">
+      <div class="row mt-2">
+
+      </div>
+      <ul class="list-group mb-3" style="background-color: transparent; border: none !important;">
+        <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+          <div class="row g-3" >
+            <div class="col-8 col-md-9 col-lg-6">
+              <small class="text-white" id="rua"></small> <br>
+              <small class="text-white" id="bairro"></small> <br>
+              <small class="text-white" id="cep-cidade"></small> <br>
+            </div> 
+            <div class="col-4 col-md-3 col-lg-5">
+              <div class="form-check d-flex align-items-center">
+                <input class="form-check-input me-3" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
+                  <b>Entrega Padrão</b> - Até 3 dias úteis
+                </label>
+                <div class="text-end text-white ms-auto">
+                  <small >R$ 12,00</small>
+                </div>
+              </div>
+              <div class="form-check d-flex align-items-center">
+                <input class="form-check-input me-3" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
+                  <b>Entrega Expressa</b> - Até 2 dias úteis
+                </label>
+                <div class="text-end text-white ms-auto">
+                  <small >R$ 50,00</small>
+                </div>
+              </div>
+              <div class="form-check d-flex align-items-center">
+                <input class="form-check-input me-3" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
+                  <b>Entrega Agendada</b> - Até 20 dias úteis
+                </label>
+                <div class="text-end text-white ms-auto">
+                  <small >R$ 55,00</small>
+                </div>
+              </div>
+            </div>
+        </li>
+      </ul>
+    </div>
+  
     <div class="container">
         <div class="row mt-2">
             <div class="col-12 col-md-12">
@@ -228,7 +284,6 @@
                     <h6 class="text-white">04434010</h6>
                     <h6 class="text-white">São Paulo - SP </h6>
                     <div class="d-flex justify-content-between">
-                        <a href="#" class="card-link">Remover</a>
                         <div class="form-check">
                             <input class="form-check-input" type="radio">
 
@@ -252,7 +307,6 @@
                     <h6 class="text-white">04434010</h6>
                     <h6 class="text-white">São Paulo - SP </h6>
                     <div class="d-flex justify-content-between">
-                        <a href="#" class="card-link">Remover</a>
                         <div class="form-check">
                             <input class="form-check-input" type="radio">
 
@@ -687,6 +741,47 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
         alert("Erro ao buscar o CEP!");
       });
   };
+  function isSessionActive(callback) {
+  fetch('/verificar-sessao')
+    .then(response => response.json())
+    .then(data => {
+      if(callback(data)){
+        isSessionActive();
+      }
+    })
+    .catch(error => {
+      console.error('Erro ao verificar a sessão:', error);
+      callback(false); // Tratar erros como sessão inativa
+    });
+}
+
+isSessionActive(function(sessionActive) {
+  const enderecoLogado = document.getElementById('divEnderecoLogado');
+  const enderecoNaoLogado = document.getElementById('divEndereco');
+  const tituloNaoLogado = document.getElementById('endereco-nao-logado');
+  const tituloLogado = document.getElementById('endereco-logado');
+
+  if (sessionActive) {
+    // Sessão ativa, exibir bloco "endereco-logado" e ocultar "endereco-nao-logado"
+    enderecoLogado.style.display = 'block';
+    enderecoNaoLogado.style.display = 'none';
+    tituloNaoLogado.style.display = 'none';
+    tituloLogado.style.display = 'block';
+
+  } else {
+    // Sessão inativa, ocultar bloco "endereco-logado" e exibir "endereco-nao-logado"
+    enderecoLogado.style.display = 'none';
+    enderecoNaoLogado.style.display = 'block';
+    tituloNaoLogado.style.display = 'block';
+    tituloLogado.style.display = 'none';
+
+  }
+});
+
+
+
+
+
 
 
   </script>
