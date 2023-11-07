@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Winery:: Formas de Pagamento</title>
+    <link rel="shortcut icon" href="../static/imagens/faviconWinery.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<style>
+    .bodyWinery {
+        background-image: url('https://play.hbomax.com/default-3840x2160.png') !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }
+
+    .corFundo {
+        background: linear-gradient(to bottom, #000000, #000000f0);
+
+    }
+
+    .fundoDoFormulario {
+        background: linear-gradient(to bottom, #000000, #000000f0);
+    }
+
+    .produto-imagem {
+        width: 170px;
+        height: 135px;
+        object-fit: cover;
+        /* Isso mantém a proporção e cobre a área especificada */
+    }
+
+    .botaoPadrao {
+        background: linear-gradient(to bottom, #4F0599, #7A0707);
+        border: none;
+    }
+</style>
+
+<body class="bodyWinery">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary"
+        style="background-color: transparent !important; margin-right: 15px; margin-left: 15px; padding-top: 20px !important;">
+        <div class="container-fluid d-flex justify-content-center">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/estoque/listarProdutos">
+                            Vinhos
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/estoque/listarProdutos">
+                            Vinicolas
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/estoque/listarProdutos">
+                            Espumante
+                        </a>
+                    </li>
+                </ul>
+
+                <a class="navbar-brand" href="/Winery"
+                    style="position: absolute; left: 50%; transform: translateX(-50%);">
+                    <img src="../static/imagens/logoWinery250x250new.png" width="175px" alt="Logo da Winery">
+                </a>
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item ml-auto">
+                        <a class="nav-link text-white" href="#">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-cart3" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            </svg>
+                            Carrinho
+                        </a>
+                    </li>
+
+                    <li class="nav-item ml-auto">
+                        <a class="nav-link text-white" href="/authentication/login">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                            </svg>
+                            Entrar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container" id="divEndereco">
+        <div class="row mt-2">
+            <div class="col-12 col-md-12">
+                <div class="d-flex align-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-eye-fill text-white" viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                        <path
+                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                    </svg>
+                    <h4 class="text-white ml-2 ms-4">Forma de Pagamento</h4>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="text-white">
+        <ul class="list-group mb-3" style="background-color: transparent; border: none !important;">
+            <li class="list-group-item py-3 mb-3"
+                style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+                <button class="btn" style="width: 100% !important;" onclick="activateRadio('flexRadioDefault1')">
+                <div class="row g-3">
+                    <div class="col-12 col-md-12 col-lg-12" style="position: relative;"> <!-- Aumente a largura dessa coluna -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onclick="showPixForm()">
+                            <label class="form-check-label text-white ms-5" for="flexRadioDefault1" style="position: absolute; top: 0; left: 0;">
+                                PIX
+                            </label>
+                            <div style="position: absolute; top: 0; right: 0;">
+                                <svg width="24" height="24" viewBox="0 0 22 22" fill="none"
+                                    xmlns="https://www.w3.org/2000/svg" class="IconPIX " aria-hidden="true">
+                                    <g class="text-end">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M4.51548 5.1526C4.54582 5.08862 4.58126 5.05531 4.61352 5.02498L4.61353 5.02498C4.62098 5.01797 4.62827 5.01112 4.63528 5.00409L5.77372 3.8643L5.77385 3.86417C6.72274 2.91434 7.67153 1.9646 8.61835 1.01354C9.11044 0.520208 9.68883 0.187017 10.3741 0.0630388C11.4794 -0.137134 12.4533 0.139234 13.288 0.894726C13.3789 0.976438 13.4643 1.06361 13.5497 1.15079C13.5818 1.18348 13.6138 1.21618 13.6461 1.24858C14.9015 2.50457 16.1556 3.76185 17.4098 5.01913L17.4115 5.02087C17.4193 5.02872 17.4275 5.03637 17.4358 5.04418C17.47 5.07617 17.5069 5.11072 17.5339 5.17197C17.5025 5.17197 17.4731 5.17213 17.445 5.17228H17.4449C17.3925 5.17256 17.3447 5.17281 17.2968 5.17197C16.3037 5.14485 15.4766 5.50646 14.781 6.21158C14.0613 6.94225 13.3358 7.66652 12.6104 8.39069L12.6102 8.39084L12.6102 8.39087C12.3048 8.69573 11.9994 9.00057 11.6945 9.30587L11.6629 9.33791C11.6317 9.36971 11.6008 9.40115 11.567 9.43114C11.3287 9.64552 10.9976 9.65198 10.7529 9.44535C10.7178 9.41518 10.685 9.38188 10.6528 9.3491L10.6527 9.34908L10.6253 9.32137L9.56114 8.25606L9.55937 8.25429C8.85027 7.54455 8.14117 6.8348 7.43322 6.12506C6.9772 5.66789 6.43874 5.36569 5.80753 5.2288C5.55762 5.17456 5.30514 5.1526 5.05008 5.15389C4.87875 5.1526 4.70742 5.1526 4.51548 5.1526ZM0.00386455 10.7084C0.0464263 10.6634 0.054063 10.6061 0.061631 10.5493L0.0644092 10.5289C0.162311 9.83667 0.439271 9.22582 0.926204 8.72733C1.48614 8.15392 2.05352 7.58683 2.6207 7.01994L2.62075 7.01989L2.621 7.01964C2.90449 6.7363 3.18793 6.453 3.47037 6.16898C3.52061 6.11862 3.56569 6.0915 3.64041 6.11733C3.6767 6.12977 3.71795 6.12802 3.7589 6.12629H3.75891C3.77319 6.12568 3.78744 6.12508 3.80143 6.12508C3.92471 6.12508 4.04785 6.12585 4.17095 6.12662H4.17104H4.17109C4.43771 6.1283 4.7041 6.12997 4.9711 6.12378C5.7131 6.1057 6.3237 6.37174 6.84412 6.90123C7.5331 7.603 8.22933 8.29806 8.92547 8.99303L8.92559 8.99315L8.92561 8.99317C9.2876 9.35455 9.64957 9.71591 10.0105 10.0782C10.2849 10.3532 10.6095 10.5173 10.9972 10.5547C11.4223 10.596 11.8011 10.4837 12.1347 10.2215C12.2158 10.1583 12.2893 10.0847 12.3614 10.0123L12.3614 10.0123L12.8154 9.55832L12.8154 9.5583C13.7216 8.65219 14.6274 7.7465 15.5303 6.83795C15.8859 6.48022 16.3058 6.25551 16.8018 6.16898C16.9391 6.14439 17.0788 6.14322 17.2175 6.14204L17.2385 6.14186C17.4402 6.141 17.6425 6.14129 17.8447 6.14158H17.845L18.1479 6.14186C18.1615 6.14186 18.1753 6.14285 18.189 6.14383C18.2197 6.14603 18.2501 6.14821 18.2768 6.13928C18.4635 6.07471 18.573 6.17932 18.6928 6.30071C19.4592 7.07419 20.2295 7.84379 20.9997 8.61339L20.9998 8.61354L21 8.61368C21.4895 9.10184 21.8141 9.68041 21.9365 10.3623C22.1362 11.4755 21.8682 12.4699 21.0876 13.2887C20.5355 13.8683 19.9669 14.4327 19.3986 14.9968L19.3984 14.9971C19.1247 15.2687 18.8512 15.5403 18.5795 15.8135C18.5241 15.869 18.4713 15.8974 18.394 15.8729C18.343 15.8562 18.2903 15.8572 18.238 15.8582C18.2323 15.8583 18.2266 15.8584 18.2209 15.8585C18.2142 15.8586 18.2075 15.8587 18.2008 15.8587L17.8647 15.8584C17.641 15.8581 17.4175 15.8578 17.1934 15.8587C16.5429 15.8612 15.9928 15.6236 15.5329 15.1639C15.0741 14.7039 14.615 14.2443 14.156 13.7849L14.154 13.7829C13.5415 13.1698 12.9292 12.5568 12.3176 11.943C11.9814 11.6059 11.5808 11.4394 11.1054 11.4536C10.6868 11.4652 10.3235 11.6098 10.0259 11.9068C9.70389 12.2284 9.38185 12.55 9.06109 12.8728C8.78428 13.1504 8.50713 13.4275 8.22995 13.7047C7.74479 14.1899 7.25954 14.6752 6.77585 15.1626C6.30051 15.6417 5.72856 15.878 5.05612 15.8767H3.8375C3.82567 15.8767 3.81346 15.8758 3.80118 15.8749C3.77469 15.873 3.74791 15.871 3.72414 15.878C3.56441 15.9258 3.47037 15.8393 3.36603 15.7347C2.58925 14.9495 1.80732 14.1682 1.02539 13.3868C0.53202 12.8948 0.215127 12.3085 0.083732 11.6227C0.0744763 11.5736 0.0672157 11.523 0.0600389 11.4731L0.0515274 11.4148C0.05176 11.3992 0.052707 11.3834 0.0536549 11.3676C0.0579556 11.2958 0.0622765 11.2238 0 11.1656C0.00386455 11.0119 0.00386455 10.8608 0.00386455 10.7084ZM4.71962 16.8482C4.65361 16.8481 4.58581 16.8479 4.5153 16.8479C4.54641 16.9134 4.58419 16.9488 4.61858 16.981C4.62691 16.9888 4.63504 16.9964 4.64283 17.0042C5.65482 18.0187 6.66939 19.0346 7.68267 20.0491L7.68423 20.0507C7.78203 20.1487 7.87943 20.2473 7.97685 20.3459C8.22587 20.5979 8.47504 20.85 8.73153 21.0942C9.31507 21.6495 10.0171 21.9504 10.8184 21.9943C11.7974 22.0473 12.654 21.7309 13.3522 21.0386C14.4014 19.9977 15.4438 18.9515 16.4863 17.9052C16.8121 17.5781 17.138 17.251 17.4641 16.9241C17.4687 16.9195 17.4741 16.9152 17.4797 16.9107C17.5022 16.8926 17.527 16.8726 17.5105 16.826C17.463 16.826 17.4153 16.8258 17.3673 16.8257C17.2709 16.8254 17.1736 16.8251 17.0764 16.826C16.9025 16.8273 16.7311 16.8053 16.5611 16.773C15.8861 16.6452 15.3167 16.3236 14.8337 15.838C14.1357 15.1374 13.4365 14.438 12.7374 13.7385C12.3875 13.3884 12.0377 13.0384 11.6879 12.6882C11.6828 12.6829 11.6777 12.6777 11.6726 12.6724C11.6364 12.6348 11.5999 12.5969 11.5604 12.5629C11.4071 12.4325 11.2319 12.386 11.0322 12.4235C10.8802 12.4532 10.7669 12.5358 10.6612 12.6417C9.6062 13.7007 8.54989 14.7584 7.49229 15.8148C7.38924 15.9181 7.28361 16.0201 7.17153 16.1131C6.56609 16.6116 5.86532 16.8415 5.08725 16.8479C4.96691 16.8488 4.84657 16.8485 4.71962 16.8482Z"
+                                            fill="#ffffff"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </button>
+                <div class="p-2 border-top" id="pixForm" style="display: none;">
+                    <h6 class="text-white">Com aprovação imediata que torna a expedição mais rápida do pedido.</h6>
+                    
+                </div>
+            </li>
+
+
+            <li class="list-group-item py-3 mb-3"
+                style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+                <button class="btn" style="width: 100% !important;" onclick="activateRadio('flexRadioDefault2')">
+                <div class="row g-3">
+                    <div class="col-12 col-md-12 col-lg-12" style="position: relative;"> <!-- Aumente a largura dessa coluna -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onclick="showBoletoForm()">
+                            <label class="form-check-label text-white ms-5" for="flexRadioDefault2" style="position: absolute; top: 0; left: 0;">
+                                BOLETO BANCÁRIO
+                            </label>
+                            <div style="position: absolute; top: 0; right: 0;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-upc text-white" viewBox="0 0 16 16">
+                                    <path d="M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                                  </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </button>
+
+                <div class="p-2 border-top" id="boletoForm" style="display: none;">
+                    <h6 class="text-white">Você poderá visualizar ou imprimir o boleto após a finalização do pedido. Mas fique de olho! Passada a data de vencimento, seu pedido perderá automaticamente a validade.</h6>
+                    
+                </div>
+            </li>
+
+            <li class="list-group-item py-3 mb-3"
+                style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+                <button class="btn" style="width: 100% !important;" onclick="activateRadio('flexRadioDefault3')">
+                <div class="row g-3">
+                    <div class="col-12 col-md-12 col-lg-12" style="position: relative;"> <!-- Aumente a largura dessa coluna -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" onclick="showCreditCardForm()">
+                            <label class="form-check-label text-white ms-5" for="flexRadioDefault3" style="position: absolute; top: 0; left: 0;">
+                                CARTÃO DE CRÉDITO
+                            </label>
+                            <div style="position: absolute; top: 0; right: 0;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-credit-card-fill text-white" viewBox="0 0 16 16">
+                                    <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1H0V4zm0 3v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7H0zm3 2h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1z"/>
+                                  </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </button>
+
+                <div class="p-2 border-top" id="creditCardForm" style="display: none;">
+                    <h3 class="text-white">Cadastro de Cartão de Crédito</h3>
+                    <form>
+                        <div class="form-group mb-2">
+                            <label for="cardNumber" class="text-white">Número do Cartão:</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="Digite o número do cartão" required>
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label for="cardHolderName" class="text-white">Nome do Titular:</label>
+                            <input type="text" class="form-control" id="cardHolderName" placeholder="Nome do titular" required>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col">
+                                <label for="expiryDate" class="text-white">Data de Expiração:</label>
+                                <input type="text" class="form-control" id="expiryDate" placeholder="MM/AA" required>
+                            </div>
+                            <div class="col">
+                                <label for="cvv" class="text-white">CVV:</label>
+                                <input type="text" class="form-control" id="cvv" placeholder="CVV" required>
+                            </div>
+                          </div>
+                        
+                        <button type="submit" class="btn botaoPadrao mt-3 text-white">Cadastrar Cartão</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container text-end">
+        <button type="submit" class="btn botaoPadrao mt-5 text-white">Avançar</button>
+    </div>
+
+    <!-- Remove the container if you want to extend the Footer to full width. -->
+    <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
+        <!-- Footer -->
+        <footer class="text-center text-lg-start text-white" style="background-color: transparent !important;">
+            <!-- Grid container -->
+            <div class="container p-4 pb-0">
+                <!-- Section: Links -->
+                <section class="">
+                    <!--Grid row-->
+                    <div class="row">
+                        <!--Grid column-->
+                        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                            <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
+
+                            <p>
+                                Alguma dúvida? A gente ajuda você! <br>
+                                Horario de Atendimento: <br>
+                                De segunda a sexta-feira de 08h as 18h. Exceto feriados.
+                            </p>
+                        </div>
+                        <!--Grid column-->
+
+                        <!--Grid column-->
+                        <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-white">Sobre a Winery</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="https://github.com/anaguimaraess/Winery" class="text-white"
+                                        style="text-decoration: none;">GitHub</a>
+                                </li>
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Sobre Nós</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <!--Grid column-->
+
+                        <!--Grid column-->
+                        <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-white">Suporte</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Política de Frete</a>
+                                </li>
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Política de
+                                        Privacidade</a>
+                                </li>
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Termos de
+                                        Condições</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <!--Grid column-->
+
+                        <!--Grid column-->
+                        <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-white">Categorias</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Lançamentos</a>
+                                </li>
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Vinho Tinto</a>
+                                </li>
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Vinho Branco</a>
+                                </li>
+                                <li>
+                                    <a href="#!" class="text-white" style="text-decoration: none;">Promoções</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--Grid column-->
+
+                        <!--Grid column-->
+                        <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-white">Formas de Pagamento</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <img src="../static/imagens/formaPagamento.webp" width="200px" alt="">
+                            </ul>
+                        </div>
+                        <!--Grid column-->
+                    </div>
+                    <!--Grid row-->
+                </section>
+                <!-- Section: Links -->
+
+                <hr class="mb-4" />
+
+                <!-- Section: CTA -->
+                <section class="text-center">
+                    <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_empresabuscape_horizontal.png"
+                        width="148" height="30" alt="Empresa reconhecida buscapé" loading="lazy"
+                        class="sc-kpKSZj bigULn">
+                    <a href="https://transparencyreport.google.com/safe-browsing/search?url=kabum.com.br&amp;hl=pt-PT"
+                        target="_blank" rel="noreferrer" class="sc-lfYzqA kxaHhl" style="margin-left: 30px;">
+                        <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo-google-site-seguro.png"
+                            alt="GOOGLE SITE SEGURO" width="130" height="46" loading="lazy" class="sc-kpKSZj bigULn"
+                            style="margin-left: 30px;"></a>
+                    <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_ebit_kabum_horizontal.png"
+                        width="150" height="36" alt="Ebit diamante excelente" loading="lazy" class="sc-kpKSZj bigULn"
+                        style="margin-left: 30px;"></a>
+                    <a id="seloEconfy" href="https://www.compreconfie.com.br/103388" target="_blank" rel="noreferrer"
+                        class="sc-lfYzqA kxaHhl" style="margin-left: 30px;">
+                        <img class="sc-kpKSZj bigULn compreConfieImg"
+                            src="https://selo.compreconfie.com.br/reputation/103388.png" width="57" height="60"
+                            alt="Compre e confie" loading="lazy" style="margin-left: 30px;"></a>
+                    <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo-ra.png" height="60"
+                        alt="Empresa campeã prêmio reclame aqui 2022" loading="lazy" class="sc-kpKSZj bigULn"
+                        style="margin-left: 30px;">
+                </section>
+                <!-- Section: CTA -->
+
+                <hr class="mb-4" />
+
+                <!-- Section: Social media -->
+            </div>
+            <!-- Grid container -->
+
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: transparent !important;">
+                © 2023 Copyright por Winery
+
+            </div>
+            <!-- Copyright -->
+        </footer>
+        <!-- Footer -->
+    </div>
+    <!-- End of .container -->
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+        
+<script>
+    
+
+    function showCreditCardForm() {
+            const creditCardForm = document.getElementById("creditCardForm");
+            const creditCardRadio = document.getElementById("flexRadioDefault3");
+
+            if (creditCardRadio.checked) {
+                creditCardForm.style.display = "block";
+            } else {
+                creditCardForm.style.display = "none";
+            }
+        }
+
+        function activateRadio(radioId) {
+            const radioCartao = document.getElementById(radioId);
+            if (radioCartao) {
+                radioCartao.checked = true;
+                showCreditCardForm();
+            }
+        }
+
+        function showBoletoForm() {
+            const boletoForm = document.getElementById("boletoForm");
+            const boletoRadio = document.getElementById("flexRadioDefault2");
+
+            if (boletoRadio.checked) {
+                boletoForm.style.display = "block";
+            } else {
+                boletoForm.style.display = "none";
+            }
+        }
+
+        function activateRadio(radioId) {
+            const radioBoleto = document.getElementById(radioId);
+            if (radioBoleto) {
+                radioBoleto.checked = true;
+                showBoletoForm();
+            }
+        }
+
+        function showPixForm() {
+            const pixForm = document.getElementById("pixForm");
+            const pixRadio = document.getElementById("flexRadioDefault1");
+
+            if (pixRadio.checked) {
+                pixForm.style.display = "block";
+            } else {
+                pixForm.style.display = "none";
+            }
+        }
+
+        function activateRadio(radioId) {
+            const radioPix = document.getElementById(radioId);
+            if (radioPix) {
+                radioPix.checked = true;
+                showPixForm();
+            }
+        }
+</script>
+
+        
+</body>
+
+</html>
