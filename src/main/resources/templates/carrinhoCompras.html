@@ -121,30 +121,30 @@
           
             <div class="col-4 col-md-3 col-lg-5">
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <input class="form-check-input me-3" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
                 <div class="text-end text-white ms-auto">
-                  <small data-valor="12.00">R$ 12,00</small>
+                  <small >R$ 12,00</small>
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input me-3" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
                 <div class="text-end text-white ms-auto">
-                  <small data-valor="50.00">R$ 50,00</small>
+                  <small >R$ 50,00</small>
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                <input class="form-check-input me-3" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
                 <div class="text-end text-white ms-auto">
-                  <small data-valor="50.00">R$ 55,00</small>
+                  <small >R$ 55,00</small>
                 </div>
               </div>
             </div>
@@ -295,15 +295,53 @@
   <!-- End of .container -->
 
   <script>
+      document.addEventListener("DOMContentLoaded", () => {
+  hideEnderecoBox(); // Chama a função para ocultar o divEndereco inicialmente
+  addEventListeners();
+  // updateFrete(); // Atualiza o frete quando a página é carregada
+});
+      
+  let valorFrete = 0; 
+ 
+  const updateFrete = () => {
+    valorFrete = 0;
+
+  const botoesRadio = document.querySelectorAll('input[type="radio"]');
+
+
+  botoesRadio.forEach((radio) => {
+    if (radio.checked) {
+      valorFrete = parseFloat(radio.getAttribute('data-valor'));
+      console.log(valorFrete)
+    }
+  });
+
+
+
+  document.getElementById("valor-frete").textContent = `R$ ${valorFrete.toFixed(2)}`;
+
+  const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+  var valorTotalCarrinho = calcularValorTotalCarrinho(carrinho);
+  exibirCarrinho();
+};
+
+
+
+const botoesRadio = document.querySelectorAll('input[type="radio"]');
+document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+    radio.addEventListener("change", updateFrete);
+    
+  });
+
     function calcularValorTotalCarrinho(carrinho) {
       let total = 0;
   
       carrinho.forEach((item) => {
         total += item.quantidade * parseFloat(item.preco);
       });
-      const valorFrete = parseFloat(freteSelecionado.dataset.valor);
-
-      total += valorFrete;
+       total = valorFrete + total;
+       console.log("sadklaskfsal aa ", total)
+       
       return total;
     }
   
@@ -360,11 +398,11 @@
       const carrinho = JSON.parse(localStorage.getItem('carrinho'));
       const carrinhoLista = document.getElementById('carrinho-lista');
   
-      carrinhoLista.innerHTML = ''; // Limpa o conteúdo anterior
+      carrinhoLista.innerHTML = ''; 
   
       if (carrinho && carrinho.length > 0) {
         carrinho.forEach((item, index) => {
-          const valorItem = parseFloat(item.preco); // Alterado para mostrar o valor do item
+          const valorItem = parseFloat(item.preco); 
   
           const itemHTML = `
             <li class="list-group-item py-3 mb-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
@@ -407,29 +445,26 @@
             </li>
           `;
   
-          carrinhoLista.innerHTML += itemHTML; // Adicione o item à lista do carrinho
+          carrinhoLista.innerHTML += itemHTML; 
         });
   
-        // Calcule o valor total do carrinho
-        const valorTotalCarrinho = calcularValorTotalCarrinho(carrinho);
-  
-        const valorFrete = 0.0; 
-  
+        let valorTotalCarrinho =  calcularValorTotalCarrinho(carrinho);
+
+
+
         carrinhoLista.innerHTML += `
           <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
             <div class="text-end">
               <h4 class="text-white mb-3">Valor Total: R$ ${valorTotalCarrinho.toFixed(2)}</h4>
-              <h5 class="text-white mb-3">Valor Frete: R$ ${valorFrete.toFixed(2)}</h5>
+              <h5 id="valor-frete" class="text-white mb-3">Valor Frete: R$ ${valorFrete.toFixed(2)}</h5>
               <a href="/Winery" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
               <button class="btn btn-danger btn-lg botaoPadrao">Ir para Pagamento</button>
             </div>
           </li>
         `;
   
-        // Adicione novamente os manipuladores de eventos para os botões
         adicionarManipuladoresEventos();
       } else {
-        // Se o carrinho estiver vazio, exiba uma mensagem indicando isso
         carrinhoLista.innerHTML = '<div class="text-center p-3"><h2 style="color: white;">Não há produtos no carrinho.</h2></div>';
       }
     }
@@ -439,14 +474,16 @@
     adicionarManipuladoresEventos();
 
 //frete
-    document.addEventListener("DOMContentLoaded", () => {
-    hideEnderecoBox(); // Chama a função para ocultar o divEndereco inicialmente
-    addEventListeners();
-  });
+
 
   const addEventListeners = () => {
     document.getElementById("buscarCepBtn").addEventListener("click", handleCEPSubmit);
+    document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+    radio.addEventListener("change", updateFrete);
+  });
   };
+
+
 
   const hideEnderecoBox = () => {
     const enderecoDiv = document.getElementById("divEndereco");
@@ -491,6 +528,8 @@
         alert("Erro ao buscar o CEP!");
       });
   };
+
+  
   </script>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
