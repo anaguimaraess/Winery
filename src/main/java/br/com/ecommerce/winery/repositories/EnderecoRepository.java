@@ -31,12 +31,13 @@ public interface EnderecoRepository extends JpaRepository<Endereco, Integer> {
     );
 
 
-//    @Transactional
-//    @Modifying
-//    @Query("UPDATE Endereco e SET e.principal = :principal, e.flagEndereco = :status WHERE e.cliente = :cliente")
-//    void updateEnderecosByClienteAndPrincipalAndFlag(@Param("cliente") Cliente cliente,
-//                                                  @Param("principal") boolean principal,
-//                                                  @Param("flagEndereco") FlagEndereco flagEndereco);
+    @Transactional
+    @Modifying
+    @Query("UPDATE Endereco e SET e.principal = :principal, e.flagEndereco = :flagEndereco WHERE e.cliente = :cliente")
+    void updateEnderecosByClienteAndPrincipalAndFlag(@Param("cliente") Cliente cliente,
+                                                     @Param("principal") boolean principal,
+                                                     @Param("flagEndereco") FlagEndereco flagEndereco);
+
 
 
 
