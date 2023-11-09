@@ -311,8 +311,9 @@
           </div>
           <div class="modal-body">
             <form class="row g-3">
-              <input type="hidden" id="idClienteEndereco" name="idClienteEndereco" th:value="${cliente.idCliente}">
-              <div id="modalMessages" class="position-absolute"></div>
+              <th:block th:if="${cliente != null}">
+                <input type="hidden" id="idClienteEndereco" name="idClienteEndereco" th:value="${cliente.idCliente}">
+            </th:block>              <div id="modalMessages" class="position-absolute"></div>
 
               <div class="col-6">
                   <label for="" class="form-label text-white">Logradouro</label>
@@ -645,7 +646,7 @@ document.querySelectorAll('input[type="radio"].frete').forEach((radio) => {
               <h4 class="text-white mb-3">Valor Total: R$ ${valorTotalCarrinho.toFixed(2)}</h4>
               <h5 id="valor-frete" class="text-white mb-3">Valor Frete: R$ ${valorFrete.toFixed(2)}</h5>
               <a href="/Winery" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
-              <button class="btn btn-danger btn-lg botaoPadrao">Ir para Pagamento</button>
+              <button type="button" class="btn btn-danger btn-lg botaoPadrao" onclick="irParaPagamento()">Ir para Pagamento</button>
             </div>
           </li>
         `;
@@ -872,7 +873,92 @@ isSessionActive(function(sessionActive) {
                     alert("Erro ao buscar o CEP!");
                 });
         };
+
+//pedido
+
+function irParaPagamento() {
+    const pedido = {
+        carrinhoPedido: [], // Array vazio, você pode adicionar itens a este array conforme necessário
+        idDoCliente: null,
+        valorTotal: null, // Preencha com o valor total do pedido
+        valorFretePedido: null, // Preencha com o valor do frete do pedido
+        endereco: {
+            logradouro: "", // Preencha com o logradouro do endereço
+            numero: "", // Preencha com o número do endereço
+            bairro: "", // Preencha com o bairro do endereço
+            id: "", // Preencha com o ID do endereço, se aplicável
+            cidade: "", // Preencha com a cidade do endereço
+            uf: "", // Preencha com o estado (UF) do endereço
+            complemento: "" // Preencha com informações adicionais, se necessário
+        }
+    };
+
+    const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+    pedido.carrinhoPedido = carrinho;
+    idDoCliente = document.getElementById('idClienteEndereco').value;
+    pedido.valorTotal = calcularValorTotalCarrinho(carrinho);
+    pedido.valorFretePedido = valorFrete; // Valor padrão ou lógica para obter o valor do frete
+    pedido.endereco = {
+        logradouro: document.getElementById("ruaLogado").innerText,
+        // numero: document.getElementById("numeroLogado").innerText, // Adicione um id correspondente no seu HTML
+        bairro: document.getElementById("bairroLogado").innerText,
+        id: document.querySelector('.enderecinho:checked').value,
+        cidade: document.getElementById("cidadeUfLogado").innerText.split(" - ")[0],
+        uf: document.getElementById("cidadeUfLogado").innerText.split(" - ")[1],
+        complemento: document.getElementById("complementoLogado").innerText,
+    };
+
+    const pedidoString = JSON.stringify(pedido);
+    localStorage.setItem("pedido", pedidoString);
+
+    // Redirecionar para a página de pagamento
+    window.location.href = "/pagamento";
+}
+
+
+
+
+
+
+// const pedido = {
+//   carrinhoPedido: [], // Array vazio, você pode adicionar itens a este array conforme necessário
+//   idDoCliente: null,
+//   valorTotal: null, // Preencha com o valor total do pedido
+//   valorFretePedido: null, // Preencha com o valor do frete do pedido
+//   endereco: {
+//     logradouro: "", // Preencha com o logradouro do endereço
+//     numero: "", // Preencha com o número do endereço
+//     bairro: "", // Preencha com o bairro do endereço
+//     id: "", // Preencha com o ID do endereço, se aplicável
+//     cidade: "", // Preencha com a cidade do endereço
+//     uf: "", // Preencha com o estado (UF) do endereço
+//     complemento: "" // Preencha com informações adicionais, se necessário
+//   }
+// };
+// console.log("vaizo ne:", pedido)
+// const pedidoString = JSON.stringify(pedido);
+
+// localStorage.setItem("pedido", pedidoString);
+// const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+// pedido.carrinhoPedido = carrinho;
+// idDoCliente = document.getElementById('idClienteEndereco').value;
+// pedido.valorTotal = calcularValorTotalCarrinho(carrinho);
+// pedido.valorFretePedido = valorFrete; // Valor padrão ou lógica para obter o valor do frete
+// pedido.endereco = {
+//     logradouro: document.getElementById("ruaLogado").innerText,
+//     // numero: document.getElementById("numeroLogado").innerText, // Adicione um id correspondente no seu HTML
+//     bairro: document.getElementById("bairroLogado").innerText,
+//     id: document.querySelector('.enderecinho:checked').value,
+//     cidade: document.getElementById("cidadeUfLogado").innerText.split(" - ")[0],
+//     uf: document.getElementById("cidadeUfLogado").innerText.split(" - ")[1],
+//     complemento: document.getElementById("complementoLogado").innerText,
+// };
+
+// const pedidoAtualizadoString = JSON.stringify(pedido);
+// localStorage.setItem("pedido", pedidoAtualizadoString);
+// console.log("agoraa", pedido)
 </script>
+
 
 
 
