@@ -37,6 +37,9 @@
         background: linear-gradient(to bottom, #4F0599, #7A0707);
         border: none;
     }
+    #parcelas:hover {
+        cursor: pointer;
+    }
 </style>
 
 <body class="bodyWinery">
@@ -234,7 +237,25 @@
                                 <input type="text" class="form-control" id="cvv" placeholder="CVV" required>
                             </div>
                         </div>
-
+                        <div class="form-group mb-2">
+                            <label for="parcelas" class="text-white">Número de Parcelas:</label>
+                            <select class="form-control" id="parcelas" onchange="atualizarValorPorParcela()">
+                        
+                                <option  id="parcelas"value="1">Nenhum</option>
+                                <option id="parcelas" value="2">2x</option>
+                                <option id="parcelas" value="3">3x</option>
+                                <option id="parcelas" value="4">4x</option>
+                                <option  id="parcelas" value="5">5x</option>
+                            </select>
+                        </div>
+                        
+                
+                        <div class="form-group mb-2">
+                            <label for="valorPorParcela" class="text-white">Valor por Parcela:</label>
+                            <input type="text" class="form-control" id="valorPorParcela" readonly style="pointer-events: none;">
+                        </div>
+                        
+                        
                         <button type="submit" id="cadastrarCartaoButton" class="btn botaoPadrao mt-3 text-white" >Cadastrar Cartão</button>
                     </form>
                 </div>
@@ -459,7 +480,21 @@ document.querySelector("#cadastrarCartaoButton").addEventListener("click", funct
         }
     });
 });
+function atualizarValorPorParcela() {
+    const pedido = JSON.parse(localStorage.getItem('pedido')) || {};
+        const parcelasSelect = document.getElementById('parcelas');
+        const valorPorParcelaInput = document.getElementById('valorPorParcela');
 
+        const valorTotal = pedido.valorTotal;
+        const numeroParcelas = parseInt(parcelasSelect.value);
+
+        if (numeroParcelas > 1) {
+            const valorPorParcela = valorTotal / numeroParcelas;
+            valorPorParcelaInput.value = `R$ ${valorPorParcela.toFixed(2)}`;
+        } else {
+            valorPorParcelaInput.value = '';
+        }
+    }
 
 function verificarCamposDoCartao(callback) {
     console.log("Chamando verificarCamposDoCartao");
@@ -513,7 +548,8 @@ function verificarCamposDoCartao(callback) {
 
             const pedido = JSON.parse(localStorage.getItem('pedido')) || {};
             pedido.cartaoDeCredito = cartaoDeCredito;
-
+            pedido.cartaoDeCredito = cartaoDeCredito;
+            pedido.numeroParcelas = parseInt(document.getElementById('parcelas').value);
             localStorage.setItem('pedido', JSON.stringify(pedido));
         });
 
