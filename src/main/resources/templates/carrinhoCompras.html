@@ -311,6 +311,9 @@
           </div>
           <div class="modal-body">
             <form class="row g-3">
+              <input type="hidden" id="idClienteEndereco" name="idClienteEndereco" th:value="${cliente.idCliente}">
+              <div id="modalMessages" class="position-absolute"></div>
+
               <div class="col-6">
                   <label for="" class="form-label text-white">Logradouro</label>
                   <input type="text" class="form-control" id="inputLogradouro" >
@@ -329,7 +332,7 @@
                   </div>
                 <div class="col-md-3">
                     <label for="" class="form-label text-white">CEP</label>
-                    <input type="text" class="form-control" id="inputCep" placeholder="Somente números" minlength="8" maxlength="8">
+                    <input type="text" class="form-control" id="inputCepModal" placeholder="Somente números" minlength="8" maxlength="8">
                 </div>
                 <div class="col-md-1">
                   <label for="" class="form-label text-white">UF</label>
@@ -340,7 +343,7 @@
                   <input type="text" class="form-control" id="inputCidade">
                 </div>
                 <div class="text-center" >
-                <button class="btn btn-primary botaoPadrao" style="width: 300px !important;">Cadastrar Novo Endereço</button>
+                <button class="btn btn-primary botaoPadrao" type="submit" style="width: 300px !important;">Cadastrar Novo Endereço</button>
               </div>
           </form>
           </div>
@@ -483,6 +486,9 @@
   hideEnderecoBox(); // Chama a função para ocultar o divEndereco inicialmente
   addEventListeners();
   preencherEndereco();
+  document
+                .getElementById("inputCepModal")
+                .addEventListener("blur", handleCEPBlur());
 });
 
   let valorFrete = 0;
@@ -742,34 +748,6 @@ isSessionActive(function(sessionActive) {
   }
 });
 
-
-// $(document).ready(function() {
-//     // Adicione o evento de clique aos radio buttons
-//     $('input[type="radio"].enderecinho').click(function() {
-//         var enderecoId = $(this).val(); // Obtém o valor do radio button
-//         var confirmar = confirm("Deseja definir este endereço como padrão?");
-//         if (confirmar) {
-//             // Fazer a requisição ao backend aqui
-//             $.ajax({
-//                 url: '/cliente/definirPadrao/'+enderecoId, // Substitua pela URL correta
-//                 type: 'POST', // Ou outro método HTTP apropriado
-//                 success: function(response) {
-//                     alert('Endereço definido como padrão com sucesso.');
-//                     $('#exampleModalToggle').modal('hide');
-//                         window.location.reload(true);
-//                 },
-//                 error: function() {
-//                     alert('Ocorreu um erro ao definir o endereço como padrão.');
-//                 }
-//             });
-//         }
-//     });
-// });
-
-
-
-
-
  function preencherEndereco() {
     const modalRadioInputs = document.querySelectorAll('.enderecinho');
 
@@ -783,7 +761,6 @@ isSessionActive(function(sessionActive) {
             complemento: enderecoElement.querySelector('.text-white:nth-child(6)').textContent
         };
 
-        // Verificar se há CEP na string antes de dividir
         const cepIndex = modalData.cep.indexOf('CEP: ');
         const cep = cepIndex !== -1 ? modalData.cep.substring(cepIndex + 5) : '';
 
@@ -804,7 +781,6 @@ isSessionActive(function(sessionActive) {
         exibirDadosEnderecoModal(enderecoInicial.closest('.card-body'));
     }
 
-    // Adicionar listener de change para atualizar os dados quando houver mudanças
     modalRadioInputs.forEach(function(input) {
         input.addEventListener('change', function() {
             if (this.checked) {
@@ -814,6 +790,88 @@ isSessionActive(function(sessionActive) {
     });
   }
 
+  $('#exampleModalToggle2').on('submit', function (event) {
+    event.preventDefault();
+
+    var endereco = {
+        logradouro: document.getElementById('inputLogradouro').value,
+        numero: document.getElementById('inputNumero').value,
+        complemento: document.getElementById('inputComplemento').value,
+        bairro: document.getElementById('inputBairro').value,
+        cep: document.getElementById('inputCepModal').value,
+        uf: document.getElementById('inputUf').value,
+        cidade: document.getElementById('inputCidade').value,
+        idCliente: document.getElementById('idClienteEndereco').value
+    };
+
+  
+
+        $.ajax({
+            type: 'POST',
+            url: '/cliente/adicionarEndereco',
+            data: JSON.stringify(endereco),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#modalMessages').empty();
+
+                if (data.startsWith('Sucesso:')) {
+                var mensagemSucesso = data.replace('Sucesso: ', '');
+                $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
+
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function () {
+                        $(this).remove();
+
+                        window.location.reload(true);
+                    });
+                }, 3500);
+
+                }
+            },
+            error: function (xhr) {
+                $('#modalMessages').empty();
+
+                var mensagemErro = xhr.responseText;
+                
+                $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                }, 3500);
+              }
+        });
+    });
+
+
+        const handleCEPBlur = () => (e) => {
+            if (e.target.value.length >= 8) {
+
+                fetchAddress2(e);
+
+            }
+        };
+
+
+        const fetchAddress2 = () => {
+            let cep = document.getElementById('inputCepModal');
+
+            fetch(`https://viacep.com.br/ws/${cep.value}/json/`)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.erro) {
+                        alert("CEP não encontrado!");
+                    } else {
+                        document.getElementById('inputLogradouro').value = data.logradouro;
+                        document.getElementById('inputBairro').value = data.bairro;
+                        document.getElementById('inputCidade').value = data.localidade;
+                        document.getElementById('inputUf').value = data.uf;
+                    }
+                })
+                .catch(() => {
+                    alert("Erro ao buscar o CEP!");
+                });
+        };
 </script>
 
 
