@@ -258,34 +258,35 @@
           <div class="modal-body">
             <div class="container">
               <div class="row">
-                <th:block th:each="endereco : ${cliente.enderecos}">
-
-                <div class="col-4" >
-
-                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
-                      <hr class="text-white">
-
-                    <h6 class="text-white"  th:text="'Rua ' + ${endereco.logradouro + ', ' + endereco.numero} ?: 'Endereço não disponível'"></h6>
-                    <h6 class="text-white" th:text="${endereco.bairro}"></h6>
-                    <h6 class="text-white" th:text="${ 'CEP: ' + endereco.cep}"></h6>
-                    <h6 class="text-white" th:text="${endereco.cidade  + ' - ' + endereco.uf}"></h6>
-                    <h6 class="text-white" th:text="${endereco.complemento}"></h6>
-                    <div class="d-flex justify-content-between">
-                        <div class="form-check">
-                            <input class="form-check-input enderecinho radio-hand-cursor" type="radio"  th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
-
-                            <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
-                                Definir como endereço de entrega
-                            </label>
+                <th:block th:if="${cliente != null}">
+                    <th:block th:each="endereco : ${cliente.enderecos}">
+            
+                        <div class="col-4">
+                            <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
+                                <hr class="text-white">
+            
+                                <h6 class="text-white" th:text="'Rua ' + ${endereco.logradouro + ', ' + endereco.numero} ?: 'Endereço não disponível'"></h6>
+                                <h6 class="text-white" th:text="${endereco.bairro}"></h6>
+                                <h6 class="text-white" th:text="${ 'CEP: ' + endereco.cep}"></h6>
+                                <h6 class="text-white" th:text="${endereco.cidade  + ' - ' + endereco.uf}"></h6>
+                                <h6 class="text-white" th:text="${endereco.complemento}"></h6>
+                                <div class="d-flex justify-content-between">
+                                    <div class="form-check">
+                                        <input class="form-check-input enderecinho radio-hand-cursor" type="radio"  th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
+            
+                                        <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
+                                            Definir como endereço de entrega
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                         </div>
-                    </div>
-
-                  </div>
-
-                </div>
-              </th:block>
-
-              </div>
+            
+                    </th:block>
+                </th:block>
+            </div>
+            
             </div>
           </div>
           <div class="modal-footer">
@@ -481,7 +482,7 @@
       document.addEventListener("DOMContentLoaded", () => {
   hideEnderecoBox(); // Chama a função para ocultar o divEndereco inicialmente
   addEventListeners();
-  // updateFrete(); // Atualiza o frete quando a página é carregada
+  preencherEndereco();
 });
 
   let valorFrete = 0;
@@ -733,6 +734,7 @@ isSessionActive(function(sessionActive) {
     tituloLogado.style.display = 'block';
 
   } else {
+    console.log("oxi")
     enderecoLogado.style.display = 'none';
     tituloNaoLogado.style.display = 'block';
     tituloLogado.style.display = 'none';
@@ -765,12 +767,10 @@ isSessionActive(function(sessionActive) {
 // });
 
 
-</script>
 
 
 
-<script>
- document.addEventListener('DOMContentLoaded', function() {
+ function preencherEndereco() {
     const modalRadioInputs = document.querySelectorAll('.enderecinho');
 
     // Função para exibir os dados do endereço
@@ -812,8 +812,7 @@ isSessionActive(function(sessionActive) {
             }
         });
     });
-});
-
+  }
 
 </script>
 
