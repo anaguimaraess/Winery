@@ -4,8 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Winery:: Carrinho de Compras</title>
-    <link rel="shortcut icon" href="../static/imagens/faviconWinery.png" type="image/x-icon">
+    <link th:href="@{/imagens/faviconWinery.png}" rel="shortcut icon" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
   </head>
   <style>
     .bodyWinery {
@@ -31,6 +33,9 @@
     background: linear-gradient(to bottom, #4F0599, #7A0707);
     border: none;
   }
+  .radio-hand-cursor {
+    cursor: pointer;
+}
 
   </style>
 
@@ -96,28 +101,33 @@
     </div>
 
     <div class="container" id="divEnderecoLogado">
-      <div class="row mt-2">
+      <input type="hidden" id="idCliente" name="idClienteEndereco" th:value="${cliente != null ? cliente.idCliente : ''}">
 
-      </div>
       <ul class="list-group mb-3" style="background-color: transparent; border: none !important;">
         <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
           <div class="row g-3" >
-            <div class="col-8 col-md-9 col-lg-6" >
-              <small class="text-white" id="ruaLogado">teste</small> <br>
-              <small class="text-white" id="bairroLogado">zap</small> <br>
-              <small class="text-white" id="cep-cidadeLogado">oi</small> <br>
-              <button type="button" class="btn btn-outline-info mt-4" style="padding: 7px !important;" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                     viewBox="0 0 16 16">
-                  <path
-                          d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+            <div class="col-8 col-md-9 col-lg-6" th:if="${cliente != null}">
+              <th:block th:if="${cliente.enderecos != null and cliente.enderecos.size() > 0}">
+        <th:block th:with="enderecoPrincipal=${cliente.enderecos[0]}">
+            <small class="text-white" id="ruaLogado" th:text="'Rua ' + ${enderecoPrincipal.logradouro + ', ' + enderecoPrincipal.numero} ?: 'Endereço não disponível'"></small> <br>
+            <small class="text-white" id="bairroLogado" th:text="${enderecoPrincipal.bairro}">Endereço não disponível</small> <br>
+            <small class="text-white" id="cepLogado" th:text="${enderecoPrincipal.cep}">Endereço não disponível</small> <br>
+            <small class="text-white" id="cidadeUfLogado" th:text="${enderecoPrincipal.cidade + ' - ' + enderecoPrincipal.uf}">Endereço não disponível</small> <br>
+            <small class="text-white" id="complementoLogado" th:text="${enderecoPrincipal.complemento}">Endereço não disponível</small> <br>
+            <button type="button" class="btn btn-outline-info mt-4" style="padding: 7px !important;" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path
+                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                 </svg>
                 Alterar endereço
-              </button>
-            </div>
-            <div class="col-4 col-md-3 col-lg-5">
-              <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            </button>
+        </th:block>
+    </th:block>
+          </div>
+
+          <div class="col-4 col-md-3 col-lg-5 d-flex flex-column justify-content-center ">
+            <div class="form-check d-flex align-items-center">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
@@ -126,7 +136,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
@@ -135,7 +145,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
@@ -184,8 +194,8 @@
               <small class="text-white" id="cep-cidade"></small> <br>
             </div> 
             <div class="col-4 col-md-3 col-lg-5">
-              <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+              <div class="form-check d-flex align-items-center ">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
@@ -194,7 +204,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
@@ -202,8 +212,8 @@
                   <small >R$ 50,00</small>
                 </div>
               </div>
-              <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+              <div class="form-check d-flex align-items-center ">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
@@ -249,76 +259,35 @@
           <div class="modal-body">
             <div class="container">
               <div class="row">
-                <div class="col-4">
-                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
-                    <div class="d-flex justify-content-between">
+                <th:block th:if="${cliente != null}">
+                    <th:block th:each="endereco : ${cliente.enderecos}">
 
-                    </div>
-                    <hr class="text-white">
-                    <h6 class="text-white">Rua Selma Kurtz 21</h6>
-                    <h6 class="text-white">Complemento</h6>
-                    <h6 class="text-white">Jardim Maria Luiza</h6>
-                    <h6 class="text-white">04434010</h6>
-                    <h6 class="text-white">São Paulo - SP </h6>
-                    <div class="d-flex justify-content-between">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio">
+                        <div class="col-4">
+                            <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
+                                <hr class="text-white">
 
-                            <label class="form-check-label text-white">
-                                Definir como padrão
-                            </label>
+                                <h6 class="text-white" th:text="'Rua ' + ${endereco.logradouro + ', ' + endereco.numero} ?: 'Endereço não disponível'"></h6>
+                                <h6 class="text-white" th:text="${endereco.bairro}"></h6>
+                                <h6 class="text-white" th:text="${ 'CEP: ' + endereco.cep}"></h6>
+                                <h6 class="text-white" th:text="${endereco.cidade  + ' - ' + endereco.uf}"></h6>
+                                <h6 class="text-white" th:text="${endereco.complemento}"></h6>
+                                <div class="d-flex justify-content-between">
+                                    <div class="form-check">
+                                        <input class="form-check-input enderecinho radio-hand-cursor" type="radio"  th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
+
+                                        <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
+                                            Definir como endereço de entrega
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                         </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="col-4">
-                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
-                    <div class="d-flex justify-content-between">
+                    </th:block>
+                </th:block>
+            </div>
 
-                    </div>
-                    <hr class="text-white">
-                    <h6 class="text-white">Rua Selma Kurtz 21</h6>
-                    <h6 class="text-white">Complemento</h6>
-                    <h6 class="text-white">Jardim Maria Luiza</h6>
-                    <h6 class="text-white">04434010</h6>
-                    <h6 class="text-white">São Paulo - SP </h6>
-                    <div class="d-flex justify-content-between">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio">
-
-                            <label class="form-check-label text-white">
-                                Definir como padrão
-                            </label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-4">
-                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
-                    <div class="d-flex justify-content-between">
-
-                    </div>
-                    <hr class="text-white">
-                    <h6 class="text-white">Rua Selma Kurtz 21</h6>
-                    <h6 class="text-white">Complemento</h6>
-                    <h6 class="text-white">Jardim Maria Luiza</h6>
-                    <h6 class="text-white">04434010</h6>
-                    <h6 class="text-white">São Paulo - SP </h6>
-                    <div class="d-flex justify-content-between">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio">
-
-                            <label class="form-check-label text-white">
-                                Definir como padrão
-                            </label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -343,6 +312,10 @@
           </div>
           <div class="modal-body">
             <form class="row g-3">
+              <th:block th:if="${cliente != null}">
+                <input type="hidden" id="idClienteEndereco" name="idClienteEndereco" th:value="${cliente.idCliente}">
+            </th:block>              <div id="modalMessages" class="position-absolute"></div>
+
               <div class="col-6">
                   <label for="" class="form-label text-white">Logradouro</label>
                   <input type="text" class="form-control" id="inputLogradouro" >
@@ -361,7 +334,7 @@
                   </div>
                 <div class="col-md-3">
                     <label for="" class="form-label text-white">CEP</label>
-                    <input type="text" class="form-control" id="inputCep" placeholder="Somente números" minlength="8" maxlength="8">
+                    <input type="text" class="form-control" id="inputCepModal" placeholder="Somente números" minlength="8" maxlength="8">
                 </div>
                 <div class="col-md-1">
                   <label for="" class="form-label text-white">UF</label>
@@ -372,7 +345,7 @@
                   <input type="text" class="form-control" id="inputCidade">
                 </div>
                 <div class="text-center" >
-                <button class="btn btn-primary botaoPadrao" style="width: 300px !important;">Cadastrar Novo Endereço</button>
+                <button class="btn btn-primary botaoPadrao" type="submit" style="width: 300px !important;">Cadastrar Novo Endereço</button>
               </div>
           </form>
           </div>
@@ -396,7 +369,7 @@
           <div class="row">
             <!--Grid column-->
             <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
+                <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
   
               <p>
                 Alguma dúvida? A gente ajuda você! <br>
@@ -467,7 +440,7 @@
               <h5 class="text-white">Formas de Pagamento</h5>
   
               <ul class="list-unstyled mb-0">
-                <img src="../static/imagens/formaPagamento.webp"  width="200px" alt="">
+                <img src="/imagens/formaPagamento.webp"  width="200px" alt="">
               </ul>
             </div>
             <!--Grid column-->
@@ -511,21 +484,13 @@
   <!-- End of .container -->
 
   <script>
-
-document.addEventListener("DOMContentLoaded", function() {
-
-const avancarButton = document.getElementById("irParaPagamentoBtn");
-
-
-avancarButton.addEventListener("click", function() {
-    // Redirecione o usuário para a página de checkout de pagamento
-    window.location.href = "pagamento";
-});
-});
       document.addEventListener("DOMContentLoaded", () => {
   hideEnderecoBox(); // Chama a função para ocultar o divEndereco inicialmente
   addEventListeners();
-  // updateFrete(); // Atualiza o frete quando a página é carregada
+  preencherEndereco();
+  document
+                .getElementById("inputCepModal")
+                .addEventListener("blur", handleCEPBlur());
 });
 
   let valorFrete = 0;
@@ -533,7 +498,7 @@ avancarButton.addEventListener("click", function() {
   const updateFrete = () => {
     valorFrete = 0;
 
-  const botoesRadio = document.querySelectorAll('input[type="radio"]');
+  const botoesRadio = document.querySelectorAll('input[type="radio"].frete');
 
 
   botoesRadio.forEach((radio) => {
@@ -554,8 +519,8 @@ avancarButton.addEventListener("click", function() {
 
 
 
-const botoesRadio = document.querySelectorAll('input[type="radio"]');
-document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+const botoesRadio = document.querySelectorAll('input[type="radio"].frete');
+document.querySelectorAll('input[type="radio"].frete').forEach((radio) => {
     radio.addEventListener("change", updateFrete);
 
   });
@@ -682,7 +647,7 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
               <h4 class="text-white mb-3">Valor Total: R$ ${valorTotalCarrinho.toFixed(2)}</h4>
               <h5 id="valor-frete" class="text-white mb-3">Valor Frete: R$ ${valorFrete.toFixed(2)}</h5>
               <a href="/Winery" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
-              <button class="btn btn-danger btn-lg botaoPadrao" id="irParaPagamentoBtn">Ir para Pagamento</button>
+              <button type="button" class="btn btn-danger btn-lg botaoPadrao" onclick="irParaPagamento()">Ir para Pagamento</button>
             </div>
           </li>
         `;
@@ -702,7 +667,7 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
 
   const addEventListeners = () => {
     document.getElementById("buscarCepBtn").addEventListener("click", handleCEPSubmit);
-    document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+    document.querySelectorAll('input[type="radio"].frete').forEach((radio) => {
     radio.addEventListener("change", updateFrete);
   });
   };
@@ -756,12 +721,10 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
   fetch('/verificar-sessao')
     .then(response => response.json())
     .then(data => {
-      if(callback(data)){
-        isSessionActive();
-      }
+      callback(data); // Chamar a função de callback com o resultado
     })
     .catch(error => {
-      console.error('Erro ao verificar a sessão:', error);
+      console.error("Erro ao verificar a sessão:", error);
       callback(false); // Tratar erros como sessão inativa
     });
 }
@@ -773,30 +736,201 @@ isSessionActive(function(sessionActive) {
   const tituloLogado = document.getElementById('endereco-logado');
 
   if (sessionActive) {
-    // Sessão ativa, exibir bloco "endereco-logado" e ocultar "endereco-nao-logado"
     enderecoLogado.style.display = 'block';
     enderecoNaoLogado.style.display = 'none';
     tituloNaoLogado.style.display = 'none';
     tituloLogado.style.display = 'block';
 
   } else {
-    // Sessão inativa, ocultar bloco "endereco-logado" e exibir "endereco-nao-logado"
     enderecoLogado.style.display = 'none';
-    enderecoNaoLogado.style.display = 'block';
     tituloNaoLogado.style.display = 'block';
     tituloLogado.style.display = 'none';
 
   }
 });
 
+ function preencherEndereco() {
+    const modalRadioInputs = document.querySelectorAll('.enderecinho');
+
+    // Função para exibir os dados do endereço
+    function exibirDadosEnderecoModal(enderecoElement) {
+        const modalData = {
+            logradouro: enderecoElement.querySelector('.text-white:nth-child(2)').textContent,
+            bairro: enderecoElement.querySelector('.text-white:nth-child(3)').textContent,
+            cep: enderecoElement.querySelector('.text-white:nth-child(4)').textContent,
+            cidadeUf: enderecoElement.querySelector('.text-white:nth-child(5)').textContent,
+            complemento: enderecoElement.querySelector('.text-white:nth-child(6)').textContent
+        };
+
+        const cepIndex = modalData.cep.indexOf('CEP: ');
+        const cep = cepIndex !== -1 ? modalData.cep.substring(cepIndex + 5) : '';
+
+        // Separar cidade e uf corretamente
+        const [cidade, uf] = modalData.cidadeUf.split(' - ');
+
+        document.getElementById('ruaLogado').textContent = modalData.logradouro;
+        document.getElementById('bairroLogado').textContent = modalData.bairro;
+        document.getElementById('cepLogado').textContent = cep;
+        document.getElementById('cidadeUfLogado').textContent = cidade + ' - ' + uf;
+        document.getElementById('complementoLogado').textContent = modalData.complemento;
+    }
+
+    // Encontrar o endereço marcado como checked inicialmente
+    const enderecoInicial = [...modalRadioInputs].find(input => input.checked);
+
+    if (enderecoInicial) {
+        exibirDadosEnderecoModal(enderecoInicial.closest('.card-body'));
+    }
+
+    modalRadioInputs.forEach(function(input) {
+        input.addEventListener('change', function() {
+            if (this.checked) {
+                exibirDadosEnderecoModal(this.closest('.card-body'));
+            }
+        });
+    });
+  }
+
+  $('#exampleModalToggle2').on('submit', function (event) {
+    event.preventDefault();
+
+    var endereco = {
+        logradouro: document.getElementById('inputLogradouro').value,
+        numero: document.getElementById('inputNumero').value,
+        complemento: document.getElementById('inputComplemento').value,
+        bairro: document.getElementById('inputBairro').value,
+        cep: document.getElementById('inputCepModal').value,
+        uf: document.getElementById('inputUf').value,
+        cidade: document.getElementById('inputCidade').value,
+        idCliente: document.getElementById('idClienteEndereco').value
+    };
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/cliente/adicionarEndereco',
+            data: JSON.stringify(endereco),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#modalMessages').empty();
+
+                if (data.startsWith('Sucesso:')) {
+                var mensagemSucesso = data.replace('Sucesso: ', '');
+                $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
+
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function () {
+                        $(this).remove();
+
+                        window.location.reload(true);
+                    });
+                }, 3500);
+
+                }
+            },
+            error: function (xhr) {
+                $('#modalMessages').empty();
+
+                var mensagemErro = xhr.responseText;
+
+                $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
+                setTimeout(function () {
+                    $('#modalMessages .alert').fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                }, 3500);
+              }
+        });
+    });
+
+
+        const handleCEPBlur = () => (e) => {
+            if (e.target.value.length >= 8) {
+
+                fetchAddress2(e);
+
+            }
+        };
+
+
+        const fetchAddress2 = () => {
+            let cep = document.getElementById('inputCepModal');
+
+            fetch(`https://viacep.com.br/ws/${cep.value}/json/`)
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.erro) {
+                        alert("CEP não encontrado!");
+                    } else {
+                        document.getElementById('inputLogradouro').value = data.logradouro;
+                        document.getElementById('inputBairro').value = data.bairro;
+                        document.getElementById('inputCidade').value = data.localidade;
+                        document.getElementById('inputUf').value = data.uf;
+                    }
+                })
+                .catch(() => {
+                    alert("Erro ao buscar o CEP!");
+                });
+        };
+
+
+        
+//pedido
+
+function irParaPagamento() {
+  isSessionActive(function(sessionActive) {
+        if (!sessionActive) {
+            window.location.href = "/authentication/login";
+        } else {
+          const opcaoEntregaSelecionada = document.querySelector('.frete:checked');
+    if (!opcaoEntregaSelecionada) {
+        alert('Por favor, escolha uma opção de entrega antes de prosseguir.');
+        return; // Impede que a função prossiga
+    }
+    let pedido = {
+        carrinhoPedido: [], 
+        idDoCliente: document.getElementById('idCliente').value, 
+        valorTotal: null, 
+        valorFretePedido: null, 
+        formaPagamento: null,
+        endereco: {
+            logradouro: "",
+            numero: "", 
+            bairro: "", 
+            id: "", 
+            cidade: "", 
+            uf: "", 
+            complemento: "" 
+        }
+    };
+
+    const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+    pedido.carrinhoPedido = carrinho;
+    pedido.valorTotal = calcularValorTotalCarrinho(carrinho);
+    pedido.valorFretePedido = valorFrete; 
+    pedido.endereco = {
+        logradouro: document.getElementById("ruaLogado").innerText,
+        // numero: document.getElementById("numeroLogado").innerText, // Adicione um id correspondente no seu HTML
+        bairro: document.getElementById("bairroLogado").innerText,
+        id: document.querySelector('.enderecinho:checked').value,
+        cidade: document.getElementById("cidadeUfLogado").innerText.split(" - ")[0],
+        uf: document.getElementById("cidadeUfLogado").innerText.split(" - ")[1],
+        complemento: document.getElementById("complementoLogado").innerText,
+    };
+
+    let pedidoString = JSON.stringify(pedido);
+    localStorage.setItem("pedido", pedidoString);
+
+    window.location.href = "/pagamento";
+    }
+  });
+}
 
 
 
 
-
-
-  </script>
-  
+</script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
   </html>

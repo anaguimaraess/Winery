@@ -1,6 +1,6 @@
 package br.com.ecommerce.winery.security.session;
 
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +8,12 @@ import org.springframework.stereotype.Service;
 public class Sessao {
 
     public boolean isSessaoAtiva() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        return context.getAuthentication() != null && context.getAuthentication().isAuthenticated();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            System.out.println("Sessão ativa para o usuário: " + authentication.getName());
+            return true;
+        } else {
+            System.out.println("Sessão não ativa");
+            return false;
     }
-}
+}}

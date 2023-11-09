@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,12 +28,17 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest != null) {
-            response.sendRedirect(savedRequest.getRedirectUrl());
+            if (Objects.equals(savedRequest.getRedirectUrl(), "/verificar-sessao") || Objects.equals(savedRequest.getRedirectUrl(), "http://localhost:8082/verificar-sessao")) {
+                response.sendRedirect("/carrinho");
+            } else {
+                response.sendRedirect(savedRequest.getRedirectUrl());
+            }
         } else {
             String redirectURL = determineTargetUrl(authentication);
             response.sendRedirect(redirectURL);
         }
     }
+
     protected String determineTargetUrl(Authentication authentication) {
         Set<String> roles = authentication.getAuthorities().stream()
                 .map(r -> r.getAuthority())
@@ -42,7 +48,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             return "/admin/home";
         } else if (roles.contains("ESTOQUISTA")) {
             return "/estoque/homeEstoque";
-        }else if (roles.contains("CLIENTE")) {
+        } else if (roles.contains("CLIENTE")) {
             return "/Winery";
         } else {
             return "/Winery";  // para outros usuários ou default

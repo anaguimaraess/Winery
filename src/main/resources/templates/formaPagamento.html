@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Winery:: Formas de Pagamento</title>
-    <link rel="shortcut icon" href="../static/imagens/faviconWinery.png" type="image/x-icon">
+    <link th:href="@{/imagens/faviconWinery.png}" rel="shortcut icon" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
@@ -36,6 +36,9 @@
     .botaoPadrao {
         background: linear-gradient(to bottom, #4F0599, #7A0707);
         border: none;
+    }
+    #parcelas:hover {
+        cursor: pointer;
     }
 </style>
 
@@ -71,7 +74,7 @@
 
                 <a class="navbar-brand" href="/Winery"
                     style="position: absolute; left: 50%; transform: translateX(-50%);">
-                    <img src="../static/imagens/logoWinery250x250new.png" width="175px" alt="Logo da Winery">
+                    <img th:src="@{/imagens/logoWinery250x250new.png}" width="175px" alt="Logo da Winery">
                 </a>
 
                 <ul class="navbar-nav ml-auto">
@@ -234,17 +237,37 @@
                                 <input type="text" class="form-control" id="cvv" placeholder="CVV" required>
                             </div>
                         </div>
-
-                        <button type="submit" class="btn botaoPadrao mt-3 text-white">Cadastrar Cartão</button>
+                        <div class="form-group mb-2">
+                            <label for="parcelas" class="text-white">Número de Parcelas:</label>
+                            <select class="form-control" id="parcelas" onchange="atualizarValorPorParcela()">
+                        
+                                <option  id="parcelas"value="1">Nenhum</option>
+                                <option id="parcelas" value="2">2x</option>
+                                <option id="parcelas" value="3">3x</option>
+                                <option id="parcelas" value="4">4x</option>
+                                <option  id="parcelas" value="5">5x</option>
+                            </select>
+                        </div>
+                        
+                
+                        <div class="form-group mb-2">
+                            <label for="valorPorParcela" class="text-white">Valor por Parcela:</label>
+                            <input type="text" class="form-control" id="valorPorParcela" readonly style="pointer-events: none;">
+                        </div>
+                        
+                        
+                        <button type="submit" id="cadastrarCartaoButton" class="btn botaoPadrao mt-3 text-white" >Cadastrar Cartão</button>
                     </form>
                 </div>
             </li>
         </ul>
     </div>
-
-    <div class="container text-end">
+    <div class="container d-flex justify-content-between align-items-end">
+        <button class="btn btn-outline-warning mt-5" onclick="window.history.back();" type="button">Voltar</button>
         <button type="submit" class="btn botaoPadrao mt-5 text-white" id="avancarButton">Avançar</button>
+
     </div>
+    
 
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
@@ -258,7 +281,7 @@
                     <div class="row">
                         <!--Grid column-->
                         <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                            <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
+                            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
 
                             <p>
                                 Alguma dúvida? A gente ajuda você! <br>
@@ -332,7 +355,7 @@
                             <h5 class="text-white">Formas de Pagamento</h5>
 
                             <ul class="list-unstyled mb-0">
-                                <img src="../static/imagens/formaPagamento.webp" width="200px" alt="">
+                                <img src="/imagens/formaPagamento.webp" width="200px" alt="">
                             </ul>
                         </div>
                         <!--Grid column-->
@@ -392,69 +415,123 @@
 
 
     <script>
+        let pedido = JSON.parse(localStorage.getItem('pedido'));
+        console.log("o top", pedido)
 
         function savePaymentForm() {
-            const formaPagamentoSelecionada = document.querySelector('input[name="campoFormasPagamento"]:checked')
+            const formaPagamentoSelecionada = document.querySelector('input[name="campoFormasPagamento"]:checked');
             if (formaPagamentoSelecionada) {
-                const formaPagamentoSelecionadaId = formaPagamentoSelecionada.id
-                localStorage.setItem('formaPagamento', formaPagamentoSelecionadaId)
-                alert('Forma de pagamento salva com sucesso!')
+                const formaPagamentoSelecionadaId = formaPagamentoSelecionada.id;
+
+                const pedido = JSON.parse(localStorage.getItem('pedido')) || {};
+                pedido.formaPagamento = formaPagamentoSelecionadaId;
+
+                localStorage.setItem('pedido', JSON.stringify(pedido));
+                localStorage.setItem('formaPagamento', formaPagamentoSelecionadaId);
             } else {
-                alert('Por favor, selecione uma forma de pagamento.')
+                alert('Por favor, selecione uma forma de pagamento.');
             }
-        };
-
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const avancarButton = document.getElementById("avancarButton")
-
-            avancarButton.addEventListener("click", function () {
-
-                verificarCamposDoCartao()
-
-                const paymentRadios = document.querySelectorAll('input[type="radio"][name="campoFormasPagamento"]')
-                let isPaymentSelected = false;
-
-                paymentRadios.forEach(function (radio) {
-                    if (radio.checked) {
-                        isPaymentSelected = true
-                    }
-                });
-
-
-                if (isPaymentSelected) {
-                    // Redirecione o usuário para a página de checkout de pagamento
-                    savePaymentForm()
-                    window.location.href = "checkout"
-                } else {
-                    // Mostre uma mensagem de erro ao usuário ou tome outra ação, pois nenhuma opção de pagamento foi selecionada.
-                    alert("Por favor, selecione uma forma de pagamento antes de avançar.")
-                }
-            });
-        });
-
-        function verificarCamposDoCartao() {
-            const cardNumberInput = document.getElementById('cardNumber');
-            const cardHolderNameInput = document.getElementById('cardHolderName');
-            const expiryDateInput = document.getElementById('expiryDate');
-            const cvvInput = document.getElementById('cvv');
-
-            if (
-                cardNumberInput.value.length !== 16 ||
-                cardHolderNameInput.value.trim() === "" ||
-                !isValidExpiryDate(expiryDateInput.value) ||
-                cvvInput.value.length !== 3
-            ) {
-                return false;
-                alert("Todos os campos precisam estar preenchidos!")
-            }
-
-            return true;
-            alert("Cartão cadastrado com sucesso!")
         }
 
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const avancarButton = document.getElementById("avancarButton");
+
+    avancarButton.addEventListener("click", function () {
+        const paymentRadios = document.querySelectorAll('input[type="radio"][name="campoFormasPagamento"]');
+        let isPaymentSelected = false;
+
+        paymentRadios.forEach(function (radio) {
+            if (radio.checked) {
+                isPaymentSelected = true;
+            }
+        });
+
+        if (isPaymentSelected) {
+            const formaPagamentoSelecionada = document.querySelector('input[name="campoFormasPagamento"]:checked');
+            const formaPagamentoSelecionadaId = formaPagamentoSelecionada.id;
+
+            if (formaPagamentoSelecionadaId === 'cartaoDeCredito') {
+                verificarCamposDoCartao(function (isValid) {
+                    if (isValid) {
+                        savePaymentForm();
+                        window.location.href = "checkout";
+                    }
+                });
+            } else {
+                savePaymentForm();
+                window.location.href = "checkout";
+            }
+        } else {
+            alert("Por favor, selecione uma forma de pagamento antes de avançar.");
+        }
+    });
+});
+
+document.querySelector("#cadastrarCartaoButton").addEventListener("click", function () {
+    // Chama a função de verificação antes de prosseguir
+    verificarCamposDoCartao(function (isValid) {
+        if (isValid) {
+            // Se a validação passar, salva o formulário de pagamento e avança
+            savePaymentForm();
+            alert("Cartão cadastrado com sucesso!");
+            // Você pode redirecionar ou realizar outras ações aqui conforme necessário
+        }
+    });
+});
+function atualizarValorPorParcela() {
+    const pedido = JSON.parse(localStorage.getItem('pedido')) || {};
+        const parcelasSelect = document.getElementById('parcelas');
+        const valorPorParcelaInput = document.getElementById('valorPorParcela');
+
+        const valorTotal = pedido.valorTotal;
+        const numeroParcelas = parseInt(parcelasSelect.value);
+
+        if (numeroParcelas > 1) {
+            const valorPorParcela = valorTotal / numeroParcelas;
+            valorPorParcelaInput.value = `R$ ${valorPorParcela.toFixed(2)}`;
+        } else {
+            valorPorParcelaInput.value = '';
+        }
+    }
+
+function verificarCamposDoCartao(callback) {
+    console.log("Chamando verificarCamposDoCartao");
+
+    const cardPaymentRadio = document.getElementById('cartaoDeCredito');
+
+    if (cardPaymentRadio.checked) {
+        const cardNumberInput = document.getElementById('cardNumber');
+        const cardHolderNameInput = document.getElementById('cardHolderName');
+        const expiryDateInput = document.getElementById('expiryDate');
+        const cvvInput = document.getElementById('cvv');
+
+        const cardNumber = cardNumberInput.value.replace(/\D/g, '');
+        const cardHolderName = cardHolderNameInput.value.trim();
+        const expiryDate = expiryDateInput.value.replace(/\D/g, '');
+        const cvv = cvvInput.value.replace(/\D/g, '');
+
+        if (cardNumber.length !== 16) {
+            alert("O número do cartão deve ter 16 dígitos.");
+            callback(false);
+        } else if (cardHolderName === "") {
+            alert("Por favor, insira o nome do titular do cartão.");
+            callback(false);
+        } else if (!verificarDataExpiracaoMenorQueAtual(expiryDate)) {
+            callback(false);
+        } else if (cvv.length !== 3) {
+            alert("O CVV do cartão deve ter 3 dígitos.");
+            callback(false);
+        } else {
+            callback(true);
+        }
+    } else {
+        callback(true);
+    }
+}
 
         const cartaoDeCredito = {
             numero: "",
@@ -471,10 +548,11 @@
             cartaoDeCredito.validade = document.getElementById("expiryDate").value;
             cartaoDeCredito.cvv = document.getElementById("cvv").value;
 
-            const cartaoJSON = JSON.stringify(cartaoDeCredito);
-            localStorage.setItem("cartaoDeCredito", cartaoJSON);
-
-            console.log(cartaoDeCredito)
+            const pedido = JSON.parse(localStorage.getItem('pedido')) || {};
+            pedido.cartaoDeCredito = cartaoDeCredito;
+            pedido.cartaoDeCredito = cartaoDeCredito;
+            pedido.numeroParcelas = parseInt(document.getElementById('parcelas').value);
+            localStorage.setItem('pedido', JSON.stringify(pedido));
         });
 
         const cardNumberInput = document.getElementById('cardNumber')
@@ -505,21 +583,6 @@
             }
         });
 
-        const expiryDateInput = document.getElementById('expiryDate');
-        expiryDateInput.addEventListener('input', function () {
-            this.value = this.value.replace(/\D/g, '')
-            if (this.value.length > 6) {
-                this.value = this.value.slice(0, 6)
-            }
-            if (this.value.length === 6) {
-
-                const month = this.value.slice(0, 2)
-                const year = this.value.slice(2)
-                this.value = `${month}/${year}`
-            }
-        });
-
-
         const cvvInput = document.getElementById('cvv');
         cvvInput.addEventListener('input', function () {
             this.value = this.value.replace(/\D/g, '');
@@ -533,7 +596,7 @@
 
 
 
-
+// controle dos radio e cards
         function showCreditCardForm() {
             const creditCardForm = document.getElementById("creditCardForm");
             const creditCardRadio = document.getElementById("cartaoDeCredito");
@@ -590,6 +653,49 @@
                 showPixForm();
             }
         }
+
+//------------------------------- mascarando campo de data vencimento
+const expiryDateInput = document.getElementById('expiryDate');
+expiryDateInput.addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '');
+
+    if (this.value.length === 2 && this.value.indexOf('/') === -1) {
+        this.value += '/';
+    } else if (this.value.length > 2) {
+        this.value = this.value.slice(0, 2) + '/' + this.value.slice(2);
+    }
+
+    if (this.value.length > 5) {
+        this.value = this.value.slice(0, 5);
+    }
+    
+
+    if (this.value.length >= 2) {
+        const month = parseInt(this.value.slice(0, 2));
+        if (month > 12) {
+            this.value = '12';
+        }
+    }
+    
+});
+
+
+function verificarDataExpiracaoMenorQueAtual(inputValue) {
+    if (inputValue.length === 4) {
+        const month = parseInt(inputValue.slice(0, 2), 10);
+        const year = parseInt(inputValue.slice(2, 4), 10);
+
+        const today = new Date();
+        const currentMonth = today.getMonth() + 1; // Mês é baseado em zero no JavaScript
+        const currentYearFull = today.getFullYear() % 100;
+
+        if (year < currentYearFull || (year === currentYearFull && month < currentMonth)) {
+            alert('Cartão vencido? A data de expiração não pode ser menor que a data atual.');
+            return false
+        }
+        return true;
+    }
+}
     </script>
 
 

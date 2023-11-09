@@ -154,6 +154,7 @@ public class ClienteService {
     }
 
     public void definirPadrao(int idEndereco, Cliente cliente){
+        enderecoRepository.updateEnderecosByClienteAndPrincipalAndFlag(cliente, false, FlagEndereco.ENTREGA);
         enderecoRepository.updatePrincipalById(idEndereco, true);
     }
 }

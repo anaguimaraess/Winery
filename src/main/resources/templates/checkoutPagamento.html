@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Winery:: Confirmação do Pedido</title>
-    <link rel="shortcut icon" href="../static/imagens/faviconWinery.png" type="image/x-icon">
+    <link th:href="@{/imagens/faviconWinery.png}" rel="shortcut icon" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
@@ -71,7 +71,7 @@
 
                 <a class="navbar-brand" href="/Winery"
                     style="position: absolute; left: 50%; transform: translateX(-50%);">
-                    <img src="../static/imagens/logoWinery250x250new.png" width="175px" alt="Logo da Winery">
+                    <img th:src="@{/imagens/logoWinery250x250new.png}" width="175px" alt="Logo da Winery">
                 </a>
 
                 <ul class="navbar-nav ml-auto">
@@ -123,29 +123,16 @@
                     </div>
                     <hr class="text-white">
                     <div class="row">
-                        <div class="col-6 col-md-5 py-3"
-                            style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
-                            <h6 class="text-white">Dados Pessoais</h6>
-                            <small class="text-white">Informações que serão inseridas na nota fiscal do pedido.</small>
-                            <hr class="text-white">
-                            <small class="text-white"><b>Thiago Soares Bellico</b></small> <br>
-                            <small class="text-white"><b>CPF:</b> 522.017.798-21</small> <br>
-                            <small class="text-white"><b>E-mail:</b> thiagobellico@outlook.com</small> <br>
-                            <small class="text-white"><b>CEP:</b> 05833-120 - São Paulo, SP. </small> <br>
-                        </div>
-
-                        <div class="col-6 col-md-2">
-                        </div>
-
-                        <div class="col-6 col-md-5 py-3"
+                        <div class="col-12 col-md-12 py-3"
                             style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
                             <h6 id="" class="text-white">Endereço de entrega</h6>
                             <small class="text-white">Este é o endereço onde seu pedido será enviado</small>
                             <hr class="text-white">
-                            <small class="text-white">Rua Ferreiropolis,</small> <br>
-                            <small class="text-white">Apartamento 22 Bloco 6,</small> <br>
-                            <small class="text-white">Jardim Vaz de Lima,</small> <br>
-                            <small class="text-white">CEP 05833-120 - São Paulo, SP. </small> <br>
+                            <small class="text-white" id="ruaLogado" th:text="'Rua ' + ${enderecoPrincipal.logradouro + ', ' + enderecoPrincipal.numero} ?: 'Endereço não disponível'"></small> <br>
+                            <small class="text-white" id="bairroLogado" th:text="${enderecoPrincipal.bairro}">Endereço não disponível</small> <br>
+                            <small class="text-white" id="cepLogado" th:text="${enderecoPrincipal.cep}">Endereço não disponível</small> <br>
+                            <small class="text-white" id="cidadeUfLogado" th:text="${enderecoPrincipal.cidade + ' - ' + enderecoPrincipal.uf}">Endereço não disponível</small> <br>
+                            <small class="text-white" id="complementoLogado" th:text="${enderecoPrincipal.complemento}">Endereço não disponível</small> <br>
                         </div>
                     </div>
                 </div>
@@ -202,7 +189,7 @@
 
                     <div class="d-grid gap-2 mb-5 me-5 ms-5 mt-5">
                         <button class="btn btn-primary botaoPadrao" type="button">Finalizar</button>
-                        <button class="btn btn-outline-warning" type="button">Voltar</button>
+                        <button class="btn btn-outline-warning"  onclick="window.history.back();" type="button">Voltar</button>
                     </div>
                     <small class="text-white">Ao efetuar o seu pedido, você concorda com os Termos e condições de Venda
                         do Winery! e com nossa Política de Privacidade.</small>
@@ -224,7 +211,7 @@
                     <div class="row">
                         <!--Grid column-->
                         <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                            <img src="../static/imagens/logoWinery250x250new.png" width="150px" alt="Logo da Winery">
+                            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
 
                             <p>
                                 Alguma dúvida? A gente ajuda você! <br>
@@ -298,7 +285,7 @@
                             <h5 class="text-white">Formas de Pagamento</h5>
 
                             <ul class="list-unstyled mb-0">
-                                <img src="../static/imagens/formaPagamento.webp" width="200px" alt="">
+                                <img src="/imagens/formaPagamento.webp" width="200px" alt="">
                             </ul>
                         </div>
                         <!--Grid column-->
@@ -353,6 +340,8 @@
 
 
     <script>
+let pedidoString = localStorage.getItem('pedido');
+console.log("Pedido em formato de string:", pedidoString);
 
         function exibirFormaDePagamento() {
             const formaPagamentoValor = localStorage.getItem('formaPagamento');
@@ -373,7 +362,6 @@
         function getFormaPagamentoText(formaPagamento) {
             const formaPagamentoMap = {
                 cartaoDeCredito: "Cartão de Crédito",
-                // Adicione outros mapeamentos aqui conforme necessário
             };
 
             return formaPagamentoMap[formaPagamento] || formaPagamento;
@@ -401,14 +389,7 @@
             });
         }
 
-
-
-
-
-
-
     </script>
-
 </body>
 
 </html>
