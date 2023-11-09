@@ -9,4 +9,15 @@ public class CarrinhoController {
     public String exibirCarrinho() {
         return "carrinhoCompras"; // Nome do arquivo HTML sem a extensão
     }
+
+     @GetMapping("/pagamento")
+    public String exibirFomasDePagamento() {
+        return "formaPagamento"; // Nome do arquivo HTML sem a extensão
+    }
+
+    @GetMapping("/checkout")
+    public String exibirCheckout(){
+        return "checkoutPagamento";
+    }
+    
 }

@@ -139,7 +139,7 @@
 
                         <div class="col-6 col-md-5 py-3"
                             style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
-                            <h6 class="text-white">Endereço de entrega</h6>
+                            <h6 id="" class="text-white">Endereço de entrega</h6>
                             <small class="text-white">Este é o endereço onde seu pedido será enviado</small>
                             <hr class="text-white">
                             <small class="text-white">Rua Ferreiropolis,</small> <br>
@@ -159,7 +159,7 @@
                                     <path
                                         d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.730-.574z" />
                                 </svg>
-                                <h4 class="text-white ml-2 ms-4">Lista de produtos</h4>
+                                <h4 id="checkout-container" class="text-white ml-2 ms-4">Lista de produtos</h4>
                             </div>
                         </div>
                         <hr class="text-white">
@@ -190,18 +190,12 @@
 
                     <div class="row">
                         <div class="col">
-                            <h6 class="text-white"><b>Valor dos Produtos: </b></h6>
-                            <h6 class="text-white"><b>Valor do Frete: </b> </h6>
-                            <h6 class="text-white"><b>Forma de Pagamento: </b> </h6>
-
-                            <h3 class="text-white mt-4"><b>Total:</b></h3>
-                        </div>
-                        <div class="col">
-                            <h6 class="text-white text-end"> R& 2.044,76</h6>
-                            <h6 class="text-white text-end"> R& 100,00</h6>
-                            <h6 class="text-white text-end"> Cartão de Crédito</h6>
-
-                            <h3 class="text-white text-end mt-4"> R$ 2.144,76</h3>
+                            <h6 class="text-white" id="valorDosProdutos"><b>Valor dos Produtos: </b></h6>
+                            <h6 class="text-white" id="valorFrete"><b>Valor do Frete: </b> </h6>
+                            <h6 class="text-white" id="formaPagamentoSelecionada"><b>Forma de Pagamento:</b>
+                                <span id="formaPagamentoSelecionadaValor"></span>
+                            </h6>
+                            <h3 class="text-white mt-4" id="valorTotal"><b>Total:</b></h3>
                         </div>
                     </div>
 
@@ -358,9 +352,63 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+    <script>
+
+        function exibirFormaDePagamento() {
+            const formaPagamentoValor = localStorage.getItem('formaPagamento');
+            const formaPagamentoValorElement = document.getElementById('formaPagamentoSelecionadaValor');
+
+            const formaPagamentoMap = {
+                pix: "PIX",
+                boleto: "Boleto Bancário",
+                cartaoDeCredito: "Cartão de Crédito",
+            };
+
+            if (formaPagamentoValorElement && formaPagamentoValor) {
+                const formaPagamentoTexto = formaPagamentoMap[formaPagamentoValor] || formaPagamentoValor;
+                formaPagamentoValorElement.innerText = formaPagamentoTexto;
+            }
+        }
+
+        function getFormaPagamentoText(formaPagamento) {
+            const formaPagamentoMap = {
+                cartaoDeCredito: "Cartão de Crédito",
+                // Adicione outros mapeamentos aqui conforme necessário
+            };
+
+            return formaPagamentoMap[formaPagamento] || formaPagamento;
+        }
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            exibirFormaDePagamento()
+            exibirProdutosNoCheckout()
+        })
+
+        function exibirProdutosNoCheckout() {
+            const checkoutContainer = document.getElementById('checkout-container')
+            const carrinho = JSON.parse(localStorage.getItem('carrinho'))
+
+            const carrinhoLista = document.getElementById("carrinho-lista")
+
+            carrinho.forEach((produto) => {
+
+                const li = document.createElement("li")
+                li.classList.add("list-group-item")
+                li.textContent = `${produto.nome}\nQuantidade: ${produto.quantidade}\nPreço: $${(produto.preco * produto.quantidade).toFixed(2)}`
+
+                carrinhoLista.appendChild(li)
+            });
+        }
+
+
+
+
+
+
+
+    </script>
+
 </body>
 
 </html>

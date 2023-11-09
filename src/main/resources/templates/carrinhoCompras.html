@@ -511,6 +511,17 @@
   <!-- End of .container -->
 
   <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+const avancarButton = document.getElementById("irParaPagamentoBtn");
+
+
+avancarButton.addEventListener("click", function() {
+    // Redirecione o usuário para a página de checkout de pagamento
+    window.location.href = "pagamento";
+});
+});
       document.addEventListener("DOMContentLoaded", () => {
   hideEnderecoBox(); // Chama a função para ocultar o divEndereco inicialmente
   addEventListeners();
@@ -671,7 +682,7 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
               <h4 class="text-white mb-3">Valor Total: R$ ${valorTotalCarrinho.toFixed(2)}</h4>
               <h5 id="valor-frete" class="text-white mb-3">Valor Frete: R$ ${valorFrete.toFixed(2)}</h5>
               <a href="/Winery" class="btn btn-outline-success btn-lg">Continuar Comprando</a>
-              <button class="btn btn-danger btn-lg botaoPadrao">Ir para Pagamento</button>
+              <button class="btn btn-danger btn-lg botaoPadrao" id="irParaPagamentoBtn">Ir para Pagamento</button>
             </div>
           </li>
         `;
