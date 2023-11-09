@@ -6,6 +6,8 @@
     <title>Winery:: Carrinho de Compras</title>
     <link th:href="@{/imagens/faviconWinery.png}" rel="shortcut icon" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
   </head>
   <style>
     .bodyWinery {
@@ -103,8 +105,9 @@
             <div class="col-8 col-md-9 col-lg-6" th:if="${cliente != null}">
               <th:block th:each="endereco : ${cliente.enderecos}">
                   <th:block th:if="${endereco.principal == true}">
-                      <small class="text-white" id="ruaLogado" th:text="${endereco.logradouro}">Endereço não disponível</small> <br>
-                      <small class="text-white" id="bairroLogado" th:text="${endereco.bairro}">Endereço não disponível</small> <br>
+
+                    <small class="text-white" id="ruaLogado" th:text="'Rua ' + ${endereco.logradouro + ', ' + endereco.numero} ?: 'Endereço não disponível'"></small> <br>
+                    <small class="text-white" id="bairroLogado" th:text="${endereco.bairro}">Endereço não disponível</small> <br>
                       <small class="text-white" id="cep-cidadeLogado" th:text="${endereco.cep}">Endereço não disponível</small> <br>
                       <button type="button" class="btn btn-outline-info mt-4" style="padding: 7px !important;" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
@@ -120,7 +123,7 @@
           
             <div class="col-4 col-md-3 col-lg-5">
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <input class="form-check-input me-3 frete" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
@@ -129,7 +132,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input me-3 frete" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
@@ -138,7 +141,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                <input class="form-check-input me-3 frete" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
@@ -188,7 +191,7 @@
             </div> 
             <div class="col-4 col-md-3 col-lg-5">
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <input class="form-check-input me-3 frete" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
@@ -197,7 +200,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input me-3 frete" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
@@ -205,8 +208,8 @@
                   <small >R$ 50,00</small>
                 </div>
               </div>
-              <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+              <div class="form-check d-flex align-items-center ">
+                <input class="form-check-input me-3 frete" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
@@ -252,74 +255,32 @@
           <div class="modal-body">
             <div class="container">
               <div class="row">
-                <div class="col-4">
-                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
-                    <div class="d-flex justify-content-between">
+                <th:block th:each="endereco : ${cliente.enderecos}">
 
-                    </div>
-                    <hr class="text-white">
-                    <h6 class="text-white">Rua Selma Kurtz 21</h6>
-                    <h6 class="text-white">Complemento</h6>
-                    <h6 class="text-white">Jardim Maria Luiza</h6>
-                    <h6 class="text-white">04434010</h6>
-                    <h6 class="text-white">São Paulo - SP </h6>
+                <div class="col-4" >
+
+                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
+                      <hr class="text-white">
+
+                    <h6 class="text-white"  th:text="'Rua ' + ${endereco.logradouro + ', ' + endereco.numero} ?: 'Endereço não disponível'"></h6>
+                    <h6 class="text-white" th:text="${endereco.bairro}"></h6>
+                    <h6 class="text-white" th:text="${ 'CEP: ' + endereco.cep}"></h6>
+                    <h6 class="text-white" th:text="${endereco.cidade  + ' - ' + endereco.uf}"></h6>
+                    <h6 class="text-white" th:text="${endereco.complemento}"></h6>
                     <div class="d-flex justify-content-between">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio">
+                            <input class="form-check-input enderecinho" type="radio"  th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
 
-                            <label class="form-check-label text-white">
+                            <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
                                 Definir como padrão
                             </label>
                         </div>
                     </div>
+
                   </div>
+
                 </div>
-
-                <div class="col-4">
-                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
-                    <div class="d-flex justify-content-between">
-
-                    </div>
-                    <hr class="text-white">
-                    <h6 class="text-white">Rua Selma Kurtz 21</h6>
-                    <h6 class="text-white">Complemento</h6>
-                    <h6 class="text-white">Jardim Maria Luiza</h6>
-                    <h6 class="text-white">04434010</h6>
-                    <h6 class="text-white">São Paulo - SP </h6>
-                    <div class="d-flex justify-content-between">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio">
-
-                            <label class="form-check-label text-white">
-                                Definir como padrão
-                            </label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-4">
-                  <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
-                    <div class="d-flex justify-content-between">
-
-                    </div>
-                    <hr class="text-white">
-                    <h6 class="text-white">Rua Selma Kurtz 21</h6>
-                    <h6 class="text-white">Complemento</h6>
-                    <h6 class="text-white">Jardim Maria Luiza</h6>
-                    <h6 class="text-white">04434010</h6>
-                    <h6 class="text-white">São Paulo - SP </h6>
-                    <div class="d-flex justify-content-between">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio">
-
-                            <label class="form-check-label text-white">
-                                Definir como padrão
-                            </label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
+              </th:block>
 
               </div>
             </div>
@@ -525,7 +486,7 @@
   const updateFrete = () => {
     valorFrete = 0;
 
-  const botoesRadio = document.querySelectorAll('input[type="radio"]');
+  const botoesRadio = document.querySelectorAll('input[type="radio"].frete');
 
 
   botoesRadio.forEach((radio) => {
@@ -546,8 +507,8 @@
 
 
 
-const botoesRadio = document.querySelectorAll('input[type="radio"]');
-document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+const botoesRadio = document.querySelectorAll('input[type="radio"].frete');
+document.querySelectorAll('input[type="radio"].frete').forEach((radio) => {
     radio.addEventListener("change", updateFrete);
 
   });
@@ -694,7 +655,7 @@ document.querySelectorAll('input[type="radio"]').forEach((radio) => {
 
   const addEventListeners = () => {
     document.getElementById("buscarCepBtn").addEventListener("click", handleCEPSubmit);
-    document.querySelectorAll('input[type="radio"]').forEach((radio) => {
+    document.querySelectorAll('input[type="radio"].frete').forEach((radio) => {
     radio.addEventListener("change", updateFrete);
   });
   };
@@ -777,13 +738,35 @@ isSessionActive(function(sessionActive) {
 });
 
 
+$(document).ready(function() {
+    // Adicione o evento de clique aos radio buttons
+    $('input[type="radio"].enderecinho').click(function() {
+        var enderecoId = $(this).val(); // Obtém o valor do radio button
+        var confirmar = confirm("Deseja definir este endereço como padrão?");
+        if (confirmar) {
+            // Fazer a requisição ao backend aqui
+            $.ajax({
+                url: '/cliente/definirPadrao/'+enderecoId, // Substitua pela URL correta
+                type: 'POST', // Ou outro método HTTP apropriado
+                success: function(response) {
+                    alert('Endereço definido como padrão com sucesso.');
+                    $('#exampleModalToggle').modal('hide');
+                        window.location.reload(true);
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao definir o endereço como padrão.');
+                }
+            });
+        }
+    });
+});
 
 
 
 
 
   </script>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
   </html>

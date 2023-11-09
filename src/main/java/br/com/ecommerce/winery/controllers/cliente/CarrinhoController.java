@@ -36,9 +36,27 @@ public class CarrinhoController {
                 return "carrinhoCompras";
             }
             return "carrinhoCompras";
-
         } catch (Exception e) {
             return "landingPageProduto";
         }
     }
+
+//    public String listarEnderecosClienteLogado(Model model, Principal principal){
+//        try {
+//            if (principal != null) {
+//                String clienteUsername = principal.getName();
+//                Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
+//                List<Endereco> listaEnderecos = enderecoRepository.findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
+//                cliente.setEnderecos(listaEnderecos);
+//                if (cliente != null) {
+//                    model.addAttribute("cliente", cliente);
+//                }
+//                return "carrinhoCompras";
+//            }
+//            return "carrinhoCompras";
+//        } catch (Exception e) {
+//            return "landingPageProduto";
+//        }
+//    }
+
 }
