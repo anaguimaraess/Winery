@@ -33,6 +33,9 @@
     background: linear-gradient(to bottom, #4F0599, #7A0707);
     border: none;
   }
+  .radio-hand-cursor {
+    cursor: pointer;
+}
 
   </style>
 
@@ -103,27 +106,27 @@
         <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
           <div class="row g-3" >
             <div class="col-8 col-md-9 col-lg-6" th:if="${cliente != null}">
-              <th:block th:each="endereco : ${cliente.enderecos}">
-                  <th:block th:if="${endereco.principal == true}">
-
-                    <small class="text-white" id="ruaLogado" th:text="'Rua ' + ${endereco.logradouro + ', ' + endereco.numero} ?: 'Endereço não disponível'"></small> <br>
-                    <small class="text-white" id="bairroLogado" th:text="${endereco.bairro}">Endereço não disponível</small> <br>
-                      <small class="text-white" id="cep-cidadeLogado" th:text="${endereco.cep}">Endereço não disponível</small> <br>
-                      <button type="button" class="btn btn-outline-info mt-4" style="padding: 7px !important;" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil"
-                               viewBox="0 0 16 16">
-                              <path
-                                  d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                          </svg>
-                          Alterar endereço
-                      </button>
-                  </th:block>
-              </th:block>
+              <th:block th:if="${cliente.enderecos != null and cliente.enderecos.size() > 0}">
+        <th:block th:with="enderecoPrincipal=${cliente.enderecos[0]}">
+            <small class="text-white" id="ruaLogado" th:text="'Rua ' + ${enderecoPrincipal.logradouro + ', ' + enderecoPrincipal.numero} ?: 'Endereço não disponível'"></small> <br>
+            <small class="text-white" id="bairroLogado" th:text="${enderecoPrincipal.bairro}">Endereço não disponível</small> <br>
+            <small class="text-white" id="cepLogado" th:text="${enderecoPrincipal.cep}">Endereço não disponível</small> <br>
+            <small class="text-white" id="cidadeUfLogado" th:text="${enderecoPrincipal.cidade + ' - ' + enderecoPrincipal.uf}">Endereço não disponível</small> <br>
+            <small class="text-white" id="complementoLogado" th:text="${enderecoPrincipal.complemento}">Endereço não disponível</small> <br>
+            <button type="button" class="btn btn-outline-info mt-4" style="padding: 7px !important;" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path
+                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                </svg>
+                Alterar endereço
+            </button>
+        </th:block>
+    </th:block>
           </div>
           
-            <div class="col-4 col-md-3 col-lg-5">
-              <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3 frete" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+          <div class="col-4 col-md-3 col-lg-5 d-flex flex-column justify-content-center ">
+            <div class="form-check d-flex align-items-center">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
@@ -132,7 +135,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3 frete" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
@@ -141,7 +144,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3 frete" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
@@ -190,8 +193,8 @@
               <small class="text-white" id="cep-cidade"></small> <br>
             </div> 
             <div class="col-4 col-md-3 col-lg-5">
-              <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3 frete" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+              <div class="form-check d-flex align-items-center ">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault1">
                   <b>Entrega Padrão</b> - Até 3 dias úteis
                 </label>
@@ -200,7 +203,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center">
-                <input class="form-check-input me-3 frete" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="50.00" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault2">
                   <b>Entrega Expressa</b> - Até 2 dias úteis
                 </label>
@@ -209,7 +212,7 @@
                 </div>
               </div>
               <div class="form-check d-flex align-items-center ">
-                <input class="form-check-input me-3 frete" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="55.00" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
                 <label class="form-check-label text-white mb-0" for="flexRadioDefault3">
                   <b>Entrega Agendada</b> - Até 20 dias úteis
                 </label>
@@ -269,10 +272,10 @@
                     <h6 class="text-white" th:text="${endereco.complemento}"></h6>
                     <div class="d-flex justify-content-between">
                         <div class="form-check">
-                            <input class="form-check-input enderecinho" type="radio"  th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
+                            <input class="form-check-input enderecinho radio-hand-cursor" type="radio"  th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
 
                             <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
-                                Definir como padrão
+                                Definir como endereço de entrega
                             </label>
                         </div>
                     </div>
@@ -738,34 +741,91 @@ isSessionActive(function(sessionActive) {
 });
 
 
-$(document).ready(function() {
-    // Adicione o evento de clique aos radio buttons
-    $('input[type="radio"].enderecinho').click(function() {
-        var enderecoId = $(this).val(); // Obtém o valor do radio button
-        var confirmar = confirm("Deseja definir este endereço como padrão?");
-        if (confirmar) {
-            // Fazer a requisição ao backend aqui
-            $.ajax({
-                url: '/cliente/definirPadrao/'+enderecoId, // Substitua pela URL correta
-                type: 'POST', // Ou outro método HTTP apropriado
-                success: function(response) {
-                    alert('Endereço definido como padrão com sucesso.');
-                    $('#exampleModalToggle').modal('hide');
-                        window.location.reload(true);
-                },
-                error: function() {
-                    alert('Ocorreu um erro ao definir o endereço como padrão.');
-                }
-            });
-        }
+// $(document).ready(function() {
+//     // Adicione o evento de clique aos radio buttons
+//     $('input[type="radio"].enderecinho').click(function() {
+//         var enderecoId = $(this).val(); // Obtém o valor do radio button
+//         var confirmar = confirm("Deseja definir este endereço como padrão?");
+//         if (confirmar) {
+//             // Fazer a requisição ao backend aqui
+//             $.ajax({
+//                 url: '/cliente/definirPadrao/'+enderecoId, // Substitua pela URL correta
+//                 type: 'POST', // Ou outro método HTTP apropriado
+//                 success: function(response) {
+//                     alert('Endereço definido como padrão com sucesso.');
+//                     $('#exampleModalToggle').modal('hide');
+//                         window.location.reload(true);
+//                 },
+//                 error: function() {
+//                     alert('Ocorreu um erro ao definir o endereço como padrão.');
+//                 }
+//             });
+//         }
+//     });
+// });
+
+
+</script>
+
+
+
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+    const modalRadioInputs = document.querySelectorAll('.enderecinho');
+
+    // Função para exibir os dados do endereço
+    function exibirDadosEnderecoModal(enderecoElement) {
+        const modalData = {
+            logradouro: enderecoElement.querySelector('.text-white:nth-child(2)').textContent,
+            bairro: enderecoElement.querySelector('.text-white:nth-child(3)').textContent,
+            cep: enderecoElement.querySelector('.text-white:nth-child(4)').textContent,
+            cidadeUf: enderecoElement.querySelector('.text-white:nth-child(5)').textContent,
+            complemento: enderecoElement.querySelector('.text-white:nth-child(6)').textContent
+        };
+
+        // Verificar se há CEP na string antes de dividir
+        const cepIndex = modalData.cep.indexOf('CEP: ');
+        const cep = cepIndex !== -1 ? modalData.cep.substring(cepIndex + 5) : '';
+
+        // Separar cidade e uf corretamente
+        const [cidade, uf] = modalData.cidadeUf.split(' - ');
+
+        document.getElementById('ruaLogado').textContent = modalData.logradouro;
+        document.getElementById('bairroLogado').textContent = modalData.bairro;
+        document.getElementById('cepLogado').textContent = cep;
+        document.getElementById('cidadeUfLogado').textContent = cidade + ' - ' + uf;
+        document.getElementById('complementoLogado').textContent = modalData.complemento;
+    }
+
+    // Encontrar o endereço marcado como checked inicialmente
+    const enderecoInicial = [...modalRadioInputs].find(input => input.checked);
+
+    if (enderecoInicial) {
+        exibirDadosEnderecoModal(enderecoInicial.closest('.card-body'));
+    }
+
+    // Adicionar listener de change para atualizar os dados quando houver mudanças
+    modalRadioInputs.forEach(function(input) {
+        input.addEventListener('change', function() {
+            if (this.checked) {
+                exibirDadosEnderecoModal(this.closest('.card-body'));
+            }
+        });
     });
 });
 
 
+</script>
 
 
 
-  </script>
+
+
+
+
+
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
