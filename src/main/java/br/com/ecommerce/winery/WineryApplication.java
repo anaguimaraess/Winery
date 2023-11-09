@@ -9,4 +9,3 @@ public class WineryApplication {
         SpringApplication.run(WineryApplication.class, args);
     }
 }
-

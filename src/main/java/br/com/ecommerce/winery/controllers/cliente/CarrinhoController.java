@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.List;
 
@@ -41,22 +40,14 @@ public class CarrinhoController {
         }
     }
 
-//    public String listarEnderecosClienteLogado(Model model, Principal principal){
-//        try {
-//            if (principal != null) {
-//                String clienteUsername = principal.getName();
-//                Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
-//                List<Endereco> listaEnderecos = enderecoRepository.findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
-//                cliente.setEnderecos(listaEnderecos);
-//                if (cliente != null) {
-//                    model.addAttribute("cliente", cliente);
-//                }
-//                return "carrinhoCompras";
-//            }
-//            return "carrinhoCompras";
-//        } catch (Exception e) {
-//            return "landingPageProduto";
-//        }
-//    }
+     @GetMapping("/pagamento")
+    public String exibirFomasDePagamento() {
+        return "formaPagamento"; // Nome do arquivo HTML sem a extensão
+    }
+
+    @GetMapping("/checkout")
+    public String exibirCheckout(){
+        return "checkoutPagamento";
+    }
 
 }

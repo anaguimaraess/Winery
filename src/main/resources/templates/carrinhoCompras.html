@@ -101,6 +101,7 @@
     </div>
 
     <div class="container" id="divEnderecoLogado">
+      <input type="hidden" id="idCliente" name="idClienteEndereco" th:value="${cliente != null ? cliente.idCliente : ''}">
 
       <ul class="list-group mb-3" style="background-color: transparent; border: none !important;">
         <li class="list-group-item py-3" style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
@@ -123,7 +124,7 @@
         </th:block>
     </th:block>
           </div>
-          
+
           <div class="col-4 col-md-3 col-lg-5 d-flex flex-column justify-content-center ">
             <div class="form-check d-flex align-items-center">
                 <input class="form-check-input me-3 frete radio-hand-cursor" data-valor="12.00" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
@@ -260,11 +261,11 @@
               <div class="row">
                 <th:block th:if="${cliente != null}">
                     <th:block th:each="endereco : ${cliente.enderecos}">
-            
+
                         <div class="col-4">
                             <div class="card-body p-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
                                 <hr class="text-white">
-            
+
                                 <h6 class="text-white" th:text="'Rua ' + ${endereco.logradouro + ', ' + endereco.numero} ?: 'Endereço não disponível'"></h6>
                                 <h6 class="text-white" th:text="${endereco.bairro}"></h6>
                                 <h6 class="text-white" th:text="${ 'CEP: ' + endereco.cep}"></h6>
@@ -273,7 +274,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="form-check">
                                         <input class="form-check-input enderecinho radio-hand-cursor" type="radio"  th:id="'flexRadioDefault' + ${endereco.idEndereco}" th:name="'enderecoPadrao'" th:value="${endereco.idEndereco}" th:checked="${endereco.principal}">
-            
+
                                         <label class="form-check-label text-white" th:for="'flexRadioDefault' + ${endereco.idEndereco}">
                                             Definir como endereço de entrega
                                         </label>
@@ -282,11 +283,11 @@
                             </div>
                             <br>
                         </div>
-            
+
                     </th:block>
                 </th:block>
             </div>
-            
+
             </div>
           </div>
           <div class="modal-footer">
@@ -439,7 +440,7 @@
               <h5 class="text-white">Formas de Pagamento</h5>
   
               <ul class="list-unstyled mb-0">
-                <!-- <img src="../static/imagens/formaPagamento.webp"  width="200px" alt=""> -->
+                <img src="/imagens/formaPagamento.webp"  width="200px" alt="">
               </ul>
             </div>
             <!--Grid column-->
@@ -741,7 +742,6 @@ isSessionActive(function(sessionActive) {
     tituloLogado.style.display = 'block';
 
   } else {
-    console.log("oxi")
     enderecoLogado.style.display = 'none';
     tituloNaoLogado.style.display = 'block';
     tituloLogado.style.display = 'none';
@@ -805,7 +805,7 @@ isSessionActive(function(sessionActive) {
         idCliente: document.getElementById('idClienteEndereco').value
     };
 
-  
+
 
         $.ajax({
             type: 'POST',
@@ -833,7 +833,7 @@ isSessionActive(function(sessionActive) {
                 $('#modalMessages').empty();
 
                 var mensagemErro = xhr.responseText;
-                
+
                 $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
                 setTimeout(function () {
                     $('#modalMessages .alert').fadeOut('slow', function() {
@@ -874,30 +874,41 @@ isSessionActive(function(sessionActive) {
                 });
         };
 
+
+        
 //pedido
 
 function irParaPagamento() {
-    const pedido = {
-        carrinhoPedido: [], // Array vazio, você pode adicionar itens a este array conforme necessário
-        idDoCliente: null,
-        valorTotal: null, // Preencha com o valor total do pedido
-        valorFretePedido: null, // Preencha com o valor do frete do pedido
+  isSessionActive(function(sessionActive) {
+        if (!sessionActive) {
+            window.location.href = "/authentication/login";
+        } else {
+          const opcaoEntregaSelecionada = document.querySelector('.frete:checked');
+    if (!opcaoEntregaSelecionada) {
+        alert('Por favor, escolha uma opção de entrega antes de prosseguir.');
+        return; // Impede que a função prossiga
+    }
+    let pedido = {
+        carrinhoPedido: [], 
+        idDoCliente: document.getElementById('idCliente').value, 
+        valorTotal: null, 
+        valorFretePedido: null, 
+        formaPagamento: null,
         endereco: {
-            logradouro: "", // Preencha com o logradouro do endereço
-            numero: "", // Preencha com o número do endereço
-            bairro: "", // Preencha com o bairro do endereço
-            id: "", // Preencha com o ID do endereço, se aplicável
-            cidade: "", // Preencha com a cidade do endereço
-            uf: "", // Preencha com o estado (UF) do endereço
-            complemento: "" // Preencha com informações adicionais, se necessário
+            logradouro: "",
+            numero: "", 
+            bairro: "", 
+            id: "", 
+            cidade: "", 
+            uf: "", 
+            complemento: "" 
         }
     };
 
     const carrinho = JSON.parse(localStorage.getItem('carrinho'));
     pedido.carrinhoPedido = carrinho;
-    idDoCliente = document.getElementById('idClienteEndereco').value;
     pedido.valorTotal = calcularValorTotalCarrinho(carrinho);
-    pedido.valorFretePedido = valorFrete; // Valor padrão ou lógica para obter o valor do frete
+    pedido.valorFretePedido = valorFrete; 
     pedido.endereco = {
         logradouro: document.getElementById("ruaLogado").innerText,
         // numero: document.getElementById("numeroLogado").innerText, // Adicione um id correspondente no seu HTML
@@ -908,68 +919,18 @@ function irParaPagamento() {
         complemento: document.getElementById("complementoLogado").innerText,
     };
 
-    const pedidoString = JSON.stringify(pedido);
+    let pedidoString = JSON.stringify(pedido);
     localStorage.setItem("pedido", pedidoString);
 
-    // Redirecionar para a página de pagamento
     window.location.href = "/pagamento";
+    }
+  });
 }
 
 
 
 
-
-
-// const pedido = {
-//   carrinhoPedido: [], // Array vazio, você pode adicionar itens a este array conforme necessário
-//   idDoCliente: null,
-//   valorTotal: null, // Preencha com o valor total do pedido
-//   valorFretePedido: null, // Preencha com o valor do frete do pedido
-//   endereco: {
-//     logradouro: "", // Preencha com o logradouro do endereço
-//     numero: "", // Preencha com o número do endereço
-//     bairro: "", // Preencha com o bairro do endereço
-//     id: "", // Preencha com o ID do endereço, se aplicável
-//     cidade: "", // Preencha com a cidade do endereço
-//     uf: "", // Preencha com o estado (UF) do endereço
-//     complemento: "" // Preencha com informações adicionais, se necessário
-//   }
-// };
-// console.log("vaizo ne:", pedido)
-// const pedidoString = JSON.stringify(pedido);
-
-// localStorage.setItem("pedido", pedidoString);
-// const carrinho = JSON.parse(localStorage.getItem('carrinho'));
-// pedido.carrinhoPedido = carrinho;
-// idDoCliente = document.getElementById('idClienteEndereco').value;
-// pedido.valorTotal = calcularValorTotalCarrinho(carrinho);
-// pedido.valorFretePedido = valorFrete; // Valor padrão ou lógica para obter o valor do frete
-// pedido.endereco = {
-//     logradouro: document.getElementById("ruaLogado").innerText,
-//     // numero: document.getElementById("numeroLogado").innerText, // Adicione um id correspondente no seu HTML
-//     bairro: document.getElementById("bairroLogado").innerText,
-//     id: document.querySelector('.enderecinho:checked').value,
-//     cidade: document.getElementById("cidadeUfLogado").innerText.split(" - ")[0],
-//     uf: document.getElementById("cidadeUfLogado").innerText.split(" - ")[1],
-//     complemento: document.getElementById("complementoLogado").innerText,
-// };
-
-// const pedidoAtualizadoString = JSON.stringify(pedido);
-// localStorage.setItem("pedido", pedidoAtualizadoString);
-// console.log("agoraa", pedido)
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
   </html>
