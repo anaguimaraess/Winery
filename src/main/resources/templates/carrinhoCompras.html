@@ -901,7 +901,8 @@ function irParaPagamento() {
             id: "", 
             cidade: "", 
             uf: "", 
-            complemento: "" 
+            complemento: "",
+            cep: ""
         }
     };
 
@@ -913,6 +914,7 @@ function irParaPagamento() {
         logradouro: document.getElementById("ruaLogado").innerText,
         // numero: document.getElementById("numeroLogado").innerText, // Adicione um id correspondente no seu HTML
         bairro: document.getElementById("bairroLogado").innerText,
+        cep: document.getElementById("cepLogado").innerText,
         id: document.querySelector('.enderecinho:checked').value,
         cidade: document.getElementById("cidadeUfLogado").innerText.split(" - ")[0],
         uf: document.getElementById("cidadeUfLogado").innerText.split(" - ")[1],
