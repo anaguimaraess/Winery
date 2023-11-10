@@ -10,6 +10,7 @@ import br.com.ecommerce.winery.models.pedido.Pedido;
 import br.com.ecommerce.winery.repositories.*;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.convert.PeriodStyle;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -174,25 +176,67 @@ public class ClienteController {
 
 
             Pedido.Endereco enderecoPedido = pedido.getEndereco();
-            List<Pedido.ItemPedido> itemPedido = pedido.getCarrinhoPedido();
+            List<Pedido.ItemPedido> itemsPedido = pedido.getCarrinhoPedido();
             Pedido.CartaoDeCredito cartaoPedido = pedido.getCartaoDeCredito();
 
             pedido.setCarrinhoPedido(null);
             pedido.setEndereco(null);
             pedido.setCartaoDeCredito(null);
+            pedido.setStatus(Pedido.Status.AGUARDANDO_PAGAMENTO);
 
-
-
+            pedido.setDataPedido(new Date());
+            pedido.setId(0);
             Pedido pedidoSalvo =  pedidoRepository.save(pedido);
+            enderecoPedido.setId(0);
+            enderecoPedido.setPedido(pedidoSalvo);
+            enderecoPedidoRepository.save(enderecoPedido);
+           
 
-            
+            if (cartaoPedido != null){
+             cartaoPedido.setPedido(pedidoSalvo);
+             cartaoPedido.setId(0);
+             cartaoRepository.save(cartaoPedido);
+            }
 
 
+            for (Pedido.ItemPedido itemPedido : itemsPedido) {
+                itemPedido.setId(0);
+                itemPedido.setPedido(pedidoSalvo);
+                itemPedidoRepository.save(itemPedido);
+            }
+              return ResponseEntity.ok().body("success: "+"pedido  garvado com sucesso" );
 
         } catch (Exception e) {
             System.out.println(e);
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
-        return ResponseEntity.ok("Sucesso: Endereço se tornou padrão com sucesso!");
+       
+    }
+
+    @GetMapping("/cliente/pedidos")
+    public String meusPedidos(Model model, Principal principal) {
+        try {
+            if (principal != null) {
+                String clienteUsername = principal.getName();
+                Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
+                List<Endereco> listaEnderecos = enderecoRepository
+                        .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
+                cliente.setEnderecos(listaEnderecos);
+                
+                if (cliente != null) {
+                    
+                    List pedidos = pedidoRepository.findByIdDoCliente(String.valueOf(cliente.getIdCliente()));
+                    model.addAttribute("cliente", cliente);
+                    model.addAttribute("pedidos", pedidos);
+                     System.out.println(pedidos);
+                }
+            }
+
+           
+            return "meusPedidos";
+        } catch (Exception e) {
+            return "landingPageProduto";
+        }
     }
 
 

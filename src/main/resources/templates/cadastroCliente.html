@@ -8,11 +8,11 @@
   </head>
   <style>
     .bodyWinery {
-            background-image: url('../imagens/3.png') !important;
-            background-size: cover !important;
-            background-repeat: no-repeat !important;
-            background-attachment: fixed !important;
-        }
+        background-image: url('https://play.hbomax.com/default-3840x2160.png') !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+    }
         .corFundo {
             background: linear-gradient(to bottom, #000000, #000000f0);
             border-radius: 14px;
@@ -43,46 +43,54 @@
 
   </style>
   <body class="bodyWinery">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/Winery">
-                <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
-            </a>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: transparent !important; margin-right: 15px; margin-left: 15px; padding-top: 20px !important;">
+      <div class="container-fluid d-flex justify-content-center">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="">
+                Vinhos
+              </a>
+            </li>
+  
+            <li class="nav-item">
+              <a class="nav-link text-white" href="">
+                Vinicolas
+              </a>
+            </li>
+  
+            <li class="nav-item">
+              <a class="nav-link text-white" href="">
+                Espumante
+              </a>
+            </li>
+          </ul>
+          
+          <a class="navbar-brand" href="/Winery" style="position: absolute; left: 50%; transform: translateX(-50%);">
+            <img th:src="@{/imagens/logoWinery250x250new.png}" width="175px" alt="Logo da Winery">
+          </a>
     
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-    
-    
-                </ul>
-    
-                <ul class="navbar-nav ml-auto">
-    
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link text-white" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg>
-                            Carrinho
-                        </a>
-                    </li>
-                   
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link text-white" href="/authentication/login" >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                              </svg>
-                            Entrar
-                        </a>
-                    </li>
-                </ul>
-            </div>
+          <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item ml-auto">
+              <a class="nav-link text-white" href="/authentication/login">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-person-fill" viewBox="0 0 16 16">
+                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                </svg>
+                Entrar
+              </a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
     
-    <div class="container corFundo mt-3" >
+    <div class="container mt-5 p-4" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
         <h2 class="text-white">Formulário de Cadastro</h2>
         <form class="row g-3" th:action="@{/Winery/cadastrarCliente}" method="post" th:object="${cliente}" id="formCadastroCliente"  enctype="multipart/form-data">
           <div id="modalMessages" class="position-absolute"></div>
@@ -162,12 +170,12 @@
     </div>
      <div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
-        <div class="modal-content fundoDoFormulario">
-            <div class="modal-header">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #2c263a; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
             <h5 class="modal-title text-white" id="enderecoModalLabel">Endereço de faturamento</h5>
             <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="background-color: #2c263a; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
             <form class="row g-3">
                 <div class="col-6">
                     <label for="" class="form-label text-white">Logradouro</label>

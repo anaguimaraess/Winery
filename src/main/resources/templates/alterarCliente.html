@@ -5,11 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Winery:: Alterar Cliente</title>
+    <link th:href="@{/imagens/faviconWinery.png}" rel="shortcut icon" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <style>
     .bodyWinery {
-        background-image: url('../imagens/3.png') !important;
+        background-image: url('https://play.hbomax.com/default-3840x2160.png') !important;
         background-size: cover !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
@@ -39,48 +40,74 @@
         border-radius: 5px;
         cursor: pointer;
     }
+
+    .dropdown-menu-end{
+        --bs-dropdown-link-hover-bg: #15121d;
+    }
 </style>
 
 <body class="bodyWinery">
-<nav class="navbar navbar-expand-lg bg-body-tertiary corFundo">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/Winery">
-            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
-        </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary"
+    style="background-color: transparent !important; margin-right: 15px; margin-left: 15px; padding-top: 20px !important;">
+    <div class="container-fluid d-flex justify-content-center">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">
+                        Vinhos
+                    </a>
+                </li>
 
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">
+                        Vinicolas
+                    </a>
+                </li>
 
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">
+                        Espumante
+                    </a>
+                </li>
             </ul>
+
+            <a class="navbar-brand" href="/Winery"
+                style="position: absolute; left: 50%; transform: translateX(-50%);">
+                <img th:src="@{/imagens/logoWinery250x250new.png}" width="175px" alt="Logo da Winery">
+            </a>
 
             <ul class="navbar-nav ml-auto">
 
                 <li class="nav-item ml-auto">
-                    <a class="nav-link text-white" href="#">
+                    <a class="nav-link text-white" href="/carrinho">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                         </svg>
+                        <span id="carrinhoItens">0</span>
                     </a>
                 </li>
-                <div id="perfil-button">
-                    <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        Meu perfil
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="perfil-button">
-                        <a class="dropdown-item" href="/cliente/dados">Meus Dados</a>
-                        <a class="dropdown-item" href="/authentication/logout" onclick="showLogoutMessage()">Sair</a>
-                    </div>
+                <div  id="perfil-button">
+                <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    Meu perfil
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end" style="background-color: #1e1a28;" aria-labelledby="perfil-button">
+                    <a class="dropdown-item text-white" href="/cliente/winery">Meus Dados</a>
+                    <a class="dropdown-item text-white" href="/authentication/logout" onclick="showLogoutMessage()">Sair</a>
                 </div>
+                </div>
+                
             </ul>
         </div>
+    </div>
 </nav>
 
 
-<div class="container corFundo mt-5">
+<div class="container mt-5 py-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
     <div class="row">
         <div class="col-sm-6">
             <h2 class="text-white text-center mb-3">Alterar Dados</h2>
@@ -134,7 +161,7 @@
 </div>
 </div>
 
-<div class="container corFundo mt-5">
+<div class="container mt-5 py-3" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
     <div class="row">
         <h2 class="text-white text-center mb-3">Endereços Cadastrados</h2>
         <div class="container">
@@ -144,7 +171,7 @@
             <div class="row">
 
                 <th:block th:each="endereco : ${cliente.enderecos}">
-                    <div class="col mt-3">
+                    <div class="col-auto mt-3">
                         <div class="card endereco rounded border" style="width: 20rem;">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
@@ -178,7 +205,7 @@
 
 <div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content fundoDoFormulario">
+        <div class="modal-content" style="background-color: #1e1a28; border: 1px !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important; border-radius: 14px;">
             <div class="modal-header">
                 <h5 class="modal-title text-white" id="enderecoModalLabel">Endereço 2</h5>
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close" style="background-color: white;"></button>
@@ -225,6 +252,144 @@
         </div>
     </div>
 </div>
+
+<!-- Remove the container if you want to extend the Footer to full width. -->
+<div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
+    <!-- Footer -->
+    <footer class="text-center text-lg-start text-white" style="background-color: transparent !important;">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Links -->
+            <section class="">
+                <!--Grid row-->
+                <div class="row">
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+                        <img class="mb-3" th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+
+                        <p>
+                            Alguma dúvida? A gente ajuda você! <br>
+                            Horario de Atendimento: <br>
+                            De segunda a sexta-feira de 08h as 18h. Exceto feriados.
+                        </p>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-white">Sobre a Winery</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="https://github.com/anaguimaraess/Winery" class="text-white"
+                                    style="text-decoration: none;">GitHub</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Sobre Nós</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-white">Suporte</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Política de Frete</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Política de
+                                    Privacidade</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Termos de
+                                    Condições</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-white">Categorias</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Lançamentos</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Vinho Tinto</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Vinho Branco</a>
+                            </li>
+                            <li>
+                                <a href="#!" class="text-white" style="text-decoration: none;">Promoções</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-white">Formas de Pagamento</h5>
+
+                        <ul class="list-unstyled mb-0">
+                            <img th:src="@{/imagens/formaPagamento.webp}" width="200px" alt="">
+                        </ul>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+
+            <hr class="mb-4" />
+
+            <!-- Section: CTA -->
+            <section class="text-center">
+                <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_empresabuscape_horizontal.png"
+                    width="148" height="30" alt="Empresa reconhecida buscapé" loading="lazy"
+                    class="sc-kpKSZj bigULn">
+                <a href="https://transparencyreport.google.com/safe-browsing/search?url=kabum.com.br&amp;hl=pt-PT"
+                    target="_blank" rel="noreferrer" class="sc-lfYzqA kxaHhl" style="margin-left: 30px;">
+                    <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo-google-site-seguro.png"
+                        alt="GOOGLE SITE SEGURO" width="130" height="46" loading="lazy" class="sc-kpKSZj bigULn"
+                        style="margin-left: 30px;"></a>
+                <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_ebit_kabum_horizontal.png"
+                    width="150" height="36" alt="Ebit diamante excelente" loading="lazy" class="sc-kpKSZj bigULn"
+                    style="margin-left: 30px;"></a>
+                <a id="seloEconfy" href="https://www.compreconfie.com.br/103388" target="_blank" rel="noreferrer"
+                    class="sc-lfYzqA kxaHhl" style="margin-left: 30px;">
+                    <img class="sc-kpKSZj bigULn compreConfieImg"
+                        src="https://selo.compreconfie.com.br/reputation/103388.png" width="57" height="60"
+                        alt="Compre e confie" loading="lazy" style="margin-left: 30px;"></a>
+                <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo-ra.png" height="60"
+                    alt="Empresa campeã prêmio reclame aqui 2022" loading="lazy" class="sc-kpKSZj bigULn"
+                    style="margin-left: 30px;">
+            </section>
+            <!-- Section: CTA -->
+
+            <hr class="mb-4" />
+
+            <!-- Section: Social media -->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: transparent !important;">
+            © 2023 Copyright por Winery
+
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+</div>
+<!-- End of .container -->
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

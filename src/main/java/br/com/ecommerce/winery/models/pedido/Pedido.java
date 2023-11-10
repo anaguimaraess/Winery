@@ -1,8 +1,11 @@
 package br.com.ecommerce.winery.models.pedido;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
+import lombok.NonNull;
 
 import javax.persistence.*;
 
@@ -11,13 +14,26 @@ import javax.persistence.*;
 @Entity
 public class Pedido {
 
+
+    public enum Status{
+        AGUARDANDO_PAGAMENTO,
+        PENDENTE,
+        APROVADO,
+        CANCELADO
+    }
+
+
+
+
     @Data
     @Entity
     public static class ItemPedido {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id; // Adicione um identificador para a entidade ItemPedido
-
+        @ManyToOne
+        @JoinColumn(name = "pedido_id", nullable = false)
+        private Pedido pedido;
         private int quantidade;
         private String nome;
         private double avaliacao;
@@ -49,7 +65,9 @@ public class Pedido {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id; // Adicione um identificador para a entidade Endereco
-
+       @ManyToOne
+        @JoinColumn(name = "pedido_id", nullable = false)
+        private Pedido pedido;
         private String logradouro;
         private String bairro;
         private String cidade;
@@ -76,8 +94,11 @@ public class Pedido {
     public static class CartaoDeCredito {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
+        
         private int id; // Adicione um identificador para a entidade CartaoDeCredito
-
+       @ManyToOne
+        @JoinColumn(name = "pedido_id", nullable = false)
+        private Pedido pedido;
         private String numero;
         private String nome;
         private String validade;
@@ -110,6 +131,9 @@ public class Pedido {
     private double valorFretePedido;
     private String formaPagamento;
 
+    
+    private Pedido.Status status;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id") // Nome da coluna que faz referência ao Pedido2 na tabela Endereco
     private Endereco endereco;
@@ -119,6 +143,9 @@ public class Pedido {
     private CartaoDeCredito cartaoDeCredito;
 
     private int numeroParcelas;
+
+    @Temporal(TemporalType.DATE)
+    private Date dataPedido;
 
     @Override
     public String toString() {
