@@ -74,15 +74,22 @@
           <ul class="navbar-nav ml-auto">
 
             <li class="nav-item ml-auto">
-              <a class="nav-link text-white" href="/authentication/login">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-person-fill" viewBox="0 0 16 16">
-                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                </svg>
-                Entrar
+            <div  id="perfil-button">
+            <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                Meu perfil
               </a>
-            </li>
-          </ul>
+              <div class="dropdown-menu dropdown-menu-end" style="background-color: #1e1a28;" aria-labelledby="perfil-button">
+                <a class="dropdown-item text-white" href="/cliente/winery">Meus Dados</a>
+                <a class="dropdown-item text-white" href="/cliente/pedidos">Meus Pedidos</a>
+                <a class="dropdown-item text-white" href="/authentication/logout" onclick="showLogoutMessage()">Sair</a>
+            </div>
+            </div>
+            <div class="dropdown" id="login-link">
+                <a class="nav-link text-white" href="/Winery/cliente" >
+                  Faça login/crie seu login
+                </a>
+              </div>
+        </ul>
         </div>
       </div>
     </nav>
@@ -929,7 +936,49 @@ function irParaPagamento() {
   });
 }
 
+// Função para verificar se a sessão está ativa
+function isSessionActive(callback) {
+    // Fazer uma requisição para a rota do controlador
+    fetch('/verificar-sessao')
+      .then(response => response.json())
+      .then(data => {
+        callback(data); // Chamar a função de callback com o resultado
+      })
+      .catch(error => {
+        console.error('Erro ao verificar a sessão:', error);
+        callback(false); // Tratar erros como sessão inativa
+      });
+  }
 
+  // Função para alternar entre "Meu perfil" e "Faça login/crie seu login"
+  function toggleSessionElements() {
+    const perfilButton = document.getElementById("perfil-button");
+    const loginLink = document.getElementById("login-link");
+
+    isSessionActive(function (isSessionActive) {
+      if (isSessionActive) {
+        // Sessão ativa, mostrar "Meu perfil" e ocultar "Faça login/crie seu login"
+        perfilButton.style.display = "block";
+        loginLink.style.display = "none";
+      } else {
+        // Sessão inativa, mostrar "Faça login/crie seu login" e ocultar "Meu perfil"
+        perfilButton.style.display = "none";
+        loginLink.style.display = "block";
+      }
+    });
+  }
+
+  // Chame a função para alternar os elementos com base no estado da sessão
+  toggleSessionElements();
+
+
+
+
+    function showLogoutMessage() {
+    window.alert("Sessão encerrada com sucesso.");
+    // Redirecione para a página de logout
+    window.location.href = "/authentication/logout";
+}
 
 
 </script>
