@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-br">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <head>
     <meta charset="utf-8">
@@ -37,6 +38,7 @@
         background: linear-gradient(to bottom, #4F0599, #7A0707);
         border: none;
     }
+
     #parcelas:hover {
         cursor: pointer;
     }
@@ -157,12 +159,13 @@
 
             <li class="list-group-item py-3 mb-3"
                 style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
-                <button id="boleto" class="btn" style="width: 100% !important ;"  onclick="activateRadio('boleto')">
+                <button id="boleto" class="btn" style="width: 100% !important ;" onclick="activateRadio('boleto')">
                     <div class="row g-3">
                         <div class="col-12 col-md-12 col-lg-12" style="position: relative;">
                             <!-- Aumente a largura dessa coluna -->
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="campoFormasPagamento" id="boleto" onclick="showBoletoForm()">
+                                <input class="form-check-input" type="radio" name="campoFormasPagamento" id="boleto"
+                                    onclick="showBoletoForm()">
                                 <label class="form-check-label text-white ms-5" for="boleto"
                                     style="position: absolute; top: 0; left: 0;">
                                     BOLETO BANCÁRIO
@@ -178,7 +181,7 @@
                         </div>
                     </div>
                 </button>
-                
+
 
                 <div class="p-2 border-top" id="boletoForm" style="display: none;">
                     <h6 class="text-white">Você poderá visualizar ou imprimir o boleto após a finalização do pedido. Mas
@@ -240,23 +243,25 @@
                         <div class="form-group mb-2">
                             <label for="parcelas" class="text-white">Número de Parcelas:</label>
                             <select class="form-control" id="parcelas" onchange="atualizarValorPorParcela()">
-                        
-                                <option  id="parcelas"value="1">Nenhum</option>
+
+                                <option id="parcelas" value="1">Nenhum</option>
                                 <option id="parcelas" value="2">2x</option>
                                 <option id="parcelas" value="3">3x</option>
                                 <option id="parcelas" value="4">4x</option>
-                                <option  id="parcelas" value="5">5x</option>
+                                <option id="parcelas" value="5">5x</option>
                             </select>
                         </div>
-                        
-                
+
+
                         <div class="form-group mb-2">
                             <label for="valorPorParcela" class="text-white">Valor por Parcela:</label>
-                            <input type="text" class="form-control" id="valorPorParcela" readonly style="pointer-events: none;">
+                            <input type="text" class="form-control" id="valorPorParcela" readonly
+                                style="pointer-events: none;">
                         </div>
-                        
-                        
-                        <button type="submit" id="cadastrarCartaoButton" class="btn botaoPadrao mt-3 text-white" >Cadastrar Cartão</button>
+
+
+                        <button type="submit" id="cadastrarCartaoButton"
+                            class="btn botaoPadrao mt-3 text-white">Cadastrar Cartão</button>
                     </form>
                 </div>
             </li>
@@ -267,7 +272,7 @@
         <button type="submit" class="btn botaoPadrao mt-5 text-white" id="avancarButton">Avançar</button>
 
     </div>
-    
+
 
     <!-- Remove the container if you want to extend the Footer to full width. -->
     <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
@@ -413,8 +418,10 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 
+    <script src="/js/carrinho.js"></script>
 
-    <script>
+
+    <!-- <script>
         let pedido = JSON.parse(localStorage.getItem('pedido'));
         console.log("o top", pedido)
 
@@ -437,101 +444,101 @@
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const avancarButton = document.getElementById("avancarButton");
+        document.addEventListener("DOMContentLoaded", function () {
+            const avancarButton = document.getElementById("avancarButton");
 
-    avancarButton.addEventListener("click", function () {
-        const paymentRadios = document.querySelectorAll('input[type="radio"][name="campoFormasPagamento"]');
-        let isPaymentSelected = false;
+            avancarButton.addEventListener("click", function () {
+                const paymentRadios = document.querySelectorAll('input[type="radio"][name="campoFormasPagamento"]');
+                let isPaymentSelected = false;
 
-        paymentRadios.forEach(function (radio) {
-            if (radio.checked) {
-                isPaymentSelected = true;
-            }
-        });
+                paymentRadios.forEach(function (radio) {
+                    if (radio.checked) {
+                        isPaymentSelected = true;
+                    }
+                });
 
-        if (isPaymentSelected) {
-            const formaPagamentoSelecionada = document.querySelector('input[name="campoFormasPagamento"]:checked');
-            const formaPagamentoSelecionadaId = formaPagamentoSelecionada.id;
+                if (isPaymentSelected) {
+                    const formaPagamentoSelecionada = document.querySelector('input[name="campoFormasPagamento"]:checked');
+                    const formaPagamentoSelecionadaId = formaPagamentoSelecionada.id;
 
-            if (formaPagamentoSelecionadaId === 'cartaoDeCredito') {
-                verificarCamposDoCartao(function (isValid) {
-                    if (isValid) {
+                    if (formaPagamentoSelecionadaId === 'cartaoDeCredito') {
+                        verificarCamposDoCartao(function (isValid) {
+                            if (isValid) {
+                                savePaymentForm();
+                                window.location.href = "checkout";
+                            }
+                        });
+                    } else {
                         savePaymentForm();
                         window.location.href = "checkout";
                     }
-                });
+                } else {
+                    alert("Por favor, selecione uma forma de pagamento antes de avançar.");
+                }
+            });
+        });
+
+        document.querySelector("#cadastrarCartaoButton").addEventListener("click", function () {
+            // Chama a função de verificação antes de prosseguir
+            verificarCamposDoCartao(function (isValid) {
+                if (isValid) {
+                    // Se a validação passar, salva o formulário de pagamento e avança
+                    savePaymentForm();
+                    alert("Cartão cadastrado com sucesso!");
+                    // Você pode redirecionar ou realizar outras ações aqui conforme necessário
+                }
+            });
+        });
+        function atualizarValorPorParcela() {
+            const pedido = JSON.parse(localStorage.getItem('pedido')) || {};
+            const parcelasSelect = document.getElementById('parcelas');
+            const valorPorParcelaInput = document.getElementById('valorPorParcela');
+
+            const valorTotal = pedido.valorTotal;
+            const numeroParcelas = parseInt(parcelasSelect.value);
+
+            if (numeroParcelas > 1) {
+                const valorPorParcela = valorTotal / numeroParcelas;
+                valorPorParcelaInput.value = `R$ ${valorPorParcela.toFixed(2)}`;
             } else {
-                savePaymentForm();
-                window.location.href = "checkout";
+                valorPorParcelaInput.value = '';
             }
-        } else {
-            alert("Por favor, selecione uma forma de pagamento antes de avançar.");
         }
-    });
-});
 
-document.querySelector("#cadastrarCartaoButton").addEventListener("click", function () {
-    // Chama a função de verificação antes de prosseguir
-    verificarCamposDoCartao(function (isValid) {
-        if (isValid) {
-            // Se a validação passar, salva o formulário de pagamento e avança
-            savePaymentForm();
-            alert("Cartão cadastrado com sucesso!");
-            // Você pode redirecionar ou realizar outras ações aqui conforme necessário
+        function verificarCamposDoCartao(callback) {
+            console.log("Chamando verificarCamposDoCartao");
+
+            const cardPaymentRadio = document.getElementById('cartaoDeCredito');
+
+            if (cardPaymentRadio.checked) {
+                const cardNumberInput = document.getElementById('cardNumber');
+                const cardHolderNameInput = document.getElementById('cardHolderName');
+                const expiryDateInput = document.getElementById('expiryDate');
+                const cvvInput = document.getElementById('cvv');
+
+                const cardNumber = cardNumberInput.value.replace(/\D/g, '');
+                const cardHolderName = cardHolderNameInput.value.trim();
+                const expiryDate = expiryDateInput.value.replace(/\D/g, '');
+                const cvv = cvvInput.value.replace(/\D/g, '');
+
+                if (cardNumber.length !== 16) {
+                    alert("O número do cartão deve ter 16 dígitos.");
+                    callback(false);
+                } else if (cardHolderName === "") {
+                    alert("Por favor, insira o nome do titular do cartão.");
+                    callback(false);
+                } else if (!verificarDataExpiracaoMenorQueAtual(expiryDate)) {
+                    callback(false);
+                } else if (cvv.length !== 3) {
+                    alert("O CVV do cartão deve ter 3 dígitos.");
+                    callback(false);
+                } else {
+                    callback(true);
+                }
+            } else {
+                callback(true);
+            }
         }
-    });
-});
-function atualizarValorPorParcela() {
-    const pedido = JSON.parse(localStorage.getItem('pedido')) || {};
-        const parcelasSelect = document.getElementById('parcelas');
-        const valorPorParcelaInput = document.getElementById('valorPorParcela');
-
-        const valorTotal = pedido.valorTotal;
-        const numeroParcelas = parseInt(parcelasSelect.value);
-
-        if (numeroParcelas > 1) {
-            const valorPorParcela = valorTotal / numeroParcelas;
-            valorPorParcelaInput.value = `R$ ${valorPorParcela.toFixed(2)}`;
-        } else {
-            valorPorParcelaInput.value = '';
-        }
-    }
-
-function verificarCamposDoCartao(callback) {
-    console.log("Chamando verificarCamposDoCartao");
-
-    const cardPaymentRadio = document.getElementById('cartaoDeCredito');
-
-    if (cardPaymentRadio.checked) {
-        const cardNumberInput = document.getElementById('cardNumber');
-        const cardHolderNameInput = document.getElementById('cardHolderName');
-        const expiryDateInput = document.getElementById('expiryDate');
-        const cvvInput = document.getElementById('cvv');
-
-        const cardNumber = cardNumberInput.value.replace(/\D/g, '');
-        const cardHolderName = cardHolderNameInput.value.trim();
-        const expiryDate = expiryDateInput.value.replace(/\D/g, '');
-        const cvv = cvvInput.value.replace(/\D/g, '');
-
-        if (cardNumber.length !== 16) {
-            alert("O número do cartão deve ter 16 dígitos.");
-            callback(false);
-        } else if (cardHolderName === "") {
-            alert("Por favor, insira o nome do titular do cartão.");
-            callback(false);
-        } else if (!verificarDataExpiracaoMenorQueAtual(expiryDate)) {
-            callback(false);
-        } else if (cvv.length !== 3) {
-            alert("O CVV do cartão deve ter 3 dígitos.");
-            callback(false);
-        } else {
-            callback(true);
-        }
-    } else {
-        callback(true);
-    }
-}
 
         const cartaoDeCredito = {
             numero: "",
@@ -596,7 +603,7 @@ function verificarCamposDoCartao(callback) {
 
 
 
-// controle dos radio e cards
+        // controle dos radio e cards
         function showCreditCardForm() {
             const creditCardForm = document.getElementById("creditCardForm");
             const creditCardRadio = document.getElementById("cartaoDeCredito");
@@ -654,49 +661,70 @@ function verificarCamposDoCartao(callback) {
             }
         }
 
-//------------------------------- mascarando campo de data vencimento
-const expiryDateInput = document.getElementById('expiryDate');
-expiryDateInput.addEventListener('input', function () {
-    this.value = this.value.replace(/\D/g, '');
+        //------------------------------- mascarando campo de data vencimento
+        const expiryDateInput = document.getElementById('expiryDate');
+        expiryDateInput.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '');
 
-    if (this.value.length === 2 && this.value.indexOf('/') === -1) {
-        this.value += '/';
-    } else if (this.value.length > 2) {
-        this.value = this.value.slice(0, 2) + '/' + this.value.slice(2);
-    }
+            if (this.value.length === 2 && this.value.indexOf('/') === -1) {
+                this.value += '/';
+            } else if (this.value.length > 2) {
+                this.value = this.value.slice(0, 2) + '/' + this.value.slice(2);
+            }
 
-    if (this.value.length > 5) {
-        this.value = this.value.slice(0, 5);
-    }
-    
+            if (this.value.length > 5) {
+                this.value = this.value.slice(0, 5);
+            }
 
-    if (this.value.length >= 2) {
-        const month = parseInt(this.value.slice(0, 2));
-        if (month > 12) {
-            this.value = '12';
+
+            if (this.value.length >= 2) {
+                const month = parseInt(this.value.slice(0, 2));
+                if (month > 12) {
+                    this.value = '12';
+                }
+            }
+
+        });
+
+
+        function verificarDataExpiracaoMenorQueAtual(inputValue) {
+            if (inputValue.length === 4) {
+                const month = parseInt(inputValue.slice(0, 2), 10);
+                const year = parseInt(inputValue.slice(2, 4), 10);
+
+                const today = new Date();
+                const currentMonth = today.getMonth() + 1; // Mês é baseado em zero no JavaScript
+                const currentYearFull = today.getFullYear() % 100;
+
+                if (year < currentYearFull || (year === currentYearFull && month < currentMonth)) {
+                    alert('Cartão vencido? A data de expiração não pode ser menor que a data atual.');
+                    return false
+                }
+                return true;
+            }
         }
-    }
-    
-});
+
+        var pedidoJson = localStorage.getItem('pedido');
+        var pedidoObj = JSON.parse(pedidoJson);
+        console.log(pedidoObj)
+        $.ajax({
+            type: 'POST',
+            url: '/salvarJson',
+            contentType: 'application/json',
+            data: pedidoObj,
+            success: function (response) {
+                console.log(data)
+                console.log('JSON enviado com sucesso!');
+                // Faça algo com a resposta, se necessário
+            },
+            error: function (error) {
+                console.error('Erro ao enviar JSON:', error);
+            }
+        });
+
+    </script> -->
 
 
-function verificarDataExpiracaoMenorQueAtual(inputValue) {
-    if (inputValue.length === 4) {
-        const month = parseInt(inputValue.slice(0, 2), 10);
-        const year = parseInt(inputValue.slice(2, 4), 10);
-
-        const today = new Date();
-        const currentMonth = today.getMonth() + 1; // Mês é baseado em zero no JavaScript
-        const currentYearFull = today.getFullYear() % 100;
-
-        if (year < currentYearFull || (year === currentYearFull && month < currentMonth)) {
-            alert('Cartão vencido? A data de expiração não pode ser menor que a data atual.');
-            return false
-        }
-        return true;
-    }
-}
-    </script>
 
 
 </body>

@@ -128,11 +128,18 @@
                             <h6 id="" class="text-white">Endereço de entrega</h6>
                             <small class="text-white">Este é o endereço onde seu pedido será enviado</small>
                             <hr class="text-white">
-                            <small class="text-white" id="ruaLogado" th:text="'Rua ' + ${enderecoPrincipal.logradouro + ', ' + enderecoPrincipal.numero} ?: 'Endereço não disponível'"></small> <br>
-                            <small class="text-white" id="bairroLogado" th:text="${enderecoPrincipal.bairro}">Endereço não disponível</small> <br>
-                            <small class="text-white" id="cepLogado" th:text="${enderecoPrincipal.cep}">Endereço não disponível</small> <br>
-                            <small class="text-white" id="cidadeUfLogado" th:text="${enderecoPrincipal.cidade + ' - ' + enderecoPrincipal.uf}">Endereço não disponível</small> <br>
-                            <small class="text-white" id="complementoLogado" th:text="${enderecoPrincipal.complemento}">Endereço não disponível</small> <br>
+                            <small class="text-white" id="ruaLogado"
+                                th:text="'Rua ' + ${enderecoPrincipal.logradouro + ', ' + enderecoPrincipal.numero} ?: 'Endereço não disponível'"></small>
+                            <br>
+                            <small class="text-white" id="bairroLogado" th:text="${enderecoPrincipal.bairro}">Endereço
+                                não disponível</small> <br>
+                            <small class="text-white" id="cepLogado" th:text="${enderecoPrincipal.cep}">Endereço não
+                                disponível</small> <br>
+                            <small class="text-white" id="cidadeUfLogado"
+                                th:text="${enderecoPrincipal.cidade + ' - ' + enderecoPrincipal.uf}">Endereço não
+                                disponível</small> <br>
+                            <small class="text-white" id="complementoLogado"
+                                th:text="${enderecoPrincipal.complemento}">Endereço não disponível</small> <br>
                         </div>
                     </div>
                 </div>
@@ -189,7 +196,8 @@
 
                     <div class="d-grid gap-2 mb-5 me-5 ms-5 mt-5">
                         <button class="btn btn-primary botaoPadrao" type="button">Finalizar</button>
-                        <button class="btn btn-outline-warning"  onclick="window.history.back();" type="button">Voltar</button>
+                        <button class="btn btn-outline-warning" onclick="window.history.back();"
+                            type="button">Voltar</button>
                     </div>
                     <small class="text-white">Ao efetuar o seu pedido, você concorda com os Termos e condições de Venda
                         do Winery! e com nossa Política de Privacidade.</small>
@@ -340,8 +348,8 @@
 
 
     <script>
-let pedidoString = localStorage.getItem('pedido');
-console.log("Pedido em formato de string:", pedidoString);
+        let pedidoString = localStorage.getItem('pedido');
+        console.log("Pedido em formato de string:", pedidoString);
 
         function exibirFormaDePagamento() {
             const formaPagamentoValor = localStorage.getItem('formaPagamento');
@@ -388,6 +396,25 @@ console.log("Pedido em formato de string:", pedidoString);
                 carrinhoLista.appendChild(li)
             });
         }
+
+
+        // var pedidoJson = localStorage.getItem('pedido');
+
+        // $.ajax({
+        //     type: 'POST',
+        //     url: '/salvarJson',
+        //     contentType: 'application/json',
+        //     data: JSON.stringify({ pedidoJson: pedidoJson }),
+        //     success: function (response) {
+        //         console.log(data)
+        //         console.log('JSON enviado com sucesso!');
+        //         // Faça algo com a resposta, se necessário
+        //     },
+        //     error: function (error) {
+        //         console.error('Erro ao enviar JSON:', error);
+        //     }
+        // });
+
 
     </script>
 </body>

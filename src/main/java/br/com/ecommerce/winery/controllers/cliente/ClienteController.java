@@ -6,7 +6,8 @@ import br.com.ecommerce.winery.models.cliente.CustomClientDetails;
 import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.cliente.FlagEndereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
-import br.com.ecommerce.winery.repositories.EnderecoRepository;
+import br.com.ecommerce.winery.models.pedido.Pedido;
+import br.com.ecommerce.winery.repositories.*;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "")
@@ -31,6 +33,14 @@ public class ClienteController {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+    @Autowired
+    private CartaoRepository cartaoRepository;
+    @Autowired
+    private EnderecoPedidoRepository enderecoPedidoRepository;
 
     @GetMapping("/Winery/cliente")
     public String cadastroCliente() {
@@ -43,7 +53,8 @@ public class ClienteController {
             if (principal != null) {
                 String clienteUsername = principal.getName();
                 Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
-                List<Endereco> listaEnderecos = enderecoRepository.findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
+                List<Endereco> listaEnderecos = enderecoRepository
+                        .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
                 cliente.setEnderecos(listaEnderecos);
                 if (cliente != null) {
                     model.addAttribute("cliente", cliente);
@@ -66,7 +77,8 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente/senha")
-    public String alterarSenha(Authentication authentication, String senhaAntiga, String confirmaSenhaNova, String senhaNova, Model model) throws BusinessException {
+    public String alterarSenha(Authentication authentication, String senhaAntiga, String confirmaSenhaNova,
+            String senhaNova, Model model) throws BusinessException {
         if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
             CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
             String username = userDetails.getUsername();
@@ -88,7 +100,6 @@ public class ClienteController {
         return "redirect:/erro";
     }
 
-
     @PostMapping("/Winery/cadastrarCliente")
     public ResponseEntity<String> cadastrarCliente(@RequestBody Cliente cliente) throws BusinessException {
         try {
@@ -102,7 +113,8 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente/adicionarEndereco")
-    public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody Endereco endereco, Authentication authentication) {
+    public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody Endereco endereco,
+            Authentication authentication) {
         try {
             if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
                 CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
@@ -123,7 +135,8 @@ public class ClienteController {
 
     @GetMapping("/cliente/enderecos")
     @ModelAttribute("enderecos")
-    public List<Endereco> listarEnderecos(@ModelAttribute Cliente cliente, HttpServletResponse response) throws BusinessException {
+    public List<Endereco> listarEnderecos(@ModelAttribute Cliente cliente, HttpServletResponse response)
+            throws BusinessException {
         return clienteService.obterEnderecos(cliente.getIdCliente());
     }
 
@@ -135,7 +148,6 @@ public class ClienteController {
 
     @PostMapping("/cliente/definirPadrao/{idEndereco}")
     public ResponseEntity<String> definirPadrao(@PathVariable int idEndereco, Authentication authentication) {
-
 
         try {
             if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
@@ -152,4 +164,36 @@ public class ClienteController {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
     }
+
+    @PostMapping("/salvarJsonPedido")
+    public ResponseEntity<String> salvarJson(@RequestBody Pedido pedido) {
+
+
+        System.out.println(pedido);
+        try {
+
+
+            Pedido.Endereco enderecoPedido = pedido.getEndereco();
+            List<Pedido.ItemPedido> itemPedido = pedido.getCarrinhoPedido();
+            Pedido.CartaoDeCredito cartaoPedido = pedido.getCartaoDeCredito();
+
+            pedido.setCarrinhoPedido(null);
+            pedido.setEndereco(null);
+            pedido.setCartaoDeCredito(null);
+
+
+
+            Pedido pedidoSalvo =  pedidoRepository.save(pedido);
+
+            
+
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return ResponseEntity.ok("Sucesso: Endereço se tornou padrão com sucesso!");
+    }
+
+
 }
