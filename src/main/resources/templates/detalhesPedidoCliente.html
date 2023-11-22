@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="pt-br"  xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Winery:: Meus Pedidos</title>
-    <link rel="shortcut icon" href="../static/imagens/faviconWinery.png" type="image/x-icon">
+    <title>Winery:: Confirmação do Pedido</title>
+    <link th:href="@{/imagens/faviconWinery.png}" rel="shortcut icon" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link th:href="@{/imagens/faviconWinery.png}" rel="shortcut icon" type="image/x-icon">
 </head>
 <style>
     .bodyWinery {
@@ -17,11 +17,47 @@
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
     }
+    .position-absolute {
+    position: absolute;
+    top: 50%; /* Coloca o elemento no centro vertical */
+    left: 50%; /* Coloca o elemento no centro horizontal */
+    transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
+}
+    .nome-produto {
+        width: 200px;
+        overflow: hidden;
+    }
 
+    .quantidade-produto,
+    .preco-produto {
+        background-color: transparent;
+        border: none;
+    }
+
+    .corFundo {
+        background: linear-gradient(to bottom, #000000, #000000f0);
+
+    }
+
+    .fundoDoFormulario {
+        background: linear-gradient(to bottom, #000000, #000000f0);
+    }
+
+    .produto-imagem {
+        width: 170px;
+        height: 135px;
+        object-fit: cover;
+        /* Isso mantém a proporção e cobre a área especificada */
+    }
 
     .botaoPadrao {
         background: linear-gradient(to bottom, #4F0599, #7A0707);
         border: none;
+    }
+    .text-styled {
+        display: inline-block;
+        font-style: italic;
+        color: rgb(248, 248, 115);
     }
 </style>
 
@@ -56,19 +92,12 @@
                 </ul>
 
                 <a class="navbar-brand" href="/Winery"
-                style="position: absolute; left: 50%; transform: translateX(-50%);">
-                <img th:src="@{/imagens/logoWinery250x250new.png}" width="175px" alt="Logo da Winery">
+                    style="position: absolute; left: 50%; transform: translateX(-50%);">
+                    <img th:src="@{/imagens/logoWinery250x250new.png}" width="175px" alt="Logo da Winery">
                 </a>
 
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link text-white" href="/carrinho">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </svg>
-                            <span id="carrinhoItens">0</span>
-                        </a>
-                    </li>
+
                     <li class="nav-item ml-auto">
                     <div  id="perfil-button">
                     <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
@@ -86,101 +115,139 @@
                         </a>
                       </div>
                 </ul>
-
-
             </div>
         </div>
     </nav>
 
+    <div>
+        <div class="row">
+            <div class="col">
 
-    <div class="container">
-        <div class="row mt-2">
-            <div class="col-12 col-md-12">
-                <div class="d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                        class="bi bi-eye-fill text-white" viewBox="0 0 16 16">
-                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                        <path
-                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                    </svg>
-                    <h4 class="text-white ml-2 ms-4">Meus Pedidos</h4>
+            </div>
+
+            <div class="col-7 mt-3" style="background-color: transparent;">
+                <div class="container" id="divEndereco">
+                    <div class="row mt-2">
+                        <div class="col-12 col-md-12">
+                            <div class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    class="bi bi-truck text-white" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                </svg>
+                                <h4 class="text-white ml-2 ms-4">Informações do seu pedido</h4>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr class="text-white">
+                    <div class="row">
+                        <div class="col-12 col-md-12 py-3"
+                            style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+                            <h6 id="" class="text-white">Endereço de entrega</h6>
+                            <small class="text-white">Este é o endereço onde seu pedido será enviado</small>
+                            <hr class="text-white">
+                            <small class="text-white" id="ruaLogado" ></small> <br>
+                            <small class="text-white" id="bairroLogado"></small> <br>
+                            <small class="text-white" id="cepLogado"></small> <br>
+                            <small class="text-white" id="cidadeUfLogado"></small> <br>
+                            <small class="text-white" id="complementoLogado"></small> <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mt-3">
+                    <div class="row mt-2">
+                        <div class="col-12 col-md-12">
+                            <div class="d-flex align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-basket3-fill text-white" viewBox="0 0 16 16">
+                                    <path
+                                        d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.730-.574z" />
+                                </svg>
+                                <h4 id="checkout-container" class="text-white ml-2 ms-4">Lista de produtos</h4>
+                            </div>
+                        </div>
+                        <hr class="text-white">
+                        <ul class="list-group mb-3" style="background-color: transparent;" id="carrinho-lista">
+                            <li class="list-group-item py-3"
+                                style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+                                <div class="row">
+                                    <div class="col-md-3 text-white">
+                                        <strong>Nome do Produto</strong>
+                                    </div>
+                                    <div class="col-md-3 text-white">
+                                        <strong></strong>
+                                    </div>
+                                    <div class="col-md-2 text-white">
+                                        <strong>Quantidade</strong>
+                                    </div>
+                                    <div class="col-md-2 text-white">
+                                        <strong></strong>
+                                    </div>
+                                    <div class="col-md-2 text-white">
+                                        <strong>Valor</strong>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-4 mt-4">
+                <div class="p-3 me-5 mt-5"
+                    style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+                    <div class="row mt-2">
+                        <div class="col-12 col-md-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                class="bi bi-clipboard-check-fill text-white" viewBox="0 0 16 16">
+                                <path
+                                    d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z" />
+                                <path
+                                    d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1Zm6.854 7.354-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708Z" />
+                            </svg>
+                        </div>
+                        <div class="col-12 col-md-10">
+                            <h4 class="text-white">Resumo</h4>
+                        </div>
+                    </div>
+                    <hr class="text-white">
+
+                    <div class="row">
+                        <div class="col">
+                            <h6 class=" text-styled">
+                                <b>Status do Pedido: <span id="statusPedido" th:text="${pedido.status}"></span></b>
+                            </h6>
+                            <h6 class="text-white" ><b>Data do pedido: <span id="dataPedido" th:text="${pedido.dataPedido}"></span></b> </h6>
+                            
+                        </div>
+                    </div>
+                    <hr class="text-white">
+
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="text-white" id="valorDosProdutos"><b>Valor dos Produtos: </b> </h6>
+                            <h6 class="text-white" ><b>Valor do Frete: R$ <span id="valorFrete" th:text="${pedido.valorFretePedido}"></span></b> </h6>
+                            <br>
+                            <h6 class="text-white" id="formaPagamentoSelecionada"><b>Forma de Pagamento:</b>
+                                <span id="formaPagamentoSelecionadaValor"  th:text="${pedido.formaPagamento}"></span>
+                            </h6>
+
+                            <span id="parcelasTexto" style="color: white;"></span>
+
+                            <h3 class="text-white mt-4"><b>Total: R$ <span id="valorTotal" th:text="${pedido.valorTotal}"></span></b></h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <hr class="text-white">
-        <div class="col-12 col-md-12 mb-3">
-            <div class="d-flex align-items-center">
-                <h6 class="text-white">Filtrar por</h6>
-                <select class="form-select ms-2 text-white" aria-label="Default select example"
-                    style="width: 200px !important; background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
-                    <option value="1">Todos</option>
-                    <option value="2">Concluído</option>
-                    <option value="3">Cancelado</option>
-                </select>
-            </div>
-        </div>
-        <div style="height: 450px; " class="overflow-y-auto">
-            <ul class="list-group" style="background-color: transparent; border: none !important;">
-                <li class="list-group-item py-3"
-                    style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
-                    <div class="row">
-                        <div class="col-md-3 text-white">
-                            <strong>Número do Pedido</strong>
-                        </div>
-                        <div class="col-md-3 text-white">
-                            <strong>Data</strong>
-                        </div>
-                        <div class="col-md-2 text-white">
-                            <strong>Valor Total</strong>
-                        </div>
-                        <div class="col-md-2 text-white">
-                            <strong>Status</strong>
-                        </div>
-                        <div class="col-md-2 text-white">
-                            <strong>Mais Detalhes</strong>
-                        </div>
-                    </div>
-                </li>
-
-
-                <th:block th:each="pedido, iterStat : ${pedidos}">
-                    <li class="list-group-item border border-top border-end-0 border-bottom-0 border-start-0"
-                    style="background-color: #2c263a;  border-color: gray !important;">
-                    <div class="row">
-                        <div class="col-md-3 mt-2 text-white">
-                            <p th:text="${pedido.id}"></p>
-                        </div>
-                        <div class="col-md-3 mt-2 text-white">
-                            <p th:text="${pedido.dataPedido}"></p>
-                        </div>
-                        <div class="col-md-2 mt-2 text-white">
-                            <p th:text="${pedido.valorTotal}"></p>
-                        </div>
-                        <div class="col-md-2 mt-2 text-white">
-                            <p th:text="${pedido.status}"></p>
-                        </div>
-                        <div class="col-md-2 mt-1">
-                            <form th:action="@{/cliente/meu-pedido}" method="get">
-                                <input type="hidden" name="id" th:value="${pedido.id}" />
-                                <button class="btn btn-primary botaoPadrao" type="submit">Ver Detalhes</button>
-                            </form>
-                        </div>
-                        
-                    </div>
-                </li>
-
-                </th:block>
-
-            
-
-            </ul>
-        </div>
     </div>
-
+    <div id="modalMessages" class="position-absolute"></div>
 
 
     <!-- Remove the container if you want to extend the Footer to full width. -->
-    <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px !important;">
+    <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
         <!-- Footer -->
         <footer class="text-center text-lg-start text-white" style="background-color: transparent !important;">
             <!-- Grid container -->
@@ -191,7 +258,7 @@
                     <div class="row">
                         <!--Grid column-->
                         <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
-                            <img class="mb-3" th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
+                            <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
 
                             <p>
                                 Alguma dúvida? A gente ajuda você! <br>
@@ -265,7 +332,7 @@
                             <h5 class="text-white">Formas de Pagamento</h5>
 
                             <ul class="list-unstyled mb-0">
-                                <img src="../static/imagens/formaPagamento.webp" width="200px" alt="">
+                                <img src="/imagens/formaPagamento.webp" width="200px" alt="">
                             </ul>
                         </div>
                         <!--Grid column-->
@@ -317,120 +384,24 @@
     </div>
     <!-- End of .container -->
 
+    <script src="/js/checkout.js"></script>
+<script>
+    var valorFreteDoPedido = document.getElementById("valorFrete").textContent;
+    var valorTotalDoPedido = document.getElementById("valorTotal").textContent;
 
+var valorTotalSemFrete = valorTotalDoPedido - valorFreteDoPedido;
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+var valorDosProdutosElement = document.getElementById("valorDosProdutos");
 
-
-    <script>
-
-
-        function showCreditCardForm() {
-            const creditCardForm = document.getElementById("creditCardForm");
-            const creditCardRadio = document.getElementById("flexRadioDefault3");
-
-            if (creditCardRadio.checked) {
-                creditCardForm.style.display = "block";
-            } else {
-                creditCardForm.style.display = "none";
-            }
-        }
-
-        function activateRadio(radioId) {
-            const radioCartao = document.getElementById(radioId);
-            if (radioCartao) {
-                radioCartao.checked = true;
-                showCreditCardForm();
-            }
-        }
-
-        function showBoletoForm() {
-            const boletoForm = document.getElementById("boletoForm");
-            const boletoRadio = document.getElementById("flexRadioDefault2");
-
-            if (boletoRadio.checked) {
-                boletoForm.style.display = "block";
-            } else {
-                boletoForm.style.display = "none";
-            }
-        }
-
-        function activateRadio(radioId) {
-            const radioBoleto = document.getElementById(radioId);
-            if (radioBoleto) {
-                radioBoleto.checked = true;
-                showBoletoForm();
-            }
-        }
-
-        function showPixForm() {
-            const pixForm = document.getElementById("pixForm");
-            const pixRadio = document.getElementById("flexRadioDefault1");
-
-            if (pixRadio.checked) {
-                pixForm.style.display = "block";
-            } else {
-                pixForm.style.display = "none";
-            }
-        }
-
-        function activateRadio(radioId) {
-            const radioPix = document.getElementById(radioId);
-            if (radioPix) {
-                radioPix.checked = true;
-                showPixForm();
-            }
-        }
-
-// Função para verificar se a sessão está ativa
-function isSessionActive(callback) {
-    // Fazer uma requisição para a rota do controlador
-    fetch('/verificar-sessao')
-      .then(response => response.json())
-      .then(data => {
-        callback(data); // Chamar a função de callback com o resultado
-      })
-      .catch(error => {
-        console.error('Erro ao verificar a sessão:', error);
-        callback(false); // Tratar erros como sessão inativa
-      });
-  }
-
-  // Função para alternar entre "Meu perfil" e "Faça login/crie seu login"
-  function toggleSessionElements() {
-    const perfilButton = document.getElementById("perfil-button");
-    const loginLink = document.getElementById("login-link");
-
-    isSessionActive(function (isSessionActive) {
-      if (isSessionActive) {
-        // Sessão ativa, mostrar "Meu perfil" e ocultar "Faça login/crie seu login"
-        perfilButton.style.display = "block";
-        loginLink.style.display = "none";
-      } else {
-        // Sessão inativa, mostrar "Faça login/crie seu login" e ocultar "Meu perfil"
-        perfilButton.style.display = "none";
-        loginLink.style.display = "block";
-      }
-    });
-  }
-
-  // Chame a função para alternar os elementos com base no estado da sessão
-  toggleSessionElements();
-
-
-  function atualizarQuantidadeItensCarrinho() {
-    document.getElementById("carrinhoItens").textContent = quantidadeItensCarrinho;
+// Verifica se o elemento foi encontrado
+if (valorDosProdutosElement) {
+    // Define o texto do elemento com o valor total sem frete
+    valorDosProdutosElement.textContent = "Valor dos Produtos: R$ " + valorTotalSemFrete.toFixed(2);
+} else {
+    console.error("Elemento HTML não encontrado.");
 }
 
-let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-
-quantidadeItensCarrinho = carrinho.reduce((total, item) => total + item.quantidade, 0);
-atualizarQuantidadeItensCarrinho();
-    </script>
-
-
+</script>
 </body>
 
 </html>

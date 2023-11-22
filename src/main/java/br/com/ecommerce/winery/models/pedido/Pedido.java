@@ -1,13 +1,10 @@
 package br.com.ecommerce.winery.models.pedido;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -15,14 +12,12 @@ import javax.persistence.*;
 public class Pedido {
 
 
-    public enum Status{
+    public enum Status {
         AGUARDANDO_PAGAMENTO,
         PENDENTE,
         APROVADO,
         CANCELADO
     }
-
-
 
 
     @Data
@@ -65,7 +60,7 @@ public class Pedido {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id; // Adicione um identificador para a entidade Endereco
-       @ManyToOne
+        @ManyToOne
         @JoinColumn(name = "pedido_id", nullable = false)
         private Pedido pedido;
         private String logradouro;
@@ -94,9 +89,8 @@ public class Pedido {
     public static class CartaoDeCredito {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        
         private int id; // Adicione um identificador para a entidade CartaoDeCredito
-       @ManyToOne
+        @ManyToOne
         @JoinColumn(name = "pedido_id", nullable = false)
         private Pedido pedido;
         private String numero;
@@ -131,7 +125,6 @@ public class Pedido {
     private double valorFretePedido;
     private String formaPagamento;
 
-    
     private Pedido.Status status;
 
     @ManyToOne(cascade = CascadeType.ALL)

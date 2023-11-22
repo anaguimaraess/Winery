@@ -20,6 +20,7 @@
             background: linear-gradient(to bottom, #000000, #000000f0) ;
             
         }
+        
     .fundoDoFormulario {
         background: linear-gradient(to bottom, #000000, #000000f0);
     }
@@ -35,6 +36,12 @@
   }
   .radio-hand-cursor {
     cursor: pointer;
+}   
+ .position-absolute {
+    position: absolute;
+    top: 50%; /* Coloca o elemento no centro vertical */
+    left: 50%; /* Coloca o elemento no centro horizontal */
+    transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
 }
 
   </style>
@@ -500,6 +507,7 @@
                 .addEventListener("blur", handleCEPBlur());
 });
 
+
   let valorFrete = 0;
 
   const updateFrete = () => {
@@ -891,10 +899,10 @@ function irParaPagamento() {
             window.location.href = "/authentication/login";
         } else {
           const opcaoEntregaSelecionada = document.querySelector('.frete:checked');
-    if (!opcaoEntregaSelecionada) {
-        alert('Por favor, escolha uma opção de entrega antes de prosseguir.');
-        return; // Impede que a função prossiga
-    }
+        if (!opcaoEntregaSelecionada) {
+          alert('Por favor, escolha uma opção de entrega antes de prosseguir.');
+            return; // Impede que a função prossiga
+        }
     let pedido = {
         carrinhoPedido: [], 
         idDoCliente: document.getElementById('idCliente').value, 
@@ -979,7 +987,6 @@ function isSessionActive(callback) {
     // Redirecione para a página de logout
     window.location.href = "/authentication/logout";
 }
-
 
 </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

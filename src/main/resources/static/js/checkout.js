@@ -137,9 +137,7 @@ function recuperarValores() {
 };
 
 
-// Função para verificar se a sessão está ativa
 function isSessionActive(callback) {
-    // Fazer uma requisição para a rota do controlador
     fetch('/verificar-sessao')
       .then(response => response.json())
       .then(data => {
@@ -151,25 +149,21 @@ function isSessionActive(callback) {
       });
   }
 
-  // Função para alternar entre "Meu perfil" e "Faça login/crie seu login"
   function toggleSessionElements() {
     const perfilButton = document.getElementById("perfil-button");
     const loginLink = document.getElementById("login-link");
 
     isSessionActive(function (isSessionActive) {
       if (isSessionActive) {
-        // Sessão ativa, mostrar "Meu perfil" e ocultar "Faça login/crie seu login"
         perfilButton.style.display = "block";
         loginLink.style.display = "none";
       } else {
-        // Sessão inativa, mostrar "Faça login/crie seu login" e ocultar "Meu perfil"
         perfilButton.style.display = "none";
         loginLink.style.display = "block";
       }
     });
   }
 
-  // Chame a função para alternar os elementos com base no estado da sessão
   toggleSessionElements();
 
 
@@ -177,7 +171,6 @@ function isSessionActive(callback) {
 
     function showLogoutMessage() {
     window.alert("Sessão encerrada com sucesso.");
-    // Redirecione para a página de logout
     window.location.href = "/authentication/logout";
 }
 
@@ -193,10 +186,7 @@ console.info(te)
 
 
 async function enviarPedidoParaServidor(btn) {
-
     try {
-
-
         const response = await fetch('/salvarJsonPedido', {
             method: 'POST',
             headers: {
@@ -205,28 +195,26 @@ async function enviarPedidoParaServidor(btn) {
             body: JSON.stringify(te),
         });
 
-       
+        const data = await response.text();
+        const modalMessages = $('#modalMessages');
 
-        // const data = await response.json();
+        if (data.startsWith('Sucesso:')) {
+            const mensagemSucesso = data.replace('Sucesso:', '');
+            modalMessages.html('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
 
+            localStorage.clear();
 
-
-
-        if (!response.ok) {
-            alert("Erro a finalizar pedido")
-            return
+            setTimeout(function () {
+                window.location.href = "/Winery";
+            }, 2500);
+        } else if (data.startsWith('Erro:')) {
+            const mensagemErro = data.replace('Erro:', '');
+            modalMessages.html('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
+        } else {
+            throw new Error('Erro ao finalizar pedido');
         }
-
-        alert("Pedido realizado com sucesso");
-
-        localStorage.clear();
-        setTimeout(function() {
-            // Redireciona para outra página
-            window.location.href = "/Winery";
-          }, 2500);
-        // Faça algo com a resposta, se necessário
     } catch (error) {
-        alert("Erro a finalizar pedido")
         console.error('Erro ao enviar ou processar JSON:', error);
     }
 }
+

@@ -10,7 +10,6 @@ import br.com.ecommerce.winery.models.pedido.Pedido;
 import br.com.ecommerce.winery.repositories.*;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.convert.PeriodStyle;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "")
@@ -80,7 +79,7 @@ public class ClienteController {
 
     @PostMapping("/cliente/senha")
     public String alterarSenha(Authentication authentication, String senhaAntiga, String confirmaSenhaNova,
-            String senhaNova, Model model) throws BusinessException {
+                               String senhaNova, Model model) throws BusinessException {
         if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
             CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
             String username = userDetails.getUsername();
@@ -116,7 +115,7 @@ public class ClienteController {
 
     @PostMapping("/cliente/adicionarEndereco")
     public ResponseEntity<String> adicionarEnderecoAoCliente(@RequestBody Endereco endereco,
-            Authentication authentication) {
+                                                             Authentication authentication) {
         try {
             if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
                 CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
@@ -186,16 +185,16 @@ public class ClienteController {
 
             pedido.setDataPedido(new Date());
             pedido.setId(0);
-            Pedido pedidoSalvo =  pedidoRepository.save(pedido);
+            Pedido pedidoSalvo = pedidoRepository.save(pedido);
             enderecoPedido.setId(0);
             enderecoPedido.setPedido(pedidoSalvo);
             enderecoPedidoRepository.save(enderecoPedido);
-           
 
-            if (cartaoPedido != null){
-             cartaoPedido.setPedido(pedidoSalvo);
-             cartaoPedido.setId(0);
-             cartaoRepository.save(cartaoPedido);
+
+            if (cartaoPedido != null) {
+                cartaoPedido.setPedido(pedidoSalvo);
+                cartaoPedido.setId(0);
+                cartaoRepository.save(cartaoPedido);
             }
 
 
@@ -204,13 +203,13 @@ public class ClienteController {
                 itemPedido.setPedido(pedidoSalvo);
                 itemPedidoRepository.save(itemPedido);
             }
-              return ResponseEntity.ok().body("success: "+"pedido  garvado com sucesso" );
+            return ResponseEntity.ok().body("Sucesso:" + "Pedido número #" + pedido.getId() + " realizado com sucesso! =)");
 
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
-       
+
     }
 
     @GetMapping("/cliente/pedidos")
@@ -222,22 +221,45 @@ public class ClienteController {
                 List<Endereco> listaEnderecos = enderecoRepository
                         .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
                 cliente.setEnderecos(listaEnderecos);
-                
+
                 if (cliente != null) {
-                    
-                    List pedidos = pedidoRepository.findByIdDoCliente(String.valueOf(cliente.getIdCliente()));
+
+                    List pedidos = pedidoRepository.findByIdDoClienteOrderByDataDoPedidoDesc(String.valueOf(cliente.getIdCliente()));
                     model.addAttribute("cliente", cliente);
                     model.addAttribute("pedidos", pedidos);
-                     System.out.println(pedidos);
                 }
             }
-
-           
             return "meusPedidos";
         } catch (Exception e) {
             return "landingPageProduto";
         }
     }
 
+    @GetMapping("/cliente/meu-pedido")
+    public String detalhePedidoPorId(Model model, Principal principal, @RequestParam int id) {
+        try {
+            if (principal != null) {
+                String clienteUsername = principal.getName();
+                Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
+                List<Endereco> listaEnderecos = enderecoRepository
+                        .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
+                cliente.setEnderecos(listaEnderecos);
+
+                Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
+                Pedido pedidoExibido = pedidoOptional.get();
+
+                model.addAttribute("cliente", cliente);
+                model.addAttribute("pedido", pedidoExibido);
+                System.out.println(pedidoExibido);
+                return "detalhesPedidoCliente";
+            }
+            return "meusPedidos";
+
+        } catch (Exception e) {
+            return "meusPedidos";
+        }
+    }
+
 
 }
+
