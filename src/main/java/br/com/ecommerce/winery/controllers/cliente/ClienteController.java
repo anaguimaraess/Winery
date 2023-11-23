@@ -6,7 +6,10 @@ import br.com.ecommerce.winery.models.cliente.CustomClientDetails;
 import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.cliente.FlagEndereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
+import br.com.ecommerce.winery.models.pedido.ItemPedido;
 import br.com.ecommerce.winery.models.pedido.Pedido;
+import br.com.ecommerce.winery.models.pedido.StatusPedido;
+import br.com.ecommerce.winery.models.pedido.formasPagamento.CartaoDeCredito;
 import br.com.ecommerce.winery.repositories.*;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +43,6 @@ public class ClienteController {
     private ItemPedidoRepository itemPedidoRepository;
     @Autowired
     private CartaoRepository cartaoRepository;
-    @Autowired
-    private EnderecoPedidoRepository enderecoPedidoRepository;
-
     @GetMapping("/Winery/cliente")
     public String cadastroCliente() {
         return "cadastroCliente";
@@ -168,37 +168,32 @@ public class ClienteController {
 
     @PostMapping("/salvarJsonPedido")
     public ResponseEntity<String> salvarJson(@RequestBody Pedido pedido) {
-
-
         System.out.println(pedido);
+
         try {
+            Endereco enderecoPedido = pedido.getEndereco();
+            List<ItemPedido> itemsPedido = pedido.getItensPedido();
+            CartaoDeCredito cartaoPedido = pedido.getCartaoDeCredito();
 
-
-            Pedido.Endereco enderecoPedido = pedido.getEndereco();
-            List<Pedido.ItemPedido> itemsPedido = pedido.getCarrinhoPedido();
-            Pedido.CartaoDeCredito cartaoPedido = pedido.getCartaoDeCredito();
-
-            pedido.setCarrinhoPedido(null);
+            int idEndereco = enderecoPedido.getIdEndereco();
+            pedido.setIdEndereco(idEndereco);
+            pedido.setItensPedido(null);
             pedido.setEndereco(null);
+            pedido.setIdEndereco(idEndereco);
             pedido.setCartaoDeCredito(null);
-            pedido.setStatus(Pedido.Status.AGUARDANDO_PAGAMENTO);
+            pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
 
             pedido.setDataPedido(new Date());
             pedido.setId(0);
             Pedido pedidoSalvo = pedidoRepository.save(pedido);
-            enderecoPedido.setId(0);
-            enderecoPedido.setPedido(pedidoSalvo);
-            enderecoPedidoRepository.save(enderecoPedido);
-
 
             if (cartaoPedido != null) {
-                cartaoPedido.setPedido(pedidoSalvo);
                 cartaoPedido.setId(0);
+                System.out.println("topzao: "+pedidoSalvo);
                 cartaoRepository.save(cartaoPedido);
             }
 
-
-            for (Pedido.ItemPedido itemPedido : itemsPedido) {
+            for (ItemPedido itemPedido : itemsPedido) {
                 itemPedido.setId(0);
                 itemPedido.setPedido(pedidoSalvo);
                 itemPedidoRepository.save(itemPedido);
@@ -209,8 +204,9 @@ public class ClienteController {
             System.out.println(e);
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
-
     }
+
+
 
     @GetMapping("/cliente/pedidos")
     public String meusPedidos(Model model, Principal principal) {
@@ -247,6 +243,7 @@ public class ClienteController {
 
                 Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
                 Pedido pedidoExibido = pedidoOptional.get();
+                System.out.println(pedidoExibido);
 
                 model.addAttribute("cliente", cliente);
                 model.addAttribute("pedido", pedidoExibido);

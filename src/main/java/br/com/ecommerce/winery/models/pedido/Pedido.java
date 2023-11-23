@@ -1,157 +1,51 @@
 package br.com.ecommerce.winery.models.pedido;
 
+import br.com.ecommerce.winery.models.cliente.Endereco;
+import br.com.ecommerce.winery.models.pedido.formasPagamento.CartaoDeCredito;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-
 @Data
 @Entity
 public class Pedido {
-
-
-    public enum Status {
-        AGUARDANDO_PAGAMENTO,
-        PENDENTE,
-        APROVADO,
-        CANCELADO
-    }
-
-
-    @Data
-    @Entity
-    public static class ItemPedido {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id; // Adicione um identificador para a entidade ItemPedido
-        @ManyToOne
-        @JoinColumn(name = "pedido_id", nullable = false)
-        private Pedido pedido;
-        private int quantidade;
-        private String nome;
-        private double avaliacao;
-        private String descricao;
-        private double preco;
-        private int estoque;
-        private String imagemPrincipal;
-
-        // getters e setters
-
-        @Override
-        public String toString() {
-            return "ItemPedido{" +
-                    "id=" + id +
-                    ", quantidade=" + quantidade +
-                    ", nome='" + nome + '\'' +
-                    ", avaliacao=" + avaliacao +
-                    ", descricao='" + descricao + '\'' +
-                    ", preco=" + preco +
-                    ", estoque=" + estoque +
-                    ", imagemPrincipal='" + imagemPrincipal + '\'' +
-                    '}';
-        }
-    }
-
-    @Data
-    @Entity
-    public static class Endereco {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id; // Adicione um identificador para a entidade Endereco
-        @ManyToOne
-        @JoinColumn(name = "pedido_id", nullable = false)
-        private Pedido pedido;
-        private String logradouro;
-        private String bairro;
-        private String cidade;
-        private String uf;
-        private String complemento;
-
-        // getters e setters
-
-        @Override
-        public String toString() {
-            return "Endereco{" +
-                    "id=" + id +
-                    ", logradouro='" + logradouro + '\'' +
-                    ", bairro='" + bairro + '\'' +
-                    ", cidade='" + cidade + '\'' +
-                    ", uf='" + uf + '\'' +
-                    ", complemento='" + complemento + '\'' +
-                    '}';
-        }
-    }
-
-    @Data
-    @Entity
-    public static class CartaoDeCredito {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int id; // Adicione um identificador para a entidade CartaoDeCredito
-        @ManyToOne
-        @JoinColumn(name = "pedido_id", nullable = false)
-        private Pedido pedido;
-        private String numero;
-        private String nome;
-        private String validade;
-        private String cvv;
-
-        // getters e setters
-
-        @Override
-        public String toString() {
-            return "CartaoDeCredito{" +
-                    "id=" + id +
-                    ", numero='" + numero + '\'' +
-                    ", nome='" + nome + '\'' +
-                    ", validade='" + validade + '\'' +
-                    ", cvv='" + cvv + '\'' +
-                    '}';
-        }
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; // Adicione um identificador para a entidade Pedido2
+    @Column(name = "pedido_id")
+    private int id;
+    private StatusPedido status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
+    private List<ItemPedido> itensPedido;
+    @Column(name = "idEndereco")
+    private int idEndereco;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pedido_id") // Nome da coluna que faz referência ao Pedido2 na tabela ItemPedido
-    private List<ItemPedido> carrinhoPedido;
-
+    @ManyToOne
+    @JoinColumn(name = "idEndereco", insertable = false, updatable = false, nullable = true)
+    private Endereco endereco;
+    @JoinColumn(name = "cartao_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private CartaoDeCredito cartaoDeCredito;
+    private int numeroParcelas;
     private String idDoCliente;
     private double valorTotal;
     private double valorFretePedido;
     private String formaPagamento;
-
-    private Pedido.Status status;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id") // Nome da coluna que faz referência ao Pedido2 na tabela Endereco
-    private Endereco endereco;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cartao_id") // Nome da coluna que faz referência ao Pedido2 na tabela CartaoDeCredito
-    private CartaoDeCredito cartaoDeCredito;
-
-    private int numeroParcelas;
-
     @Temporal(TemporalType.DATE)
     private Date dataPedido;
 
-    @Override
-    public String toString() {
-        return "Pedido2{" +
-                "id=" + id +
-                ", carrinhoPedido=" + carrinhoPedido +
-                ", idDoCliente='" + idDoCliente + '\'' +
-                ", valorTotal=" + valorTotal +
-                ", valorFretePedido=" + valorFretePedido +
-                ", formaPagamento='" + formaPagamento + '\'' +
-                ", endereco=" + endereco +
-                ", cartaoDeCredito=" + cartaoDeCredito +
-                ", numeroParcelas=" + numeroParcelas +
-                '}';
+    public Pedido(int id, StatusPedido status, List<ItemPedido> itensPedido, int idEndereco, Endereco endereco, CartaoDeCredito cartaoDeCredito, int numeroParcelas, String idDoCliente, double valorTotal, double valorFretePedido, String formaPagamento, Date dataPedido) {
+        this.id = id;
+        this.status = status;
+        this.itensPedido = itensPedido;
+        this.idEndereco = idEndereco;
+        this.endereco = endereco;
+        this.cartaoDeCredito = cartaoDeCredito;
+        this.numeroParcelas = numeroParcelas;
+        this.idDoCliente = idDoCliente;
+        this.valorTotal = valorTotal;
+        this.valorFretePedido = valorFretePedido;
+        this.formaPagamento = formaPagamento;
+        this.dataPedido = dataPedido;
     }
 }

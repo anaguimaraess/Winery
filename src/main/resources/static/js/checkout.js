@@ -175,10 +175,23 @@ function isSessionActive(callback) {
 }
 
 
+let pedidoLocalStorage = JSON.parse(localStorage.getItem('pedido'));
 
 var pedidoJson = localStorage.getItem('pedido');
-
-
+let pedidoAdaptado = {
+    id: 0, // ou null, dependendo da lógica do seu back-end para gerar o ID
+    status: null, // StatusPedido - ajuste conforme necessário
+    itensPedido: pedidoLocalStorage.carrinhoPedido,
+    idEndereco: 0, // ou null, dependendo da lógica do seu back-end para gerar o ID
+    endereco: pedidoLocalStorage.endereco,
+    cartaoDeCredito: null, // Se você não tem informações de cartão no localStorage, pode manter como null ou remover
+    numeroParcelas: pedidoLocalStorage.numeroParcelas,
+    idDoCliente: pedidoLocalStorage.idDoCliente,
+    valorTotal: pedidoLocalStorage.valorTotal,
+    valorFretePedido: pedidoLocalStorage.valorFretePedido,
+    formaPagamento: pedidoLocalStorage.formaPagamento,
+    dataPedido: null // Data - ajuste conforme necessário
+};
 var te = JSON.parse(pedidoJson);
 
 te.status =0;
@@ -192,7 +205,7 @@ async function enviarPedidoParaServidor(btn) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(te),
+            body: JSON.stringify(pedidoAdaptado),
         });
 
         const data = await response.text();
