@@ -239,17 +239,18 @@ public class ClienteController {
             if (principal != null) {
                 String clienteUsername = principal.getName();
                 Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
-                List<Endereco> listaEnderecos = enderecoRepository
-                        .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
-                cliente.setEnderecos(listaEnderecos);
 
                 Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
                 Pedido pedidoExibido = pedidoOptional.get();
-                System.out.println(pedidoExibido);
+                Endereco endereco = enderecoRepository
+                        .findById(pedidoExibido.getIdEndereco()).get();
 
                 model.addAttribute("cliente", cliente);
                 model.addAttribute("pedido", pedidoExibido);
-                System.out.println(pedidoExibido);
+                model.addAttribute("endereco", endereco);
+                model.addAttribute("itensPedido", pedidoExibido.getItensPedido());
+
+                System.out.println();
                 return "detalhesPedidoCliente";
             }
             return "meusPedidos";

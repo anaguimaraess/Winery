@@ -9,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
 public class Endereco {
@@ -39,4 +38,25 @@ public class Endereco {
     private Status status;
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;}
+    private Cliente cliente;
+
+    public Endereco() {
+    }
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "idEndereco=" + idEndereco +
+                ", logradouro='" + logradouro + '\'' +
+                ", numero=" + numero +
+                ", complemento='" + complemento + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", cep='" + cep + '\'' +
+                ", uf='" + uf + '\'' +
+                ", flagEndereco=" + flagEndereco +
+                ", principal=" + principal +
+                ", status=" + status +
+                '}';
+    }
+}

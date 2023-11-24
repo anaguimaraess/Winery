@@ -147,11 +147,11 @@
                             <h6 id="" class="text-white">Endereço de entrega</h6>
                             <small class="text-white">Este é o endereço onde seu pedido será enviado</small>
                             <hr class="text-white">
-                            <small class="text-white" id="ruaLogado" ></small> <br>
-                            <small class="text-white" id="bairroLogado"></small> <br>
-                            <small class="text-white" id="cepLogado"></small> <br>
-                            <small class="text-white" id="cidadeUfLogado"></small> <br>
-                            <small class="text-white" id="complementoLogado"></small> <br>
+                            <h6 class="text-white" th:text="${endereco.logradouro +' '+endereco.numero}"></h6>
+                            <h6 class="text-white" th:text="'Complemento ' + ${endereco.complemento}"></h6>
+                            <h6 class="text-white" th:text="${endereco.bairro}"></h6>
+                            <h6 class="text-white" th:text="${endereco.cep}"></h6>
+                            <h6 class="text-white" th:text="${endereco.cidade} + ' - ' + ${endereco.uf}"></h6>
                         </div>
                     </div>
                 </div>
@@ -173,24 +173,59 @@
                             <li class="list-group-item py-3"
                                 style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
                                 <div class="row">
-                                    <div class="col-md-3 text-white">
-                                        <strong>Nome do Produto</strong>
-                                    </div>
-                                    <div class="col-md-3 text-white">
-                                        <strong></strong>
-                                    </div>
-                                    <div class="col-md-2 text-white">
-                                        <strong>Quantidade</strong>
+                                    <div class="col-md-1 text-white">
+                                        <strong>Imagem</strong>
                                     </div>
                                     <div class="col-md-2 text-white">
                                         <strong></strong>
                                     </div>
                                     <div class="col-md-2 text-white">
-                                        <strong>Valor</strong>
+                                        <strong>Nome</strong>
+                                    </div>
+                                    <div class="col-md-2 text-white">
+                                        <strong></strong>
+                                    </div>
+                                    <div class="col-md-1 text-white">
+                                        <strong >Quantidade</strong>
+                                    </div>
+                                    <div class="col-md-1 text-white">
+                                        <strong></strong>
+                                    </div>
+                                    <div class="col-md-1 text-white">
+                                        <strong >Valor</strong>
+                                    </div>
+                                </div>
+                            </li>
+                        
+                            <!-- Adicione aqui os itens do carrinho usando a estrutura anterior -->
+                            <li th:each="itemPedido : ${pedido.itensPedido}" class="list-group-item py-3"
+                                style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-1 text-white">
+                                        <img th:src="@{${itemPedido.imagemPrincipal}}" class="produto-imagem" style="max-width: 150px; height: auto;">
+                                    </div>
+                                    <div class="col-md-2 text-white">
+                                        <strong></strong>
+                                    </div>
+                                    <div class="col-md-2 text-white">
+                                        <strong th:text="${itemPedido.nome}"></strong>
+                                    </div>
+                                    <div class="col-md-2 text-white">
+                                        <strong></strong>
+                                    </div>
+                                    <div class="col-md-1 text-white  align-items-center">
+                                        <strong th:text="${itemPedido.quantidade}"></strong>
+                                    </div>
+                                    <div class="col-md-1 text-white">
+                                        <strong></strong>
+                                    </div>
+                                    <div class="col-md-1 text-white">
+                                        <strong th:text="${itemPedido.preco}"></strong>
                                     </div>
                                 </div>
                             </li>
                         </ul>
+                        
                     </div>
                 </div>
 
@@ -384,7 +419,7 @@
     </div>
     <!-- End of .container -->
 
-    <script src="/js/checkout.js"></script>
+    <!-- <script src="/js/checkout.js"></script> -->
 <script>
     var valorFreteDoPedido = document.getElementById("valorFrete").textContent;
     var valorTotalDoPedido = document.getElementById("valorTotal").textContent;
@@ -400,6 +435,35 @@ if (valorDosProdutosElement) {
 } else {
     console.error("Elemento HTML não encontrado.");
 }
+
+function isSessionActive(callback) {
+    fetch('/verificar-sessao')
+      .then(response => response.json())
+      .then(data => {
+        callback(data); // Chamar a função de callback com o resultado
+      })
+      .catch(error => {
+        console.error('Erro ao verificar a sessão:', error);
+        callback(false); // Tratar erros como sessão inativa
+      });
+  }
+
+  function toggleSessionElements() {
+    const perfilButton = document.getElementById("perfil-button");
+    const loginLink = document.getElementById("login-link");
+
+    isSessionActive(function (isSessionActive) {
+      if (isSessionActive) {
+        perfilButton.style.display = "block";
+        loginLink.style.display = "none";
+      } else {
+        perfilButton.style.display = "none";
+        loginLink.style.display = "block";
+      }
+    });
+  }
+
+  toggleSessionElements();
 
 </script>
 </body>
