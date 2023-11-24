@@ -10,7 +10,10 @@ import br.com.ecommerce.winery.models.pedido.ItemPedido;
 import br.com.ecommerce.winery.models.pedido.Pedido;
 import br.com.ecommerce.winery.models.pedido.StatusPedido;
 import br.com.ecommerce.winery.models.pedido.formasPagamento.CartaoDeCredito;
-import br.com.ecommerce.winery.repositories.*;
+import br.com.ecommerce.winery.repositories.CartaoRepository;
+import br.com.ecommerce.winery.repositories.EnderecoRepository;
+import br.com.ecommerce.winery.repositories.ItemPedidoRepository;
+import br.com.ecommerce.winery.repositories.PedidoRepository;
 import br.com.ecommerce.winery.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +46,7 @@ public class ClienteController {
     private ItemPedidoRepository itemPedidoRepository;
     @Autowired
     private CartaoRepository cartaoRepository;
+
     @GetMapping("/Winery/cliente")
     public String cadastroCliente() {
         return "cadastroCliente";
@@ -171,15 +175,11 @@ public class ClienteController {
         System.out.println(pedido);
 
         try {
-//            Endereco enderecoPedido = pedido.getEndereco();
             List<ItemPedido> itemsPedido = pedido.getItensPedido();
-            CartaoDeCredito cartaoPedido = pedido.getCartaoDeCredito();
 
             int idEndereco = pedido.getIdEndereco();
             pedido.setIdEndereco(idEndereco);
             pedido.setItensPedido(null);
-//            pedido.setEndereco(null);
-            pedido.setIdEndereco(idEndereco);
             pedido.setCartaoDeCredito(null);
             pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
 
@@ -187,11 +187,7 @@ public class ClienteController {
             pedido.setId(0);
             Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
-            if (cartaoPedido != null) {
-                cartaoPedido.setId(0);
-                System.out.println("topzao: "+pedidoSalvo);
-                cartaoRepository.save(cartaoPedido);
-            }
+            pedidoSalvo.setNumeroParcelas(pedido.getNumeroParcelas());
 
             for (ItemPedido itemPedido : itemsPedido) {
                 itemPedido.setId(0);
@@ -205,7 +201,6 @@ public class ClienteController {
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
     }
-
 
 
     @GetMapping("/cliente/pedidos")
@@ -223,12 +218,12 @@ public class ClienteController {
                 System.out.println(pedidos);
 
                 model.addAttribute("cliente", cliente);
-                    model.addAttribute("pedidos", pedidos);
+                model.addAttribute("pedidos", pedidos);
                 return "meusPedidos";
             }
             return "meusPedidos";
         } catch (Exception e) {
-            System.out.println("_--------> :"+e);
+            System.out.println("_--------> :" + e);
             return "redirect:/Winery";
         }
     }

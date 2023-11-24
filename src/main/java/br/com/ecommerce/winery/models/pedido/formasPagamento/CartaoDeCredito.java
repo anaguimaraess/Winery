@@ -11,11 +11,7 @@ public class CartaoDeCredito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    // Remova a referência bidirecional
-    // @OneToOne(mappedBy = "cartaoDeCredito")
-    // private Pedido pedido;
-
-    private int pedidoId; // Adicione um campo para armazenar o ID do pedido
+    private int pedidoId;
 
     private String numero;
     private String nome;

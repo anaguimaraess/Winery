@@ -167,8 +167,6 @@ function isSessionActive(callback) {
   toggleSessionElements();
 
 
-
-
     function showLogoutMessage() {
     window.alert("Sessão encerrada com sucesso.");
     window.location.href = "/authentication/logout";
@@ -182,7 +180,7 @@ let pedidoAdaptado = {
     id: 0, // ou null, dependendo da lógica do seu back-end para gerar o ID
     status: null, // StatusPedido - ajuste conforme necessário
     itensPedido: pedidoLocalStorage.carrinhoPedido,
-    idEndereco: 0, // ou null, dependendo da lógica do seu back-end para gerar o ID
+    idEndereco: pedidoLocalStorage.endereco.idEndereco, // ou null, dependendo da lógica do seu back-end para gerar o ID
     endereco: pedidoLocalStorage.endereco,
     cartaoDeCredito: null, // Se você não tem informações de cartão no localStorage, pode manter como null ou remover
     numeroParcelas: pedidoLocalStorage.numeroParcelas,
@@ -192,8 +190,9 @@ let pedidoAdaptado = {
     formaPagamento: pedidoLocalStorage.formaPagamento,
     dataPedido: null // Data - ajuste conforme necessário
 };
-var te = JSON.parse(pedidoJson);
 
+var te = JSON.parse(pedidoJson);
+console.log("ok: " , pedidoAdaptado)
 te.status =0;
 console.info(te)
 
