@@ -171,14 +171,14 @@ public class ClienteController {
         System.out.println(pedido);
 
         try {
-            Endereco enderecoPedido = pedido.getEndereco();
+//            Endereco enderecoPedido = pedido.getEndereco();
             List<ItemPedido> itemsPedido = pedido.getItensPedido();
             CartaoDeCredito cartaoPedido = pedido.getCartaoDeCredito();
 
-            int idEndereco = enderecoPedido.getIdEndereco();
+            int idEndereco = pedido.getIdEndereco();
             pedido.setIdEndereco(idEndereco);
             pedido.setItensPedido(null);
-            pedido.setEndereco(null);
+//            pedido.setEndereco(null);
             pedido.setIdEndereco(idEndereco);
             pedido.setCartaoDeCredito(null);
             pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
@@ -218,16 +218,18 @@ public class ClienteController {
                         .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
                 cliente.setEnderecos(listaEnderecos);
 
-                if (cliente != null) {
 
-                    List pedidos = pedidoRepository.findByIdDoClienteOrderByDataDoPedidoDesc(String.valueOf(cliente.getIdCliente()));
-                    model.addAttribute("cliente", cliente);
+                List<Pedido> pedidos = pedidoRepository.findByIdDoClienteOrderByDataDoPedidoDesc(String.valueOf(cliente.getIdCliente()));
+                System.out.println(pedidos);
+
+                model.addAttribute("cliente", cliente);
                     model.addAttribute("pedidos", pedidos);
-                }
+                return "meusPedidos";
             }
             return "meusPedidos";
         } catch (Exception e) {
-            return "landingPageProduto";
+            System.out.println("_--------> :"+e);
+            return "redirect:/Winery";
         }
     }
 

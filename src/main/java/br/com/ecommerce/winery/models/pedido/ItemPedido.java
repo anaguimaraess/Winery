@@ -20,4 +20,18 @@ public class ItemPedido {
     private double preco;
     private int estoque;
     private String imagemPrincipal;
+
+    @Override
+    public String toString() {
+        return "ItemPedido{" +
+                "id=" + id +
+                ", quantidade=" + quantidade +
+                ", nome='" + nome + '\'' +
+                ", avaliacao=" + avaliacao +
+                ", descricao='" + descricao + '\'' +
+                ", preco=" + preco +
+                ", estoque=" + estoque +
+                ", imagemPrincipal='" + imagemPrincipal + '\'' +
+                '}';
+    }
 }
