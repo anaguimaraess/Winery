@@ -39,19 +39,13 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link text-white" href="/estoque/listarProdutos">
-            Vinhos
+            Produtos
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link text-white" href="/estoque/listarProdutos">
-            Vinicolas
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link text-white" href="/estoque/listarProdutos">
-            Espumante
+          <a class="nav-link text-white" href="/estoque/listarPedidos">
+            Pedidos dos clientes
           </a>
         </li>
       </ul>
@@ -79,8 +73,6 @@
             </a>
             <div class="dropdown-menu dropdown-menu-end" style="background-color: #1e1a28;"
                  aria-labelledby="perfil-button">
-              <a class="dropdown-item text-white" href="/cliente/winery">Meus Dados</a>
-              <a class="dropdown-item text-white" href="/cliente/pedidos">Meus Pedidos</a>
               <a class="dropdown-item text-white" href="/authentication/logout"
                  onclick="showLogoutMessage()">Sair</a>
             </div>
@@ -149,6 +141,7 @@
 
 
       <th:block th:each="pedido, iterStat : ${pedidos}">
+
         <li class="list-group-item border border-top border-end-0 border-bottom-0 border-start-0"
             style="background-color: #2c263a;  border-color: gray !important;">
           <div class="row">
@@ -161,15 +154,18 @@
             <div class="col-md-2 mt-2 text-white">
               <p th:text="${pedido.valorTotal}"></p>
             </div>
-            <form th:action="@{/estoque/atualizarStatusPedido}" method="post">
-              <div class="col-md-2 mt-2 text-white">
+          
+            <div class="col-md-2 mt-2 mr-3 text-white">
+              <form  th:action="@{/estoque/atualizarStatusPedido}" method="post">
+
                 <select class="statusSelect" name="stausPedido" >
-                  <option th:selected="${status == 'AGUARDANDO_PAGAMENTO'}" value="AGUARDANDO_PAGAMENTO">Aguardando Pagamento</option>
-                  <option th:selected="${status == 'PAGAMENTO_REJEITADO'}" value="PAGAMENTO_REJEITADO">Pagamento Rejeitado</option>
-                  <option th:selected="${status == 'PAGAMENTO_COM_SUCESSO'}" value="PAGAMENTO_COM_SUCESSO">Pagamento com Sucesso</option>
-                  <option th:selected="${status == 'AGUARDANDO_RETIRADA'}" value="AGUARDANDO_RETIRADA">Aguardando Retirada</option>
-                  <option th:selected="${status == 'EM_TRANSITO'}" value="EM_TRANSITO">Em Trânsito</option>
-                  <option th:selected="${status == 'ENTREGUE'}" value="ENTREGUE">Entregue</option>
+                  <option class="statusSelect" th:value="${pedido.status}" th:text="${pedido.status}" value="AGUARDANDO_PAGAMENTO"></option>
+                  <option th:selected="${pedido.status == 'AGUARDANDO_PAGAMENTO'}" value="AGUARDANDO_PAGAMENTO">Aguardando Pagamento</option>
+                  <option th:selected="${pedido.status == 'PAGAMENTO_REJEITADO'}" value="PAGAMENTO_REJEITADO">Pagamento Rejeitado</option>
+                  <option th:selected="${pedido.status == 'PAGAMENTO_COM_SUCESSO'}" value="PAGAMENTO_COM_SUCESSO">Pagamento com Sucesso</option>
+                  <option th:selected="${pedido.status == 'AGUARDANDO_RETIRADA'}" value="AGUARDANDO_RETIRADA">Aguardando Retirada</option>
+                  <option th:selected="${pedido.status == 'EM_TRANSITO'}" value="EM_TRANSITO">Em Trânsito</option>
+                  <option th:selected="${pedido.status == 'ENTREGUE'}" value="ENTREGUE">Entregue</option>
                 </select>
 
 

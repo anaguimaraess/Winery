@@ -100,7 +100,7 @@ public class EstoquistaController {
 
     @GetMapping("/listarPedidos")
     public String listarPedidos(Model model) {
-        List pedidos = pedidoRepository.findAllOrderByDataPedidoDesc();
+        List pedidos = pedidoRepository.findAllOrderByIdDesc();
         model.addAttribute("pedidos", pedidos);
         return "listaPedidoEstoquista";
     }
