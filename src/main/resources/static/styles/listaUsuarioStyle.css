@@ -74,53 +74,6 @@ body{
 .table button{
     margin-left: 5px !important;
 }
-/* header {
-    background: linear-gradient(to bottom, #000000, #000000f0);
-    color: #fff;
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 18px;
-}
-
-nav ul li a:hover {
-    border-bottom: 2px solid #fff;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-}
-
-.search-bar input[type="text"] {
-    padding: 6px;
-    border: none;
-    border-radius: 4px;
-    margin-right: 30px;
-}
-
-
-.containerHeader {
-    width: 100% !important;
-    text-align: center !important;
-    margin-bottom: 25px !important;
-
-} */
 
 .buttonSearch{
     width: 100px;
@@ -152,11 +105,10 @@ nav ul li a:hover {
     padding: 5px 10px;
     cursor: pointer;
 }
-/* CSS para a classe position-absolute */
 .position-absolute {
     position: absolute;
-    top: 50%; /* Coloca o elemento no centro vertical */
-    left: 50%; /* Coloca o elemento no centro horizontal */
+    top: 50%;
+    left: 50%; 
     transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
 }
 
@@ -175,15 +127,6 @@ nav ul li a:hover {
 .input-buscar{
     border: none;
 }
-
-/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Open+Sans:wght@300;400;500;600&display=swap');
-* {
-    padding: 0 !important;
-    margin: 0 !important;
-    box-sizing: border-box ;
-    font-family: 'Inter', sans-serif;
-} */
-
 
 .tituloForm{
     font-style: bold;
