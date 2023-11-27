@@ -252,18 +252,11 @@
         </div>
     </div>
 </div>
-
-<!-- Remove the container if you want to extend the Footer to full width. -->
 <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
-    <!-- Footer -->
     <footer class="text-center text-lg-start text-white" style="background-color: transparent !important;">
-        <!-- Grid container -->
         <div class="container p-4 pb-0">
-            <!-- Section: Links -->
             <section class="">
-                <!--Grid row-->
                 <div class="row">
-                    <!--Grid column-->
                     <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                         <img class="mb-3" th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
 
@@ -273,9 +266,6 @@
                             De segunda a sexta-feira de 08h as 18h. Exceto feriados.
                         </p>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Sobre a Winery</h5>
 
@@ -290,9 +280,6 @@
 
                         </ul>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Suporte</h5>
 
@@ -311,9 +298,6 @@
 
                         </ul>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Categorias</h5>
 
@@ -332,9 +316,6 @@
                             </li>
                         </ul>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Formas de Pagamento</h5>
 
@@ -342,15 +323,9 @@
                             <img th:src="@{/imagens/formaPagamento.webp}" width="200px" alt="">
                         </ul>
                     </div>
-                    <!--Grid column-->
                 </div>
-                <!--Grid row-->
             </section>
-            <!-- Section: Links -->
-
             <hr class="mb-4" />
-
-            <!-- Section: CTA -->
             <section class="text-center">
                 <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_empresabuscape_horizontal.png"
                     width="148" height="30" alt="Empresa reconhecida buscapé" loading="lazy"
@@ -372,144 +347,19 @@
                     alt="Empresa campeã prêmio reclame aqui 2022" loading="lazy" class="sc-kpKSZj bigULn"
                     style="margin-left: 30px;">
             </section>
-            <!-- Section: CTA -->
-
             <hr class="mb-4" />
-
-            <!-- Section: Social media -->
         </div>
-        <!-- Grid container -->
-
-        <!-- Copyright -->
         <div class="text-center p-3" style="background-color: transparent !important;">
             © 2023 Copyright por Winery
 
         </div>
-        <!-- Copyright -->
     </footer>
-    <!-- Footer -->
 </div>
-<!-- End of .container -->
 
 
+<script src="js/alterarCliente.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-<script>
-
-        document.addEventListener("DOMContentLoaded", () => {
-            document
-                .getElementById("inputCEP")
-                .addEventListener("blur", handleCEPBlur());
-        });
-
-
-        const handleCEPBlur = () => (e) => {
-            if (e.target.value.length >= 8) {
-
-                fetchAddress2(e);
-
-            }
-        };
-
-
-        const fetchAddress2 = () => {
-            let cep = document.getElementById('inputCEP');
-
-            fetch(`https://viacep.com.br/ws/${cep.value}/json/`)
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.erro) {
-                        alert("CEP não encontrado!");
-                    } else {
-                        document.getElementById('inputAddress').value = data.logradouro;
-                        document.getElementById('inputBairro').value = data.bairro;
-                        document.getElementById('inputCity').value = data.localidade;
-                        document.getElementById('inputEstado').value = data.uf;
-                    }
-                })
-                .catch(() => {
-                    alert("Erro ao buscar o CEP!");
-                });
-        };
-
-  $('#enderecoModal').on('submit', function (event) {
-    event.preventDefault();
-
-    var endereco = {
-        logradouro: document.getElementById('inputAddress').value,
-        numero: document.getElementById('inputNumero').value,
-        complemento: document.getElementById('inputComplemento').value,
-        bairro: document.getElementById('inputBairro').value,
-        cep: document.getElementById('inputCEP').value,
-        uf: document.getElementById('inputEstado').value,
-        cidade: document.getElementById('inputCity').value,
-        idCliente: document.getElementById('idClienteEndereco').value
-    };
-
-  
-
-        $.ajax({
-            type: 'POST',
-            url: '/cliente/adicionarEndereco',
-            data: JSON.stringify(endereco),
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                $('#modalMessages').empty();
-
-                if (data.startsWith('Sucesso:')) {
-                var mensagemSucesso = data.replace('Sucesso: ', '');
-                $('#modalMessages').append('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
-
-                setTimeout(function () {
-                    $('#modalMessages .alert').fadeOut('slow', function () {
-                        $(this).remove();
-
-                        window.location.reload(true);
-                    });
-                }, 3500);
-
-                }
-            },
-            error: function (xhr) {
-                $('#modalMessages').empty();
-
-                var mensagemErro = xhr.responseText;
-                
-                $('#modalMessages').append('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');
-                setTimeout(function () {
-                    $('#modalMessages .alert').fadeOut('slow', function() {
-                        $(this).remove();
-                    });
-                }, 3500);
-              }
-        });
-    });
-
-
-    $(document).ready(function() {
-    // Adicione o evento de clique aos radio buttons
-    $('input[type="radio"]').click(function() {
-        var enderecoId = $(this).val(); // Obtém o valor do radio button
-        var confirmar = confirm("Deseja definir este endereço como padrão?");
-        if (confirmar) {
-            // Fazer a requisição ao backend aqui
-            $.ajax({
-                url: '/cliente/definirPadrao/'+enderecoId, // Substitua pela URL correta
-                type: 'POST', // Ou outro método HTTP apropriado
-                success: function(response) {
-                    alert('Endereço definido como padrão com sucesso.');
-                },
-                error: function() {
-                    alert('Ocorreu um erro ao definir o endereço como padrão.');
-                }
-            });
-        }
-    });
-});
-
-    </script>
-
 </body>
 
 </html>
