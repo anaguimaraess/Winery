@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/styles/listaUsuarioStyle.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-    <!-- Inclua as folhas de estilo e o JavaScript do Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
@@ -165,21 +164,19 @@
         </div>
     </div>
 </div>
-<!-- Modal de Sucesso -->
+
 <div id="modalSucesso" class="modal">
     <div class="modal-content">
         <div id="modalSucessoMessage"></div>
     </div>
 </div>
 
-<!-- Modal de Erro -->
 <div id="modalErro" class="modal">
     <div class="modal-content">
         <div id="modalErroMessage"></div>
     </div>
 </div>
 
-<!-- Modal Alterar USUARIO -->
 <div class="modal" id="modalAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="containerBoa">
         <div id="modalMessagesAlterar" class="position-absolute"></div>
@@ -192,7 +189,6 @@
                     </div>
                 </div>
                 <div class="input-group">
-                    <!-- Use IDs correspondentes aos atributos do objeto "usuario" -->
                     <input type="hidden" id="idUsuarioAlterar" name="id" value="">
                     <input type="hidden" id="emailAlterar" name="email" value="">
                     <input type="hidden" id="statusUsuarioAlterar" name="status" value="">
@@ -203,7 +199,6 @@
                     <div class="input-box">
                         <input id="cpfAlterar" type="text" name="cpf" placeholder="Digite o seu CPF:" required>
                     </div>
-                    <!-- Adicione os campos restantes aqui com IDs correspondentes -->
                     <div class="input-box">
                         <input id="senhaAlterar" type="password" name="senha" placeholder="Digite a senha:">
                     </div>
@@ -255,7 +250,6 @@
 
             $('#idUsuarioAlterar').val(id);
 
-            // Abra o modal de alteração
             $('#modalAlterar').modal('show');
         }
 
@@ -273,11 +267,9 @@
             $('#modalAlterar').modal('hide');
         }
 
-
-        // Funcionamento do modal de cadastro
         $(document).ready(function () {
             $('#myModalCadastroBootstrap').on('show.bs.modal', function () {
-                $('#modalMessages').empty(); // Limpa as mensagens quando o modal é aberto
+                $('#modalMessages').empty();
             });
 
             $('#formCadastro').on('submit', function (event) {
@@ -328,7 +320,7 @@
 
         $(document).ready(function () {
             $('#modalAlterar').on('show.bs.modal', function () {
-                $('#modalMessagesAlterar').empty(); // Limpa as mensagens quando o modal é aberto
+                $('#modalMessagesAlterar').empty(); 
             });
 
 
@@ -338,10 +330,8 @@
                 var novaConfirmaSenha = $('#confirmaSenhaAlterar').val();
 
                 var formData = $(this).serialize();
-
-                // Verifique se ambos os campos de senha estão vazios
                 if (novaSenha === '' && novaConfirmaSenha === '') {
-                    // Se estiverem vazios, use as senhas existentes (senhaUsuario e confirmaSenhaUsuario)
+                   
                     formData = formData.replace('senhaAlterar=&', 'senha=' + senhaUsuario + '&');
                     formData = formData.replace('confirmaSenhaAlterar=&', 'confirmaSenha=' + confirmaSenhaUsuario + '&');
                 }
@@ -400,13 +390,11 @@
 
     modalMessage.innerHTML = mensagem;
 
-    // Exibir o modal
     modal.style.display = "block";
 
-    // Fechar o modal após alguns segundos (opcional)
     setTimeout(function () {
         modal.style.display = "none";
-    }, 3000); // Oculta após 3 segundos (3000 milissegundos)
+    }, 3000);
 }
 
 

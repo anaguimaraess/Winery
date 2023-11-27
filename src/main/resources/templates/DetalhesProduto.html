@@ -4,7 +4,6 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Inclua o CSS e o jQuery -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
@@ -41,7 +40,7 @@
   height: 100%;
 }
 .star {
-color: lightgray; /* Cor das estrelas inativas */
+color: lightgray; 
 cursor: pointer;
 }
 
@@ -86,24 +85,23 @@ hr{
     display: flex;
 }
 
-/* Estilos para o botão "Anterior" (esquerda) */
+
 .owl-carousel .owl-nav button.owl-prev {
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    font-size: 70px; /* Tamanho desejado dos botões (ajuste conforme necessário) */
+    font-size: 70px; 
     color: white;
 }
 
-/* Estilos para o botão "Próximo" (direita) */
 .owl-carousel .owl-nav button.owl-next {
     position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    font-size: 70px; /* Tamanho desejado dos botões (ajuste conforme necessário) */
-    color: white; /* Cor dos ícones (ajuste conforme necessário) */
+    font-size: 70px;
+    color: white; 
 }
 
 
@@ -242,17 +240,11 @@ hr{
     </div>
 </div>
 
-<!-- Remove the container if you want to extend the Footer to full width. -->
 <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
-    <!-- Footer -->
     <footer class="text-center text-lg-start text-white" style="background-color: transparent !important;">
-        <!-- Grid container -->
         <div class="container p-4 pb-0">
-            <!-- Section: Links -->
             <section class="">
-                <!--Grid row-->
                 <div class="row">
-                    <!--Grid column-->
                     <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                         <img class="mb-3" th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
 
@@ -262,9 +254,6 @@ hr{
                             De segunda a sexta-feira de 08h as 18h. Exceto feriados.
                         </p>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Sobre a Winery</h5>
 
@@ -279,9 +268,6 @@ hr{
 
                         </ul>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Suporte</h5>
 
@@ -300,9 +286,6 @@ hr{
 
                         </ul>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Categorias</h5>
 
@@ -321,9 +304,6 @@ hr{
                             </li>
                         </ul>
                     </div>
-                    <!--Grid column-->
-
-                    <!--Grid column-->
                     <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                         <h5 class="text-white">Formas de Pagamento</h5>
 
@@ -331,15 +311,10 @@ hr{
                             <img th:src="@{/imagens/formaPagamento.webp}" width="200px" alt="">
                         </ul>
                     </div>
-                    <!--Grid column-->
                 </div>
-                <!--Grid row-->
             </section>
-            <!-- Section: Links -->
-
             <hr class="mb-4" />
 
-            <!-- Section: CTA -->
             <section class="text-center">
                 <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_empresabuscape_horizontal.png"
                     width="148" height="30" alt="Empresa reconhecida buscapé" loading="lazy"
@@ -361,25 +336,15 @@ hr{
                     alt="Empresa campeã prêmio reclame aqui 2022" loading="lazy" class="sc-kpKSZj bigULn"
                     style="margin-left: 30px;">
             </section>
-            <!-- Section: CTA -->
-
             <hr class="mb-4" />
 
-            <!-- Section: Social media -->
         </div>
-        <!-- Grid container -->
-
-        <!-- Copyright -->
         <div class="text-center p-3" style="background-color: transparent !important;">
             © 2023 Copyright por Winery
 
         </div>
-        <!-- Copyright -->
     </footer>
-    <!-- Footer -->
 </div>
-<!-- End of .container -->
-
 <script>
 
 const avaliacaoProdutoThymeleaf = parseFloat([[${produto.avaliacaoProduto}]]);

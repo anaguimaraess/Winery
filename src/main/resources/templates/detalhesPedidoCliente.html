@@ -21,9 +21,9 @@
     }
     .position-absolute {
     position: absolute;
-    top: 50%; /* Coloca o elemento no centro vertical */
-    left: 50%; /* Coloca o elemento no centro horizontal */
-    transform: translate(-50%, -50%); /* Move o elemento de volta para cima e para a esquerda pela metade de sua largura e altura */
+    top: 50%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
 }
     .nome-produto {
         width: 200px;
@@ -193,8 +193,7 @@
                                     </div>
                                 </div>
                             </li>
-                        
-                            <!-- Adicione aqui os itens do carrinho usando a estrutura anterior -->
+
                             <li th:each="itemPedido : ${pedido.itensPedido}" class="list-group-item py-3"
                                 style="background-color: #1e1a28; border: none !important; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5) !important;">
                                 <div class="row align-items-center">
@@ -272,17 +271,13 @@
     <div id="modalMessages" class="position-absolute"></div>
 
 
-    <!-- Remove the container if you want to extend the Footer to full width. -->
+  
     <div class="bg-body-tertiary " style="background-color: transparent !important; margin-top: 100px;">
-        <!-- Footer -->
         <footer class="text-center text-lg-start text-white" style="background-color: transparent !important;">
-            <!-- Grid container -->
             <div class="container p-4 pb-0">
-                <!-- Section: Links -->
                 <section class="">
-                    <!--Grid row-->
                     <div class="row">
-                        <!--Grid column-->
+                
                         <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
                             <img th:src="@{/imagens/logoWinery250x250new.png}" width="150px" alt="Logo da Winery">
 
@@ -292,9 +287,9 @@
                                 De segunda a sexta-feira de 08h as 18h. Exceto feriados.
                             </p>
                         </div>
-                        <!--Grid column-->
+                
 
-                        <!--Grid column-->
+                
                         <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                             <h5 class="text-white">Sobre a Winery</h5>
 
@@ -309,9 +304,9 @@
 
                             </ul>
                         </div>
-                        <!--Grid column-->
+                
 
-                        <!--Grid column-->
+                
                         <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                             <h5 class="text-white">Suporte</h5>
 
@@ -330,9 +325,8 @@
 
                             </ul>
                         </div>
-                        <!--Grid column-->
+                
 
-                        <!--Grid column-->
                         <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                             <h5 class="text-white">Categorias</h5>
 
@@ -351,9 +345,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <!--Grid column-->
 
-                        <!--Grid column-->
                         <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
                             <h5 class="text-white">Formas de Pagamento</h5>
 
@@ -361,15 +353,12 @@
                                 <img src="/imagens/formaPagamento.webp" width="200px" alt="">
                             </ul>
                         </div>
-                        <!--Grid column-->
+                
                     </div>
-                    <!--Grid row-->
                 </section>
-                <!-- Section: Links -->
 
                 <hr class="mb-4" />
 
-                <!-- Section: CTA -->
                 <section class="text-center">
                     <img src="https://static.kabum.com.br/conteudo/temas/001/imagens/rodape/selo_empresabuscape_horizontal.png"
                         width="148" height="30" alt="Empresa reconhecida buscapé" loading="lazy"
@@ -391,79 +380,18 @@
                         alt="Empresa campeã prêmio reclame aqui 2022" loading="lazy" class="sc-kpKSZj bigULn"
                         style="margin-left: 30px;">
                 </section>
-                <!-- Section: CTA -->
 
                 <hr class="mb-4" />
-
-                <!-- Section: Social media -->
             </div>
-            <!-- Grid container -->
 
-            <!-- Copyright -->
             <div class="text-center p-3" style="background-color: transparent !important;">
                 © 2023 Copyright por Winery
 
             </div>
-            <!-- Copyright -->
         </footer>
-        <!-- Footer -->
+    
     </div>
-    <!-- End of .container -->
-
-    <!-- <script src="/js/checkout.js"></script> -->
-<script>
-    var valorFreteDoPedido = document.getElementById("valorFrete").textContent;
-    var valorTotalDoPedido = document.getElementById("valorTotal").textContent;
-
-var valorTotalSemFrete = valorTotalDoPedido - valorFreteDoPedido;
-
-var valorDosProdutosElement = document.getElementById("valorDosProdutos");
-
-// Verifica se o elemento foi encontrado
-if (valorDosProdutosElement) {
-    // Define o texto do elemento com o valor total sem frete
-    valorDosProdutosElement.textContent = "Valor dos Produtos: R$ " + valorTotalSemFrete.toFixed(2);
-} else {
-    console.error("Elemento HTML não encontrado.");
-}
-
-// Função para verificar se a sessão está ativa
-function isSessionActive(callback) {
-    // Fazer uma requisição para a rota do controlador
-    fetch('/verificar-sessao')
-      .then(response => response.json())
-      .then(data => {
-        callback(data); // Chamar a função de callback com o resultado
-      })
-      .catch(error => {
-        console.error('Erro ao verificar a sessão:', error);
-        callback(false); // Tratar erros como sessão inativa
-      });
-  }
-
-  // Função para alternar entre "Meu perfil" e "Faça login/crie seu login"
-  function toggleSessionElements() {
-    const perfilButton = document.getElementById("perfil-button");
-    const loginLink = document.getElementById("login-link");
-
-    isSessionActive(function (isSessionActive) {
-      if (isSessionActive) {
-        // Sessão ativa, mostrar "Meu perfil" e ocultar "Faça login/crie seu login"
-        perfilButton.style.display = "block";
-        loginLink.style.display = "none";
-      } else {
-        // Sessão inativa, mostrar "Faça login/crie seu login" e ocultar "Meu perfil"
-        perfilButton.style.display = "none";
-        loginLink.style.display = "block";
-      }
-    });
-  }
-
-  // Chame a função para alternar os elementos com base no estado da sessão
-  toggleSessionElements();
-
-
-</script>
+    <script src="/js/detalhesPedidoCliente.js"></script>
 
 
 </body>
