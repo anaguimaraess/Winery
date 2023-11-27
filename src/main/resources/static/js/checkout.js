@@ -87,7 +87,6 @@ function recuperarEndereco() {
     var enderecoSalvo = pedido.endereco;
 
 
-    console.log("aaaaaa ", enderecoSalvo)
     // Preencha os campos com os dados do endereço, se disponíveis
     document.getElementById('ruaLogado').innerText = 'Rua ' + (enderecoSalvo ? enderecoSalvo.logradouro : 'Endereço não disponível');
     document.getElementById('bairroLogado').innerText = enderecoSalvo ? enderecoSalvo.bairro : 'Endereço não disponível';
@@ -177,18 +176,18 @@ let pedidoLocalStorage = JSON.parse(localStorage.getItem('pedido'));
 
 var pedidoJson = localStorage.getItem('pedido');
 let pedidoAdaptado = {
-    id: 0, // ou null, dependendo da lógica do seu back-end para gerar o ID
-    status: null, // StatusPedido - ajuste conforme necessário
+    id: 0, 
+    status: null, 
     itensPedido: pedidoLocalStorage.carrinhoPedido,
-    idEndereco: pedidoLocalStorage.endereco.idEndereco, // ou null, dependendo da lógica do seu back-end para gerar o ID
+    idEndereco: pedidoLocalStorage.endereco.idEndereco, 
     endereco: pedidoLocalStorage.endereco,
-    cartaoDeCredito: null, // Se você não tem informações de cartão no localStorage, pode manter como null ou remover
+    cartaoDeCredito: null, 
     numeroParcelas: pedidoLocalStorage.numeroParcelas,
     idDoCliente: pedidoLocalStorage.idDoCliente,
     valorTotal: pedidoLocalStorage.valorTotal,
     valorFretePedido: pedidoLocalStorage.valorFretePedido,
     formaPagamento: pedidoLocalStorage.formaPagamento,
-    dataPedido: null // Data - ajuste conforme necessário
+    dataPedido: null 
 };
 
 var te = JSON.parse(pedidoJson);

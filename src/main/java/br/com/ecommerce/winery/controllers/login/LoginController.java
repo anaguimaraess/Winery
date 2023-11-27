@@ -23,6 +23,6 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logoutSuccess() {
-        return "login"; // Nome da página de sucesso de logout
+        return "login";
     }
 }

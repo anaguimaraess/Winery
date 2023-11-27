@@ -1,5 +1,4 @@
 let pedido = JSON.parse(localStorage.getItem('pedido'));
-        console.log("o top", pedido)
 
         function savePaymentForm() {
             const formaPagamentoSelecionada = document.querySelector('input[name="campoFormasPagamento"]:checked');
