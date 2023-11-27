@@ -82,7 +82,7 @@ public class EstoquistaController {
     }
 
     @PostMapping("/atualizarStatusPedido")
-    public String atualizarStatus(@RequestParam int id, @RequestParam StatusPedido stausPedido) {
+    public String atualizarStatus(@RequestParam int id, @RequestParam StatusPedido stausPedido, HttpServletResponse response) {
         try {
             Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
 
@@ -90,10 +90,11 @@ public class EstoquistaController {
                 Pedido pedido = pedidoOptional.get();
                 pedido.setStatus(stausPedido);
                 Pedido pedido1 = pedidoRepository.save(pedido);
-                System.out.println(pedido1);
+                response.setStatus(HttpStatus.OK.value());
             }
             return "redirect:/estoque/listarPedidos";
         } catch (Exception e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return "redirect:/estoque/listarPedidos";
         }
     }

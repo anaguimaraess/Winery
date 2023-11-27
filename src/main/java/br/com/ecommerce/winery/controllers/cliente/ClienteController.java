@@ -6,16 +6,12 @@ import br.com.ecommerce.winery.models.cliente.CustomClientDetails;
 import br.com.ecommerce.winery.models.cliente.Endereco;
 import br.com.ecommerce.winery.models.cliente.FlagEndereco;
 import br.com.ecommerce.winery.models.exception.BusinessException;
-import br.com.ecommerce.winery.models.pedido.ItemPedido;
 import br.com.ecommerce.winery.models.pedido.Pedido;
-import br.com.ecommerce.winery.models.pedido.StatusPedido;
-import br.com.ecommerce.winery.models.pedido.formasPagamento.CartaoDeCredito;
-import br.com.ecommerce.winery.repositories.CartaoRepository;
 import br.com.ecommerce.winery.repositories.EnderecoRepository;
-import br.com.ecommerce.winery.repositories.ItemPedidoRepository;
-import br.com.ecommerce.winery.repositories.PedidoRepository;
 import br.com.ecommerce.winery.services.ClienteService;
+import br.com.ecommerce.winery.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,19 +28,13 @@ import java.util.Optional;
 @RequestMapping(path = "")
 public class ClienteController {
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PedidoService pedidoService;
     @Autowired
     private ClienteService clienteService;
-
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private EnderecoRepository enderecoRepository;
-
-    @Autowired
-    private PedidoRepository pedidoRepository;
-    @Autowired
-    private ItemPedidoRepository itemPedidoRepository;
-    @Autowired
-    private CartaoRepository cartaoRepository;
 
     @GetMapping("/Winery/cliente")
     public String cadastroCliente() {
@@ -53,20 +42,19 @@ public class ClienteController {
     }
 
     @GetMapping("/cliente/winery")
-    public String exibirPaginaAlteracaoDados(Model model, Principal principal) {
+    public String exibirPaginaAlteracaoDados(Model model, Principal principal, HttpServletResponse response) {
         try {
             if (principal != null) {
                 String clienteUsername = principal.getName();
-                Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
-                List<Endereco> listaEnderecos = enderecoRepository
-                        .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
+                Cliente cliente = pedidoService.obterClienteParaExibicao(clienteUsername);
+                List<Endereco> listaEnderecos = pedidoService.obterEnderecosAtivosPorCliente(cliente.getIdCliente());
                 cliente.setEnderecos(listaEnderecos);
-                if (cliente != null) {
-                    model.addAttribute("cliente", cliente);
-                }
+                model.addAttribute("cliente", cliente);
+                response.setStatus(HttpStatus.OK.value());
             }
             return "alterarCliente";
         } catch (Exception e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return "landingPageProduto";
         }
     }
@@ -83,7 +71,7 @@ public class ClienteController {
 
     @PostMapping("/cliente/senha")
     public String alterarSenha(Authentication authentication, String senhaAntiga, String confirmaSenhaNova,
-                               String senhaNova, Model model) throws BusinessException {
+                               String senhaNova, Model model, HttpServletResponse response) throws BusinessException {
         if (authentication != null && authentication.getPrincipal() instanceof CustomClientDetails) {
             CustomClientDetails userDetails = (CustomClientDetails) authentication.getPrincipal();
             String username = userDetails.getUsername();
@@ -172,39 +160,17 @@ public class ClienteController {
 
     @PostMapping("/salvarJsonPedido")
     public ResponseEntity<String> salvarJson(@RequestBody Pedido pedido) {
-        System.out.println(pedido);
-
         try {
-            List<ItemPedido> itemsPedido = pedido.getItensPedido();
-
-            int idEndereco = pedido.getIdEndereco();
-            pedido.setIdEndereco(idEndereco);
-            pedido.setItensPedido(null);
-            pedido.setCartaoDeCredito(null);
-            pedido.setStatus(StatusPedido.AGUARDANDO_PAGAMENTO);
-
-            pedido.setDataPedido(new Date());
-            pedido.setId(0);
-            Pedido pedidoSalvo = pedidoRepository.save(pedido);
-
-            pedidoSalvo.setNumeroParcelas(pedido.getNumeroParcelas());
-
-            for (ItemPedido itemPedido : itemsPedido) {
-                itemPedido.setId(0);
-                itemPedido.setPedido(pedidoSalvo);
-                itemPedidoRepository.save(itemPedido);
-            }
-            return ResponseEntity.ok().body("Sucesso:" + "Pedido número #" + pedido.getId() + " realizado com sucesso! =)");
-
+            Pedido pedidoSalvo = pedidoService.salvarPedido(pedido);
+            return ResponseEntity.ok().body("Sucesso: Pedido número #" + pedidoSalvo.getId() + " realizado com sucesso! =)");
         } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
     }
 
-
     @GetMapping("/cliente/pedidos")
-    public String meusPedidos(Model model, Principal principal) {
+    public String meusPedidos(Model model, Principal principal, HttpServletResponse response) {
         try {
             if (principal != null) {
                 String clienteUsername = principal.getName();
@@ -213,48 +179,46 @@ public class ClienteController {
                         .findByClienteStatusAndFlagEndereco(cliente.getIdCliente(), Status.ATIVO, FlagEndereco.ENTREGA);
                 cliente.setEnderecos(listaEnderecos);
 
-
-                List<Pedido> pedidos = pedidoRepository.findByIdDoClienteOrderByDataDoPedidoDesc(String.valueOf(cliente.getIdCliente()));
-                System.out.println(pedidos);
+                List<Pedido> pedidos = pedidoService.obterPedidosDoCliente(cliente);
 
                 model.addAttribute("cliente", cliente);
                 model.addAttribute("pedidos", pedidos);
+                response.setStatus(HttpStatus.OK.value());
                 return "meusPedidos";
             }
             return "meusPedidos";
         } catch (Exception e) {
-            System.out.println("_--------> :" + e);
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return "redirect:/Winery";
         }
     }
 
     @GetMapping("/cliente/meu-pedido")
-    public String detalhePedidoPorId(Model model, Principal principal, @RequestParam int id) {
+    public String detalhePedidoPorId(Model model, Principal principal, @RequestParam int id, HttpServletResponse response) {
         try {
             if (principal != null) {
                 String clienteUsername = principal.getName();
                 Cliente cliente = clienteService.obterClientePorEmail(clienteUsername);
 
-                Optional<Pedido> pedidoOptional = pedidoRepository.findById(id);
-                Pedido pedidoExibido = pedidoOptional.get();
-                Endereco endereco = enderecoRepository
-                        .findById(pedidoExibido.getIdEndereco()).get();
+                Optional<Pedido> pedidoOptional = pedidoService.obterPedidoPorId(id);
+                if (pedidoOptional.isPresent()) {
+                    Pedido pedidoExibido = pedidoOptional.get();
+                    Endereco endereco = pedidoService.obterEnderecoDoPedido(pedidoExibido);
 
-                model.addAttribute("cliente", cliente);
-                model.addAttribute("pedido", pedidoExibido);
-                model.addAttribute("endereco", endereco);
-                model.addAttribute("itensPedido", pedidoExibido.getItensPedido());
+                    model.addAttribute("cliente", cliente);
+                    model.addAttribute("pedido", pedidoExibido);
+                    model.addAttribute("endereco", endereco);
+                    model.addAttribute("itensPedido", pedidoExibido.getItensPedido());
 
-                System.out.println();
-                return "detalhesPedidoCliente";
+                    response.setStatus(HttpStatus.OK.value());
+                    return "detalhesPedidoCliente";
+                }
             }
             return "meusPedidos";
-
         } catch (Exception e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return "meusPedidos";
         }
     }
-
-
 }
 
