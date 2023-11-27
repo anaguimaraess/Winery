@@ -52,4 +52,12 @@ public class CarrinhoController {
         return "checkoutPagamento";
     }
 
+    @GetMapping("/pix")
+    public String pixPagamento(){
+        return "pix";
+    }
+    @GetMapping("/boleto")
+    public String boletoPagamento(){
+        return "boleto";
+    }
 }

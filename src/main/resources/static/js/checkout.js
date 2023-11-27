@@ -213,11 +213,27 @@ async function enviarPedidoParaServidor(btn) {
             const mensagemSucesso = data.replace('Sucesso:', '');
             modalMessages.html('<div class="alert alert-success" role="alert">' + mensagemSucesso + '</div>');
 
-            localStorage.clear();
 
-            setTimeout(function () {
-                window.location.href = "/Winery";
-            }, 2500);
+            if (pedidoAdaptado.formaPagamento.toLowerCase() === 'pix') {
+                setTimeout(function () {
+                    window.location.href = "/pix";
+                }, 2500);
+                localStorage.clear();
+            
+            } else if (pedidoAdaptado.formaPagamento.toLowerCase() === 'boleto') {
+                setTimeout(function () {
+                    window.location.href = "/boleto";
+                }, 2500);
+                localStorage.clear();
+
+            } else {
+                setTimeout(function () {
+                    window.location.href = "/Winery";
+                }, 2500);
+                localStorage.clear();
+
+            }
+            
         } else if (data.startsWith('Erro:')) {
             const mensagemErro = data.replace('Erro:', '');
             modalMessages.html('<div class="alert alert-danger" role="alert">' + mensagemErro + '</div>');

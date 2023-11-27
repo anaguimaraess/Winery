@@ -4,7 +4,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Inclua o CSS e o jQuery -->
+ 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
@@ -40,7 +40,7 @@
   height: 100%;
 }
 .star {
-color: lightgray; /* Cor das estrelas inativas */
+color: lightgray; 
 cursor: pointer;
 }
 
@@ -78,24 +78,22 @@ body{
     display: flex;
 }
 
-/* Estilos para o botão "Anterior" (esquerda) */
 .owl-carousel .owl-nav button.owl-prev {
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    font-size: 70px; /* Tamanho desejado dos botões (ajuste conforme necessário) */
+    font-size: 70px; 
     color: white;
 }
 
-/* Estilos para o botão "Próximo" (direita) */
 .owl-carousel .owl-nav button.owl-next {
     position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    font-size: 70px; /* Tamanho desejado dos botões (ajuste conforme necessário) */
-    color: white; /* Cor dos ícones (ajuste conforme necessário) */
+    font-size: 70px; 
+    color: white; 
 }
 
 
@@ -202,68 +200,7 @@ body{
 </div>
 
 
-<script>
-
-const avaliacaoProdutoThymeleaf = parseFloat([[${produto.avaliacaoProduto}]]);
-
-$("#star-rating").rateYo({
-    rating: avaliacaoProdutoThymeleaf,
-    starWidth: "16px",
-    halfStar: true,
-    readOnly: true
-});
-
-
-function atualizarImagemPrincipal(element) {
-    var imagemUrl = $(element).attr('src');
-    $('#imagemPrincipal').attr('src', imagemUrl);
-}
-$(document).ready(function () {
-        $(".owl-carousel").owlCarousel({
-            items: 3, // Define o número de sub-imagens visíveis de cada vez
-            loop: true, // Ativa o loop do carrossel
-            margin: 10, // Espaçamento entre as sub-imagens
-            nav: true, // Exibe botões de navegação "previous" e "next"
-            responsive: {
-                0: {
-                    items: 1 // Número de sub-imagens visíveis em telas menores
-                },
-                768: {
-                    items: 3 // Número de sub-imagens visíveis em telas maiores
-                }
-            }
-        });
-    });
-
-    $(document).ready(function () {
-    var owl = $(".owl-carousel");
-
-    owl.owlCarousel({
-        items: 3, // Define o número de sub-imagens visíveis de cada vez
-        loop: true, // Ativa o loop do carrossel
-        margin: 10, // Espaçamento entre as sub-imagens
-        nav: false, // Desative os botões de navegação Owl Carousel
-        responsive: {
-            0: {
-                items: 1 // Número de sub-imagens visíveis em telas menores
-            },
-            768: {
-                items: 3 // Número de sub-imagens visíveis em telas maiores
-            }
-        }
-    });
-
-    // Adicione funcionalidade aos botões personalizados
-    $("#custom-prev").click(function () {
-        owl.trigger("prev.owl.carousel");
-    });
-
-    $("#custom-next").click(function () {
-        owl.trigger("next.owl.carousel");
-    });
-});
-
-</script>
+<script src="/js/exibirProduto.js"></script>
 
 </body>
 </html>
